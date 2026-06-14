@@ -131,10 +131,19 @@
 
     .brand-stack {
       display: grid;
-      gap: 6px;
+      gap: 10px;
+      justify-items: center;
     }
 
-    .brand-stack strong {
+    .brand-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand-head strong {
       font-size: clamp(2.6rem, 9vw, 4.8rem);
       line-height: 0.92;
       letter-spacing: -0.07em;
@@ -170,6 +179,51 @@
       gap: 24px;
       padding-top: clamp(28px, 7vw, 42px);
       animation: landing-card-in 0.86s cubic-bezier(0.22, 1, 0.36, 1) 1.08s both;
+    }
+
+    .lang-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(234, 224, 255, 0.12);
+      background: rgba(10, 8, 24, 0.54);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .lang-switch span {
+      color: rgba(232, 223, 255, 0.7);
+      font-size: 0.98rem;
+      line-height: 1;
+    }
+
+    .lang-switch select {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: #fff;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      padding-right: 12px;
+      outline: none;
+    }
+
+    .lang-switch select option {
+      color: #050311;
+    }
+
+    .lang-switch::after {
+      content: "▾";
+      color: rgba(232, 223, 255, 0.72);
+      font-size: 0.82rem;
+      pointer-events: none;
     }
 
     .hero-card::before {
@@ -516,6 +570,14 @@
         align-content: center;
       }
 
+      .brand-head {
+        gap: 10px;
+      }
+
+      .lang-switch {
+        min-height: 38px;
+      }
+
       .install-grid {
         grid-template-columns: 1fr;
       }
@@ -534,24 +596,35 @@
   <div class="intro-screen" aria-hidden="true"></div>
   <main class="landing">
     <section class="hero-card brand-card" aria-labelledby="homeTitle">
-
-
-      <a class="brand" href="HOME.html" id="brandMenuLink" aria-label="Open DRAGON HOME">
+      <a class="brand" href="HOME.html" id="brandMenuLink" aria-label="Open DRAGON HOME" data-i18n-aria-label="brandMenuLabel">
         <img src="logo-glass.png" alt="DRAGON logo">
         <span class="brand-stack">
-          <strong>DRAGON GO</strong>
+          <span class="brand-head">
+            <strong>DRAGON GO</strong>
+            <label class="lang-switch">
+              <span aria-hidden="true">🌐</span>
+              <select id="langSelect" aria-label="Language" data-i18n-aria-label="languageSelectLabel">
+                <option value="ru">🇺🇦 RU</option>
+                <option value="ua">🇺🇦 UA</option>
+                <option value="vn">🇻🇳 VN</option>
+                <option value="zh">🇨🇳 ZH</option>
+                <option value="pl">🇵🇱 PL</option>
+                <option value="de">🇩🇪 DE</option>
+              </select>
+            </label>
+          </span>
         </span>
       </a>
 
       <div class="copy">
-        <p>Быстрое меню, доставка.</p>
+        <p data-i18n="qrTagline">Быстрое меню, доставка.</p>
       </div>
 
-      <section class="actions" aria-label="DRAGON GO actions">
+      <section class="actions" aria-label="DRAGON GO actions" data-i18n-aria-label="actionsLabel">
         <a class="action primary" href="HOME.html" id="openMenuButton">
           <span class="action-copy">
-            <strong>Открыть меню / Web App</strong>
-            <small>Перейти в HOME.html</small>
+            <strong data-i18n="openAppTitle">Открыть меню / Web App</strong>
+            <small data-i18n="openAppHint">Перейти в HOME.html</small>
           </span>
           <span class="action-arrow" aria-hidden="true">↗</span>
         </a>
@@ -559,7 +632,7 @@
           <span class="action-label">
             <img class="action-icon-img" src="images/icon/android.png" alt="">
             <span class="action-copy">
-              <strong>Скачать для Android</strong>
+              <strong data-i18n="androidTitle">Скачать для Android</strong>
             </span>
           </span>
           <span class="action-arrow" aria-hidden="true">+</span>
@@ -568,7 +641,7 @@
           <span class="action-label">
             <img class="action-icon-img" src="images/icon/apple.png" alt="">
             <span class="action-copy">
-              <strong>Скачать для iPhone</strong>
+              <strong data-i18n="iphoneTitle">Скачать для iPhone</strong>
             </span>
           </span>
           <span class="action-arrow" aria-hidden="true">?</span>
@@ -580,25 +653,25 @@
 
     <section class="hero-card info-card" aria-labelledby="installTitle">
       <div class="copy">
-        <h2 class="section-title" id="installTitle">Установка на экран</h2>
-        <p class="section-copy">Выберите свою платформу и следуйте короткой инструкции ниже.</p>
+        <h2 class="section-title" id="installTitle" data-i18n="installTitle">Установка на экран</h2>
+        <p class="section-copy" data-i18n="installCopy">Выберите свою платформу и следуйте короткой инструкции ниже.</p>
       </div>
       <div class="install-grid">
         <section class="hint" id="androidHint">
-          <strong>Android</strong>
+          <strong data-i18n="androidHeader">Android</strong>
           <ol>
-            <li>Откройте страницу в Google Chrome.</li>
-            <li>Нажмите ⋮.</li>
-            <li>Выберите “Добавить на главный экран”.</li>
+            <li data-i18n="androidStep1">Откройте страницу в Google Chrome.</li>
+            <li data-i18n="androidStep2">Нажмите ⋮.</li>
+            <li data-i18n="androidStep3">Выберите “Добавить на главный экран”.</li>
           </ol>
         </section>
 
         <section class="hint" id="iphoneHint">
-          <strong>iPhone</strong>
+          <strong data-i18n="iphoneHeader">iPhone</strong>
           <ol>
-            <li>Откройте страницу в Safari.</li>
-            <li>Нажмите “Поделиться”.</li>
-            <li>Выберите “На экран Домой”.</li>
+            <li data-i18n="iphoneStep1">Откройте страницу в Safari.</li>
+            <li data-i18n="iphoneStep2">Нажмите “Поделиться”.</li>
+            <li data-i18n="iphoneStep3">Выберите “На экран Домой”.</li>
           </ol>
         </section>
       </div>
@@ -606,18 +679,18 @@
 
     <section class="hero-card social-card" aria-labelledby="contactsTitle">
       <div class="copy">
-        <h2 class="section-title" id="contactsTitle">Контакты и ссылки</h2>
-        <p class="section-copy">Instagram, карта, телефон и TikTok в одном месте.</p>
+        <h2 class="section-title" id="contactsTitle" data-i18n="contactsTitle">Контакты и ссылки</h2>
+        <p class="section-copy" data-i18n="contactsCopy">Instagram, карта, телефон и TikTok в одном месте.</p>
       </div>
 
-      <nav class="footer-strip" aria-label="DRAGON links">
+      <nav class="footer-strip" aria-label="DRAGON links" data-i18n-aria-label="linksLabel">
         <a class="footer-link" href="https://www.instagram.com/cyber_dragon_dlv/" target="_blank" rel="noopener noreferrer">
           <img src="images/icon/ig.png" alt="">
           <span>Instagram</span>
         </a>
         <a class="footer-link" href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса" target="_blank" rel="noopener noreferrer">
           <img src="images/icon/maps.png" alt="">
-          <span>Героїв Крут, 22</span>
+          <span data-i18n="mapLabel">Героїв Крут, 22</span>
         </a>
         <a class="footer-link" href="tel:+380632637999">
           <span class="emoji" aria-hidden="true">📞</span>
@@ -633,13 +706,235 @@
 
   <script>
     (() => {
+      const LANG_KEY = "CD_LANG";
+      const SUPPORTED_LANGS = ["ru", "ua", "vn", "zh", "pl", "de"];
+      const I18N = {
+        ru: {
+          pageTitle: "DRAGON.com - Быстрое меню",
+          language: "Язык",
+          languageSelectLabel: "Выбор языка",
+          brandMenuLabel: "Открыть DRAGON HOME",
+          qrTagline: "Быстрое меню, доставка.",
+          actionsLabel: "Действия DRAGON GO",
+          openAppTitle: "Открыть меню / Web App",
+          openAppHint: "Перейти в HOME.html",
+          androidTitle: "Скачать для Android",
+          iphoneTitle: "Скачать для iPhone",
+          installTitle: "Установка на экран",
+          installCopy: "Выберите свою платформу и следуйте короткой инструкции ниже.",
+          androidHeader: "Android",
+          androidStep1: "Откройте страницу в Google Chrome.",
+          androidStep2: "Нажмите ⋮.",
+          androidStep3: "Выберите «Добавить на главный экран».",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "Откройте страницу в Safari.",
+          iphoneStep2: "Нажмите «Поделиться».",
+          iphoneStep3: "Выберите «На экран Домой».",
+          contactsTitle: "Контакты и ссылки",
+          contactsCopy: "Instagram, карта, телефон и TikTok в одном месте.",
+          linksLabel: "Ссылки DRAGON",
+          mapLabel: "Героїв Крут, 22",
+          statusInstalled: "DRAGON установлен на главный экран.",
+          statusUseChromeMenu: "Если кнопка установки не появилась, используйте меню Chrome.",
+          statusIphoneShare: "На iPhone установка делается через кнопку «Поделиться»."
+        },
+        ua: {
+          pageTitle: "DRAGON.com - Швидке меню",
+          language: "Мова",
+          languageSelectLabel: "Вибір мови",
+          brandMenuLabel: "Відкрити DRAGON HOME",
+          qrTagline: "Швидке меню, доставка.",
+          actionsLabel: "Дії DRAGON GO",
+          openAppTitle: "Відкрити меню / Web App",
+          openAppHint: "Перейти до HOME.html",
+          androidTitle: "Завантажити для Android",
+          iphoneTitle: "Завантажити для iPhone",
+          installTitle: "Встановлення на екран",
+          installCopy: "Оберіть свою платформу та виконайте коротку інструкцію нижче.",
+          androidHeader: "Android",
+          androidStep1: "Відкрийте сторінку в Google Chrome.",
+          androidStep2: "Натисніть ⋮.",
+          androidStep3: "Оберіть «Додати на головний екран».",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "Відкрийте сторінку в Safari.",
+          iphoneStep2: "Натисніть «Поділитися».",
+          iphoneStep3: "Оберіть «На екран Додому».",
+          contactsTitle: "Контакти та посилання",
+          contactsCopy: "Instagram, карта, телефон і TikTok в одному місці.",
+          linksLabel: "Посилання DRAGON",
+          mapLabel: "Героїв Крут, 22",
+          statusInstalled: "DRAGON встановлено на головний екран.",
+          statusUseChromeMenu: "Якщо кнопка встановлення не з’явилася, скористайтеся меню Chrome.",
+          statusIphoneShare: "На iPhone встановлення робиться через кнопку «Поділитися»."
+        },
+        vn: {
+          pageTitle: "DRAGON.com - Menu nhanh",
+          language: "Ngôn ngữ",
+          languageSelectLabel: "Chọn ngôn ngữ",
+          brandMenuLabel: "Mở DRAGON HOME",
+          qrTagline: "Menu nhanh, giao hàng.",
+          actionsLabel: "Thao tác DRAGON GO",
+          openAppTitle: "Mở menu / Web App",
+          openAppHint: "Đi tới HOME.html",
+          androidTitle: "Tải cho Android",
+          iphoneTitle: "Tải cho iPhone",
+          installTitle: "Cài đặt lên màn hình",
+          installCopy: "Chọn nền tảng của bạn và làm theo hướng dẫn ngắn bên dưới.",
+          androidHeader: "Android",
+          androidStep1: "Mở trang này trong Google Chrome.",
+          androidStep2: "Nhấn ⋮.",
+          androidStep3: "Chọn “Thêm vào màn hình chính”.",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "Mở trang này trong Safari.",
+          iphoneStep2: "Nhấn “Chia sẻ”.",
+          iphoneStep3: "Chọn “Thêm vào Màn hình chính”.",
+          contactsTitle: "Liên hệ và liên kết",
+          contactsCopy: "Instagram, bản đồ, điện thoại và TikTok trong cùng một nơi.",
+          linksLabel: "Liên kết DRAGON",
+          mapLabel: "Heroiv Krut, 22",
+          statusInstalled: "DRAGON đã được cài lên màn hình chính.",
+          statusUseChromeMenu: "Nếu nút cài đặt không xuất hiện, hãy dùng menu Chrome.",
+          statusIphoneShare: "Trên iPhone, hãy cài đặt qua nút “Chia sẻ”."
+        },
+        zh: {
+          pageTitle: "DRAGON.com - 快速菜单",
+          language: "语言",
+          languageSelectLabel: "选择语言",
+          brandMenuLabel: "打开 DRAGON HOME",
+          qrTagline: "快速菜单，支持配送。",
+          actionsLabel: "DRAGON GO 操作",
+          openAppTitle: "打开菜单 / Web App",
+          openAppHint: "前往 HOME.html",
+          androidTitle: "下载 Android 版",
+          iphoneTitle: "下载 iPhone 版",
+          installTitle: "安装到主屏幕",
+          installCopy: "选择你的平台，并按照下面的简短说明操作。",
+          androidHeader: "Android",
+          androidStep1: "在 Google Chrome 中打开此页面。",
+          androidStep2: "点击 ⋮。",
+          androidStep3: "选择“添加到主屏幕”。",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "在 Safari 中打开此页面。",
+          iphoneStep2: "点击“分享”。",
+          iphoneStep3: "选择“添加到主屏幕”。",
+          contactsTitle: "联系与链接",
+          contactsCopy: "Instagram、地图、电话和 TikTok 都在这里。",
+          linksLabel: "DRAGON 链接",
+          mapLabel: "Героїв Крут, 22",
+          statusInstalled: "DRAGON 已安装到主屏幕。",
+          statusUseChromeMenu: "如果没有出现安装按钮，请使用 Chrome 菜单。",
+          statusIphoneShare: "在 iPhone 上，请通过“分享”按钮安装。"
+        },
+        pl: {
+          pageTitle: "DRAGON.com - Szybkie menu",
+          language: "Język",
+          languageSelectLabel: "Wybór języka",
+          brandMenuLabel: "Otwórz DRAGON HOME",
+          qrTagline: "Szybkie menu, dostawa.",
+          actionsLabel: "Akcje DRAGON GO",
+          openAppTitle: "Otwórz menu / Web App",
+          openAppHint: "Przejdź do HOME.html",
+          androidTitle: "Pobierz na Androida",
+          iphoneTitle: "Pobierz na iPhone'a",
+          installTitle: "Instalacja na ekranie",
+          installCopy: "Wybierz swoją platformę i postępuj zgodnie z krótką instrukcją poniżej.",
+          androidHeader: "Android",
+          androidStep1: "Otwórz stronę w Google Chrome.",
+          androidStep2: "Naciśnij ⋮.",
+          androidStep3: "Wybierz „Dodaj do ekranu głównego”.",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "Otwórz stronę w Safari.",
+          iphoneStep2: "Naciśnij „Udostępnij”.",
+          iphoneStep3: "Wybierz „Do ekranu początkowego”.",
+          contactsTitle: "Kontakty i linki",
+          contactsCopy: "Instagram, mapa, telefon i TikTok w jednym miejscu.",
+          linksLabel: "Linki DRAGON",
+          mapLabel: "Heroiv Krut, 22",
+          statusInstalled: "DRAGON został zainstalowany na ekranie głównym.",
+          statusUseChromeMenu: "Jeśli przycisk instalacji się nie pojawił, użyj menu Chrome.",
+          statusIphoneShare: "Na iPhonie instalacja odbywa się przez przycisk „Udostępnij”."
+        },
+        de: {
+          pageTitle: "DRAGON.com - Schnellmenü",
+          language: "Sprache",
+          languageSelectLabel: "Sprache auswählen",
+          brandMenuLabel: "DRAGON HOME öffnen",
+          qrTagline: "Schnellmenü, Lieferung.",
+          actionsLabel: "DRAGON GO Aktionen",
+          openAppTitle: "Menü öffnen / Web App",
+          openAppHint: "Zu HOME.html wechseln",
+          androidTitle: "Für Android herunterladen",
+          iphoneTitle: "Für iPhone herunterladen",
+          installTitle: "Zum Startbildschirm hinzufügen",
+          installCopy: "Wähle deine Plattform und folge der kurzen Anleitung unten.",
+          androidHeader: "Android",
+          androidStep1: "Öffne die Seite in Google Chrome.",
+          androidStep2: "Tippe auf ⋮.",
+          androidStep3: "Wähle „Zum Startbildschirm hinzufügen“.",
+          iphoneHeader: "iPhone",
+          iphoneStep1: "Öffne die Seite in Safari.",
+          iphoneStep2: "Tippe auf „Teilen“.",
+          iphoneStep3: "Wähle „Zum Home-Bildschirm“.",
+          contactsTitle: "Kontakte und Links",
+          contactsCopy: "Instagram, Karte, Telefon und TikTok an einem Ort.",
+          linksLabel: "DRAGON Links",
+          mapLabel: "Heroiv Krut, 22",
+          statusInstalled: "DRAGON wurde zum Startbildschirm hinzugefügt.",
+          statusUseChromeMenu: "Wenn die Installationsschaltfläche nicht erscheint, nutze das Chrome-Menü.",
+          statusIphoneShare: "Auf dem iPhone erfolgt die Installation über die Schaltfläche „Teilen“."
+        }
+      };
+
       const androidButton = document.getElementById("androidInstallButton");
       const iphoneButton = document.getElementById("iphoneInstallButton");
       const openMenuButton = document.getElementById("openMenuButton");
       const androidHint = document.getElementById("androidHint");
       const iphoneHint = document.getElementById("iphoneHint");
+      const langSelect = document.getElementById("langSelect");
       const status = document.getElementById("installStatus");
+      const i18nNodes = Array.from(document.querySelectorAll("[data-i18n]"));
+      const i18nAriaLabels = Array.from(document.querySelectorAll("[data-i18n-aria-label]"));
       let deferredPrompt = null;
+      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || document.documentElement.lang || "ru");
+
+      function normalizeLang(value) {
+        return SUPPORTED_LANGS.includes(value) ? value : "ru";
+      }
+
+      function L() {
+        return I18N[LANG] || I18N.ru;
+      }
+
+      function textByKey(key) {
+        return String(key || "")
+          .split(".")
+          .reduce((value, part) => (value && Object.prototype.hasOwnProperty.call(value, part) ? value[part] : undefined), L());
+      }
+
+      function applyTranslatedNodes() {
+        i18nNodes.forEach(node => {
+          const value = textByKey(node.dataset.i18n);
+          if (typeof value === "string") node.textContent = value;
+        });
+
+        i18nAriaLabels.forEach(node => {
+          const value = textByKey(node.dataset.i18nAriaLabel);
+          if (typeof value === "string") node.setAttribute("aria-label", value);
+        });
+      }
+
+      function applyLang(value) {
+        LANG = normalizeLang(value);
+        document.documentElement.lang = LANG;
+        if (langSelect) langSelect.value = LANG;
+        document.title = L().pageTitle || document.title;
+        applyTranslatedNodes();
+      }
+
+      function setLang(value) {
+        applyLang(value);
+        localStorage.setItem(LANG_KEY, LANG);
+      }
 
       function setStatus(text) {
         if (status) status.textContent = text || "";
@@ -655,7 +950,7 @@
         return window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
       }
 
-      if ("serviceWorker" in navigator) {
+      if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("sw.js").catch(error => {
             console.warn("Service worker registration failed", error);
@@ -671,7 +966,7 @@
 
       window.addEventListener("appinstalled", () => {
         deferredPrompt = null;
-        setStatus("DRAGON установлен на главный экран.");
+        setStatus(L().statusInstalled || "DRAGON установлен на главный экран.");
       });
 
       async function handleAndroidInstall() {
@@ -680,7 +975,7 @@
           return;
         }
         if (!deferredPrompt) {
-          setStatus("Если кнопка установки не появилась, используйте меню Chrome.");
+          setStatus(L().statusUseChromeMenu || "Если кнопка установки не появилась, используйте меню Chrome.");
           showHint(androidHint);
           return;
         }
@@ -698,10 +993,21 @@
           window.location.href = openMenuButton?.href || "HOME.html";
           return;
         }
-        setStatus("На iPhone установка делается через кнопку “Поделиться”.");
+        setStatus(L().statusIphoneShare || "На iPhone установка делается через кнопку «Поделиться».");
         showHint(iphoneHint);
       }
 
+      langSelect?.addEventListener("change", event => {
+        setLang(event.target.value);
+      });
+
+      window.addEventListener("storage", event => {
+        if (event.key === LANG_KEY) {
+          applyLang(event.newValue || "ru");
+        }
+      });
+
+      applyLang(LANG);
       androidButton?.addEventListener("click", handleAndroidInstall);
       iphoneButton?.addEventListener("click", handleIphoneInstall);
     })();

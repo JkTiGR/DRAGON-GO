@@ -74,10 +74,10 @@
     }
 
     .app {
-      width: min(100%, 760px);
+      width: min(100%, 430px);
       min-height: 100dvh;
       margin: 0 auto;
-      padding: max(18px, env(safe-area-inset-top)) 14px calc(94px + env(safe-area-inset-bottom));
+      padding: max(14px, env(safe-area-inset-top)) 12px calc(96px + env(safe-area-inset-bottom));
       background: transparent;
       border: 0;
       border-radius: 0;
@@ -92,7 +92,7 @@
 
     .header {
       position: sticky;
-      top: 0;
+      top: max(8px, env(safe-area-inset-top));
       z-index: 60;
     }
 
@@ -102,7 +102,10 @@
       align-items: center;
       justify-content: initial;
       gap: 10px;
-      padding: 10px 8px;
+      min-height: 64px;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      border-radius: 30px;
       overflow: visible;
     }
 
@@ -110,25 +113,96 @@
       opacity: 0.88;
     }
 
+    body.dragon-entry-home .nav-pop {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(35, 26, 64, 0.98), rgba(12, 9, 27, 0.98));
+      border-color: rgba(236, 228, 255, 0.18);
+      box-shadow:
+        0 24px 46px rgba(5, 2, 18, 0.56),
+        0 0 28px rgba(155, 108, 255, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(24px) saturate(170%);
+      -webkit-backdrop-filter: blur(24px) saturate(170%);
+    }
+
+    body.dragon-entry-home .brand {
+      gap: 10px;
+      color: #ffffff;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    body.dragon-entry-home .brand .mark {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+    }
+
+    body.dragon-entry-home .brand-label {
+      color: #ffffff;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    body.dragon-entry-home .lang select {
+      min-width: 92px;
+      min-height: 42px;
+      padding: 8px 30px 8px 14px;
+      border-radius: 16px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      background:
+        linear-gradient(180deg, rgba(103, 77, 196, 0.24), rgba(29, 20, 54, 0.46));
+    }
+
+    body.dragon-entry-home .burger {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border-radius: 16px;
+      color: #fff;
+      font-size: 0;
+    }
+
+    .burger-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+      color: currentColor;
+      pointer-events: none;
+    }
+
+    .burger-icon line {
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
     .hero {
       position: relative;
       overflow: hidden;
       isolation: isolate;
-      min-height: 178px;
+      min-height: 290px;
       display: grid;
-      align-content: end;
-      gap: 14px;
-      margin: 4px 0 18px;
+      align-content: start;
+      gap: 18px;
+      margin: 0 0 18px;
       padding: 28px 22px 24px;
       color: var(--ink);
       background:
-        radial-gradient(circle at 78% 24%, rgba(95, 230, 165, 0.16), transparent 22%),
-        radial-gradient(circle at 20% 18%, rgba(144, 118, 255, 0.16), transparent 26%),
-        linear-gradient(145deg, rgba(25, 20, 46, 0.82) 0%, rgba(14, 12, 30, 0.88) 48%, rgba(8, 8, 20, 0.92) 100%);
+        radial-gradient(circle at 86% 28%, rgba(117, 242, 185, 0.12), transparent 24%),
+        radial-gradient(circle at 18% 16%, rgba(144, 118, 255, 0.16), transparent 26%),
+        linear-gradient(145deg, rgba(23, 18, 42, 0.88) 0%, rgba(11, 10, 24, 0.92) 48%, rgba(7, 7, 18, 0.96) 100%);
       border: 1px solid rgba(233, 220, 255, 0.14);
-      border-radius: 30px;
+      border-radius: 32px;
       box-shadow:
-        0 22px 44px rgba(4, 2, 16, 0.3),
+        0 22px 44px rgba(4, 2, 16, 0.34),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px) saturate(108%);
       -webkit-backdrop-filter: blur(16px) saturate(108%);
@@ -146,59 +220,93 @@
     }
 
     .hero-kicker {
-      position: relative;
-      z-index: 1;
-      display: inline-flex;
-      width: max-content;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: rgba(11, 10, 24, 0.48);
-      border: 1px solid rgba(233, 220, 255, 0.12);
-      color: var(--green-dark);
-      font-size: 0.82rem;
-      font-weight: 900;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      display: none;
     }
 
     .hero-location {
+      min-width: 0;
+    }
+
+    .hero-location-copy {
+      min-width: 0;
       display: grid;
-      gap: 2px;
+      gap: 3px;
+      flex: 1 1 auto;
+    }
+
+    .hero-location-pin {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #fff;
+      font-size: 1.15rem;
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.14), transparent 28%),
+        linear-gradient(135deg, rgba(119, 232, 177, 0.92), rgba(47, 155, 106, 0.92));
+      box-shadow:
+        0 10px 22px rgba(47, 155, 106, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .hero-location strong {
       display: block;
+      overflow: hidden;
       color: var(--ink);
-      font-size: 1.06rem;
+      font-size: 1rem;
       font-weight: 900;
+      letter-spacing: -0.02em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .hero-location span {
       display: block;
       color: rgba(233, 226, 249, 0.72);
-      font-size: 0.92rem;
+      font-size: 0.84rem;
       font-weight: 800;
+    }
+
+    .hero-location-badge {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: #eafff4;
+      background: rgba(15, 60, 42, 0.54);
+      border: 1px solid rgba(119, 232, 177, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      font-size: 0.76rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .hero h1 {
       position: relative;
       z-index: 1;
-      max-width: 11ch;
+      max-width: 8.5ch;
       margin: 0;
-      font-size: clamp(2.05rem, 10vw, 4.2rem);
-      line-height: 0.96;
+      font-size: clamp(2.92rem, 10.6vw, 3.86rem);
+      line-height: 0.92;
       font-weight: 900;
-      letter-spacing: -0.07em;
+      letter-spacing: -0.085em;
+      text-wrap: balance;
     }
 
     .hero p {
       position: relative;
       z-index: 1;
-      max-width: 320px;
+      max-width: 250px;
       margin: 0;
       color: rgba(233, 226, 249, 0.76);
+      font-size: 0.98rem;
+      line-height: 1.42;
       font-weight: 800;
     }
 
@@ -209,13 +317,18 @@
       width: max-content;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
+      min-height: 44px;
+      padding: 10px 18px;
       border-radius: 999px;
       color: #ffffff;
       text-decoration: none;
       font-weight: 900;
-      background: linear-gradient(135deg, rgb(0, 0, 0), rgba(76, 0, 255, 0.94));
-      box-shadow: 0 10px 24px rgba(47, 155, 106, 0.22);
+      font-size: 1.02rem;
+      background: linear-gradient(135deg, #5c17ff, #3510ac 84%);
+      border: 1px solid rgba(183, 155, 255, 0.18);
+      box-shadow:
+        0 12px 24px rgba(67, 24, 212, 0.34),
+        0 0 28px rgba(47, 155, 106, 0.12);
     }
 
     .hero-float {
@@ -231,42 +344,33 @@
     }
 
     .hero-float.ball {
-      top: 22px;
-      right: 62px;
-      width: 132px;
-      height: 132px;
+      top: 24px;
+      right: -2px;
+      width: 154px;
+      height: 154px;
       background-image: url("glass1.png");
-      transform: rotate(-8deg);
+      filter: drop-shadow(0 18px 28px rgba(94, 55, 220, 0.28));
+      transform: rotate(4deg);
     }
 
     .hero-float.pizza {
-      top: 22px;
-      right: 18px;
-      width: 84px;
-      height: 284px;
-      background-image: url("pizza-glass.png");
-      transform: rotate(18deg);
+      display: none;
     }
 
     .hero-float.fries {
-      right: 88px;
-      bottom: 34px;
-      width: 104px;
-      height: 104px;
-      background-image: url("shaurma-glass.png");
-      transform: rotate(12deg);
+      display: none;
     }
 
-    .hero-float.burger {
-      right: 18px;
-      bottom: 20px;
-      width: 98px;
-      height: 98px;
-      background-image: url("pepsi-glass.png");
+    .hero-float.shaurma {
+      right: 14px;
+      bottom: 10px;
+      width: 86px;
+      height: 112px;
+      background-image: url("shaurma-glass.png");
       border: 0;
       box-shadow: none;
-      filter: none;
-      transform: rotate(-10deg);
+      filter: drop-shadow(0 12px 20px rgba(89, 56, 188, 0.22));
+      transform: rotate(-6deg);
     }
 
     .search {
@@ -274,11 +378,11 @@
       grid-template-columns: 42px 1fr 42px;
       align-items: center;
       gap: 4px;
-      min-height: 58px;
-      margin-bottom: 20px;
+      min-height: 60px;
+      margin-bottom: 18px;
       padding: 0 8px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(23, 18, 40, 0.72), rgba(11, 9, 24, 0.84));
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(23, 18, 40, 0.82), rgba(11, 9, 24, 0.94));
       border: 1px solid rgba(233, 220, 255, 0.12);
       box-shadow:
         0 16px 30px rgba(5, 2, 18, 0.2),
@@ -301,6 +405,7 @@
       outline: 0;
       background: transparent;
       color: var(--ink);
+      font-size: 0.94rem;
       font-weight: 800;
     }
 
@@ -326,11 +431,11 @@
     .chips {
       display: grid;
       grid-auto-flow: column;
-      grid-auto-columns: minmax(86px, 1fr);
-      gap: 12px;
+      grid-auto-columns: 78px;
+      gap: 14px;
       overflow-x: auto;
-      margin: 0 -14px 28px;
-      padding: 0 14px 4px;
+      margin: 0 0 28px;
+      padding: 0 2px 4px;
       scrollbar-width: none;
     }
 
@@ -341,7 +446,7 @@
     .chip {
       display: grid;
       justify-items: center;
-      gap: 8px;
+      gap: 10px;
       padding: 0;
       border: 0;
       background: transparent;
@@ -353,21 +458,45 @@
     }
 
     .chip-icon {
-      width: 78px;
-      height: 78px;
+      width: 76px;
+      height: 76px;
       display: grid;
       place-items: center;
       border-radius: 50%;
       background:
-        radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.08), transparent 24%),
-        linear-gradient(180deg, rgba(28, 21, 48, 0.76), rgba(11, 9, 24, 0.92));
+        radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.1), transparent 24%),
+        linear-gradient(180deg, rgba(32, 24, 58, 0.84), rgba(11, 9, 24, 0.96));
       border: 1px solid rgba(233, 220, 255, 0.12);
       box-shadow:
         0 12px 28px rgba(5, 2, 18, 0.18),
+        0 0 22px rgba(110, 82, 238, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
       font-size: 2rem;
       color: var(--ink);
       transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .chip-icon img {
+      width: 68%;
+      height: 68%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(5, 2, 18, 0.18));
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .chip-icon img.is-tall {
+      width: 58%;
+      height: 78%;
+    }
+
+    .chip > span:last-child {
+      font-size: 0.72rem;
+      line-height: 1.16;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
     }
 
     .chip.active .chip-icon,
@@ -383,7 +512,7 @@
     }
 
     .section {
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
 
     .section-head {
@@ -391,7 +520,7 @@
       align-items: end;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .section-head h2 {
@@ -419,18 +548,18 @@
       align-items: start;
       gap: 16px;
       overflow-x: auto;
-      margin: 0 -14px;
-      padding: 0 14px 4px;
+      margin: 0 -12px;
+      padding: 0 12px 4px;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
     }
 
     .top-grid {
-      grid-auto-columns: minmax(270px, 84%);
+      grid-auto-columns: minmax(254px, 76%);
     }
 
     .market-grid {
-      grid-auto-columns: minmax(184px, 62%);
+      grid-auto-columns: minmax(146px, 42%);
     }
 
     .rail::-webkit-scrollbar {
@@ -456,18 +585,18 @@
 
     .market-card {
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
 
     .market-card h3 {
       overflow: hidden;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 10px 0 4px;
+      gap: 0;
+      margin: 0;
       color: var(--ink);
-      font-size: 1.22rem;
-      line-height: 1.08;
+      font-size: 1.05rem;
+      line-height: 1.12;
       font-weight: 900;
       letter-spacing: -0.04em;
     }
@@ -477,25 +606,18 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-    }
-
-    .market-title-logo {
-      width: 44px;
-      height: 44px;
-      flex: 0 0 44px;
-      border-radius: 12px;
-      object-fit: contain;
-      box-shadow: 0 10px 18px rgba(5, 2, 18, 0.16);
+      line-clamp: 2;
     }
 
     .market-media {
       position: relative;
       overflow: hidden;
-      height: 132px;
-      border-radius: 20px;
-      padding: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 12px 24px rgba(5, 2, 18, 0.16);
+      aspect-ratio: 1 / 1;
+      height: auto;
+      border-radius: 24px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 24px rgba(5, 2, 18, 0.14);
     }
 
     .market-media::before {
@@ -506,8 +628,7 @@
       background: radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 22%);
     }
 
-    .market-stamp,
-    .market-logo {
+    .market-stamp {
       position: relative;
       z-index: 1;
       display: inline-flex;
@@ -518,67 +639,118 @@
     }
 
     .market-stamp {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
       padding: 6px 10px;
       color: #fff;
-      background: rgba(0, 0, 0, 0.34);
+      background: rgba(0, 0, 0, 0.38);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
-    .market-logo {
+    .market-visual {
       position: absolute;
-      left: 14px;
-      bottom: 14px;
-      padding: 9px 14px;
-      color: #f7f2ff;
-      background: rgba(13, 11, 26, 0.68);
-      border: 1px solid rgba(233, 220, 255, 0.12);
-      box-shadow: 0 8px 18px rgba(5, 2, 18, 0.14);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 74%;
+      height: 74%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 18px 26px rgba(5, 2, 18, 0.22));
+      transform: translate(-50%, -50%) scale(1.02);
+      pointer-events: none;
+      user-select: none;
     }
 
-    .market-logo img {
-      display: block;
-      height: 20px;
-      width: auto;
-      object-fit: contain;
+    .market-visual.is-full {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: none;
+      filter: none;
+      border-radius: inherit;
+    }
+
+    .market-copy {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .market-subline {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+      color: rgba(233, 226, 249, 0.8);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .market-plus {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(135deg, #24c47e, #19a863);
+      box-shadow: 0 10px 18px rgba(36, 196, 126, 0.18);
+      font-size: 0.9rem;
+      line-height: 1;
+    }
+
+    .market-address {
+      overflow: hidden;
+      display: -webkit-box;
+      min-width: 0;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      line-height: 1.2;
     }
 
     .brand-loko {
       background:
         radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.16), transparent 22%),
-        linear-gradient(135deg, #ff5eae, #ff7cc3);
+        linear-gradient(135deg, #ff3e78, #ff4f9d);
     }
 
     .brand-kopilka {
       background:
         radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.18), transparent 20%),
-        linear-gradient(135deg, #ff9129, #6a2cff);
+        linear-gradient(135deg, #bb13ff, #3ea4ff);
     }
 
     .brand-atb {
       background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 20%),
-        linear-gradient(135deg, #ff5252, #d61f1f);
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.32), transparent 20%),
+        linear-gradient(135deg, #fbfbfc, #ececf1);
     }
 
     .brand-hophey {
       background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.14), transparent 20%),
-        linear-gradient(135deg, #7d4319, #e8a135);
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 20%),
+        linear-gradient(135deg, #f0d5b3, #8a5a2c);
     }
 
     .brand-zoo {
       background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 20%),
-        linear-gradient(135deg, #1e7a5d, #6ae0a4);
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.24), transparent 20%),
+        linear-gradient(135deg, #ecfff7, #d8f6e8);
     }
 
     .brand-sushi {
       background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12), transparent 20%),
-        linear-gradient(135deg, #0c0f16, #4a3921);
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.2), transparent 20%),
+        linear-gradient(135deg, #1d1511, #5d3b1c);
     }
 
     .store-media {
@@ -712,7 +884,7 @@
 
     .status {
       min-height: 1.3em;
-      margin: -4px 0 22px;
+      margin: -2px 0 14px;
       color: var(--green-dark);
       font-size: 0.9rem;
       font-weight: 800;
@@ -725,7 +897,7 @@
     }
 
     .page-title {
-      margin: 14px 0 0;
+      margin: 0;
       color: var(--ink);
       font-size: clamp(1.35rem, 6vw, 2rem);
       line-height: 1.08;
@@ -918,6 +1090,7 @@
     body.dragon-entry-home .dock {
       border-color: transparent;
       outline: none;
+      width: min(calc(100% - 6px), 392px);
       box-shadow:
         0 22px 42px rgba(5, 2, 18, 0.28),
         inset 0 6px 12px rgba(255, 255, 255, 0.1),
@@ -934,6 +1107,17 @@
     body.dragon-entry-home .dock .dock-btn:focus-visible {
       outline: none;
       border: 0;
+    }
+
+    body.dragon-entry-home .dock .dock-btn {
+      max-width: 72px;
+      min-height: 54px;
+      gap: 3px;
+    }
+
+    body.dragon-entry-home .dock .dock-btn::after {
+      font-size: 0.64rem;
+      letter-spacing: 0.01em;
     }
 
     .restaurant-discount {
@@ -959,6 +1143,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
 
     .restaurant-address {
@@ -1019,6 +1204,159 @@
       gap: 4px;
     }
 
+    .orders-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(5, 3, 12, 0.68);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: opacity 0.22s ease;
+    }
+
+    .orders-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .orders-sheet {
+      position: fixed;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      z-index: 91;
+      width: min(100% - 24px, 460px);
+      display: grid;
+      gap: 16px;
+      padding: 22px 18px 18px;
+      border: 1px solid rgba(233, 220, 255, 0.12);
+      border-radius: 28px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.14), transparent 18%),
+        linear-gradient(180deg, rgba(27, 22, 46, 0.94), rgba(10, 8, 22, 0.98));
+      box-shadow:
+        0 26px 50px rgba(5, 2, 18, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px) saturate(118%);
+      -webkit-backdrop-filter: blur(18px) saturate(118%);
+      transform: translate(-50%, calc(100% + 26px));
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+
+    .orders-sheet.open {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .orders-kicker {
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: rgba(17, 54, 40, 0.3);
+      border: 1px solid rgba(119, 232, 177, 0.16);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .orders-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .orders-title {
+      margin: 8px 0 0;
+      font-size: clamp(1.45rem, 6vw, 2rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .orders-close {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 50%;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+    }
+
+    .orders-summary {
+      display: grid;
+      gap: 10px;
+    }
+
+    .orders-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(233, 220, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .orders-row span {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .orders-row strong {
+      text-align: right;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .orders-copy {
+      margin: 0;
+      color: rgba(233, 226, 249, 0.82);
+      font-weight: 700;
+    }
+
+    .orders-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .orders-action {
+      min-height: 52px;
+      border: 0;
+      border-radius: 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .orders-action.primary {
+      color: #06110c;
+      background: linear-gradient(135deg, #77e8b1, #a2ffd0);
+      box-shadow: 0 14px 26px rgba(119, 232, 177, 0.16);
+    }
+
+    .orders-action.secondary {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(233, 220, 255, 0.12);
+    }
+
+    .cart-badge.is-empty {
+      opacity: 0.76;
+    }
+
     .contact-section {
       position: relative;
       overflow: visible;
@@ -1055,7 +1393,7 @@
       }
 
       .market-grid {
-        grid-auto-columns: minmax(212px, 31%);
+        grid-auto-columns: minmax(164px, 24%);
       }
 
       .app {
@@ -1064,7 +1402,7 @@
 
       .hero {
         margin-inline: 0;
-        border-radius: 30px;
+        border-radius: 32px;
       }
     }
 
@@ -1074,7 +1412,7 @@
       }
 
       .market-grid {
-        grid-auto-columns: minmax(172px, 68%);
+        grid-auto-columns: minmax(138px, 44%);
       }
 
       .store-media {
@@ -1087,6 +1425,35 @@
 
       .restaurant-cover {
         height: 148px;
+      }
+
+      .hero {
+        min-height: 276px;
+        padding: 26px 20px 22px;
+      }
+
+      .hero h1 {
+        max-width: 8ch;
+        font-size: clamp(2.52rem, 11.2vw, 3.18rem);
+      }
+
+      .hero p {
+        max-width: 220px;
+        font-size: 0.94rem;
+      }
+
+      .hero-float.ball {
+        top: 30px;
+        right: -10px;
+        width: 138px;
+        height: 138px;
+      }
+
+      .hero-float.shaurma {
+        right: 12px;
+        bottom: 12px;
+        width: 74px;
+        height: 98px;
       }
     }
   </style>
@@ -1101,7 +1468,7 @@
         </h1>
 
         <div class="lang">
-          <select id="langSel" aria-label="Language">
+          <select id="langSel" aria-label="Language" data-i18n-aria-label="langLabel">
             <option value="ru">🇺🇦 RU</option>
             <option value="ua">🇺🇦 UA</option>
             <option value="vn">🇻🇳 VN</option>
@@ -1111,9 +1478,15 @@
           </select>
         </div>
 
-        <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">☰</button>
+        <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">
+          <svg class="burger-icon" viewBox="0 0 16 16" aria-hidden="true">
+            <line x1="2" y1="4" x2="14" y2="4"></line>
+            <line x1="2" y1="8" x2="14" y2="8"></line>
+            <line x1="2" y1="12" x2="14" y2="12"></line>
+          </svg>
+        </button>
 
-        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu">
+        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu" data-i18n-aria-label="mainMenuLabel">
           <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
           <a href="menu.html?point=dragon" id="navMenu" role="menuitem">🍜 MENU</a>
           <a href="#" id="navKaraoke" role="menuitem">🎤 KARAOKE</a>
@@ -1121,7 +1494,7 @@
           <a href="#" id="navContact" role="menuitem">📞 CONTACT</a>
           <hr>
           <div class="lang-inline" role="none">🌐
-            <select id="langSelMenu" aria-label="Language (menu)">
+            <select id="langSelMenu" aria-label="Language (menu)" data-i18n-aria-label="langMenuLabel">
               <option value="ru">🇺🇦 RU</option>
               <option value="ua">🇺🇦 UA</option>
               <option value="vn">🇻🇳 VN</option>
@@ -1136,22 +1509,26 @@
 
     <section class="hero" aria-labelledby="heroTitle">
       <div class="hero-kicker hero-location">
-        <strong>вулиця Героїв Крут 22</strong>
-        <span>Одеса 65000</span>
+        <span class="hero-location-pin" aria-hidden="true">📍</span>
+        <span class="hero-location-copy">
+          <strong data-i18n="heroLocationTitle">вулиця Героїв Крут, 22</strong>
+          <span data-i18n="heroLocationMeta">Одеса · доставка 10–30 хв</span>
+        </span>
+        <span class="hero-location-badge" data-i18n="heroLocationBadge">online</span>
       </div>
-      <h1 id="heroTitle">Найди еду, магазины и доставку</h1>
-      <p>Поиск по ресторанам, маркетам и любимым точкам DRAGON GO.</p>
-      <a class="hero-link" href="#topSection">Смотреть TOP</a>
+      <h1 id="heroTitle" data-i18n="heroTitle">Найди еду, магазины и доставку</h1>
+      <p data-i18n="heroCopy">Поиск по ресторанам, маркетам и любимым точкам DRAGON GO.</p>
+      <a class="hero-link" href="#topSection" data-i18n="heroCta">Смотреть TOP</a>
       <span class="hero-float ball" aria-hidden="true"></span>
       <span class="hero-float pizza" aria-hidden="true"></span>
       <span class="hero-float fries" aria-hidden="true"></span>
-      <span class="hero-float burger" aria-hidden="true"></span>
+      <span class="hero-float shaurma" aria-hidden="true"></span>
     </section>
 
-    <label class="search" aria-label="Поиск">
+    <label class="search" aria-label="Поиск" data-i18n-aria-label="searchLabel">
       <span aria-hidden="true">🔎</span>
-      <input id="searchInput" type="search" placeholder="Блюдо, ресторан или магазин..." autocomplete="off" />
-      <button id="filterButton" type="button" aria-label="Фильтры">
+      <input id="searchInput" type="search" placeholder="Блюдо, ресторан или магазин..." autocomplete="off" data-i18n-placeholder="searchPlaceholder" />
+      <button id="filterButton" type="button" aria-label="Фильтры" data-i18n-aria-label="filtersLabel">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 7h16"/>
           <path d="M7 7v0"/>
@@ -1162,34 +1539,47 @@
       </button>
     </label>
 
-    <nav class="chips" aria-label="Категории">
+    <nav class="chips" aria-label="Категории" data-i18n-aria-label="categoriesLabel">
       <button class="chip" type="button" data-query-chip data-query="продукты">
-        <span class="chip-icon">🛒</span>
-        <span>Продукты</span>
+        <span class="chip-icon"><img src="tachka-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.grocery">Продукты</span>
       </button>
       <button class="chip" type="button" data-query-chip data-query="pizza">
-        <span class="chip-icon">🍕</span>
-        <span>Пицца</span>
+        <span class="chip-icon"><img src="pizza-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.pizza">Пицца</span>
       </button>
-      <button class="chip" type="button" data-query-chip data-query="burger">
-        <span class="chip-icon">🍔</span>
-        <span>Бургеры</span>
+      <button class="chip" type="button" data-query-chip data-query="shaurma">
+        <span class="chip-icon"><img class="is-tall" src="shaurma-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.shaurma">Шаурма</span>
       </button>
       <button class="chip" type="button" data-query-chip data-query="напитки">
-        <span class="chip-icon">🥤</span>
-        <span>Напитки</span>
+        <span class="chip-icon"><img class="is-tall" src="pepsi-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.drinks">Напитки</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="wok">
+        <span class="chip-icon"><img src="wok-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.wok">WOK</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="shaurma">
+        <span class="chip-icon"><img class="is-tall" src="shaurma-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.shaurma">Shaurma</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="soup">
+        <span class="chip-icon"><img src="glass1.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.soup">Soup</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="sushi">
+        <span class="chip-icon"><img src="sushi-glass.png" alt="" aria-hidden="true"></span>
+        <span data-i18n="chips.sushi">Sushi</span>
       </button>
     </nav>
-
     <section class="section restaurant-section" id="topSection" aria-labelledby="restaurantsTitle" data-filter-section>
       <div class="section-head">
         <h2 class="page-title" id="restaurantsTitle">TOP</h2>
-        <a class="see-all" href="#topSection" data-clear-search>Все</a>
+        <a class="see-all" href="#topSection" data-clear-search data-i18n="seeAll">Все</a>
       </div>
-      <p class="status" id="homeStatus" aria-live="polite"></p>
-
       <div class="top-grid" data-store-list>
-        <a class="restaurant-card" href="menu.html?point=dragon" data-store="dragon" data-search-card data-search="dragon азия top noodles wok pho продукты напитки улица героїв крут">
+        <a class="restaurant-card" href="https://jktigr.github.io/dlv/menu.html" data-store="dragon" data-search-card data-search="dragon азия top noodles wok pho продукты напитки улица героїв крут">
           <div class="restaurant-cover is-yellow is-contain">
             <img src="images/dragon22point.png" alt="DRAGON">
             <span class="restaurant-heart">♡</span>
@@ -1201,48 +1591,48 @@
           </div>
           <div class="restaurant-meta">
             <span>🛵 200-250 ₴</span>
-            <span>⏱ 15–30 мин</span>
+            <span data-duration="15–30">⏱ 15–30 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=dlv" data-store="dlv" data-search-card data-search="pho viet burger pizza combo напитки top">
           <div class="restaurant-cover is-dark">
             <img src="promo.jpg" alt="PHO VIET">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
           </div>
           <h2>PHO VIET</h2>
           <div class="restaurant-meta">
             <span>🛵 0,00 ₴</span>
-            <span>⏱ 15–30 мин</span>
+            <span data-duration="15–30">⏱ 15–30 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=asian" data-store="asian" data-search-card data-search="ha noi sushi rolls wok все рестораны">
           <div class="restaurant-cover">
             <img src="images/spring_rolls.jpeg" alt="HA NOI">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
             <span class="restaurant-rating">★ 4.7 (500+)</span>
           </div>
           <h2>HA NOI</h2>
           <div class="restaurant-meta">
             <span>🛵 34,60 ₴</span>
-            <span>⏱ 20–40 мин</span>
+            <span data-duration="20–40">⏱ 20–40 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=shaurma" data-store="shaurma" data-search-card data-search="shaurma burger fastfood top streetfood delivery">
           <div class="restaurant-cover is-red">
             <img src="images/mi_xao_ga.png" alt="Shaurma">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
             <span class="restaurant-rating">★ 4.6 (250+)</span>
           </div>
           <h2>Shaurma & Brothers</h2>
           <div class="restaurant-meta">
             <span>🛵 31,30 ₴</span>
-            <span>⏱ 10–25 мин</span>
+            <span data-duration="10–25">⏱ 10–25 мин</span>
           </div>
         </a>
 
@@ -1255,7 +1645,7 @@
           <h2>i love PHO</h2>
           <div class="restaurant-meta">
             <span>🛵 29,90 ₴</span>
-            <span>⏱ 10–20 мин</span>
+            <span data-duration="10–20">⏱ 10–20 мин</span>
           </div>
         </a>
       </div>
@@ -1263,80 +1653,90 @@
 
     <section class="section" id="shopsSection" aria-labelledby="shopsTitle" data-filter-section>
       <div class="section-head">
-        <h2 id="shopsTitle">MAGAZINY</h2>
-        <a class="see-all" href="#shopsSection" data-clear-search>Все</a>
+        <h2 id="shopsTitle" data-i18n="shopsTitle">Магазины</h2>
+        <a class="see-all" href="#shopsSection" data-clear-search data-i18n="seeAll">Все</a>
       </div>
 
       <div class="market-grid">
         <a class="store-card market-card" href="#" data-search-card data-search="loko silpo продукты market shop grocery" data-market-label="LOKO від Сільпо">
           <div class="market-media brand-loko">
-            <span class="market-stamp">Быстро</span>
-            <span class="market-logo"><img src="images/shop-logos/loko-logo.png" alt="LOKO"></span>
+            <img class="market-visual is-full" src="images/shop-logos/loko-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/loko-logo.png" alt=""><span class="market-title-text">LOKO від Сільпо</span></h3>
-          <div class="meta">
-            <span>🛵 0,00 ₴</span>
-            <span>⏱ 15–30 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">LOKO від Сільпо</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.loko">Продукты и быстрая доставка</span>
+            </div>
           </div>
         </a>
 
         <a class="store-card market-card" href="#" data-search-card data-search="копилка kopilka продукты market drinks" data-market-label="Копійка">
           <div class="market-media brand-kopilka">
-            <span class="market-stamp">TOP</span>
-            <span class="market-logo"><img src="images/shop-logos/kopilka-logo.png" alt="KOPILKA"></span>
+            <img class="market-visual is-full" src="images/shop-logos/kopilka-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/kopilka-logo.png" alt=""><span class="market-title-text">Копійка</span></h3>
-          <div class="meta">
-            <span>🛵 34,60 ₴</span>
-            <span>⏱ 20–40 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">Копійка</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.kopilka">Ежедневные покупки и напитки</span>
+            </div>
           </div>
         </a>
 
         <a class="store-card market-card" href="#" data-search-card data-search="atb продукты market grocery food" data-market-label="ATB Market">
           <div class="market-media brand-atb">
-            <span class="market-stamp">Продукты</span>
-            <span class="market-logo"><img src="images/shop-logos/atb-logo.png" alt="ATB"></span>
+            <span class="market-stamp">24/7</span>
+            <img class="market-visual is-full" src="images/shop-logos/atb-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/atb-logo.png" alt=""><span class="market-title-text">ATB Market</span></h3>
-          <div class="meta">
-            <span>🛵 29,90 ₴</span>
-            <span>⏱ 15–35 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">ATB Market</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.atb">Снеки, покупки и базовые товары</span>
+            </div>
           </div>
         </a>
 
         <a class="store-card market-card" href="#" data-search-card data-search="hop hey напитки beer market alcohol" data-market-label="Hop Hey">
           <div class="market-media brand-hophey">
-            <span class="market-stamp">Напитки</span>
-            <span class="market-logo"><img src="images/shop-logos/hophey-logo.png" alt="Hop Hey"></span>
+            <span class="market-stamp">%</span>
+            <img class="market-visual is-full" src="images/shop-logos/hophey-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/hophey-logo.png" alt=""><span class="market-title-text">Hop Hey</span></h3>
-          <div class="meta">
-            <span>🛵 39,90 ₴</span>
-            <span>⏱ 20–35 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">Hop Hey</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.hophey">Пиво, снеки и вечерние покупки</span>
+            </div>
           </div>
         </a>
 
         <a class="store-card market-card" href="#" data-search-card data-search="zoo market zootovary pets shop" data-market-label="ZooMarket">
           <div class="market-media brand-zoo">
             <span class="market-stamp">Pets</span>
-            <span class="market-logo"><img src="images/shop-logos/zoomarket-logo.png" alt="ZooMarket"></span>
+            <img class="market-visual is-full" src="images/shop-logos/zoomarket-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/zoomarket-logo.png" alt=""><span class="market-title-text">ZooMarket</span></h3>
-          <div class="meta">
-            <span>🛵 25,00 ₴</span>
-            <span>⏱ 15–30 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">ZooMarket</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.zoo">Зоотовары и корм рядом</span>
+            </div>
           </div>
         </a>
 
         <a class="store-card market-card" href="#" data-search-card data-search="sushi market rolls asian food top" data-market-label="SUSHI spot">
           <div class="market-media brand-sushi">
-            <span class="market-stamp">Sushi</span>
-            <span class="market-logo"><img src="images/shop-logos/sushi-logo.png" alt="SUSHI"></span>
+            <span class="market-stamp">TOP</span>
+            <img class="market-visual is-full" src="images/shop-logos/sushi-logo.png" alt="" aria-hidden="true">
           </div>
-          <h3><img class="market-title-logo" src="images/shop-logos/sushi-logo.png" alt=""><span class="market-title-text">SUSHI spot</span></h3>
-          <div class="meta">
-            <span>🛵 31,30 ₴</span>
-            <span>⏱ 10–25 мин</span>
+          <div class="market-copy">
+            <h3><span class="market-title-text">SUSHI spot</span></h3>
+            <div class="market-subline">
+              <span class="market-plus">✚</span>
+              <span class="market-address" data-i18n="markets.sushi">Роллы и азиатские наборы</span>
+            </div>
           </div>
         </a>
       </div>
@@ -1344,8 +1744,8 @@
 
     <section class="section" id="allRestaurantsSection" aria-labelledby="allRestaurantsTitle" data-filter-section>
       <div class="section-head">
-        <h2 id="allRestaurantsTitle">Показать все рестораны</h2>
-        <a class="see-all" href="#allRestaurantsSection" data-clear-search>Все</a>
+        <h2 id="allRestaurantsTitle" data-i18n="allRestaurantsTitle">Показать все рестораны</h2>
+        <a class="see-all" href="#allRestaurantsSection" data-clear-search data-i18n="seeAll">Все</a>
       </div>
 
       <div class="all-restaurants-list">
@@ -1361,48 +1761,48 @@
           </div>
           <div class="restaurant-meta">
             <span>🛵 200-250 ₴</span>
-            <span>⏱ 15–30 мин</span>
+            <span data-duration="15–30">⏱ 15–30 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=dlv" data-store="dlv" data-search-card data-search="pho viet delivery burger combo все рестораны discount">
           <div class="restaurant-cover is-dark">
             <img src="promo.jpg" alt="PHO VIET">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
           </div>
           <h2>PHO VIET</h2>
           <div class="restaurant-meta">
             <span>🛵 0,00 ₴</span>
-            <span>⏱ 15–30 мин</span>
+            <span data-duration="15–30">⏱ 15–30 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=asian" data-store="asian" data-search-card data-search="HA NOI sushi rolls wok все рестораны">
           <div class="restaurant-cover">
             <img src="images/spring_rolls.jpeg" alt="HA NOI">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
             <span class="restaurant-rating">★ 4.7 (500+)</span>
           </div>
           <h2>HA NOI</h2>
           <div class="restaurant-meta">
             <span>🛵 34,60 ₴</span>
-            <span>⏱ 20–40 мин</span>
+            <span data-duration="20–40">⏱ 20–40 мин</span>
           </div>
         </a>
 
         <a class="restaurant-card" href="menu.html?point=shaurma" data-store="shaurma" data-search-card data-search="shaurma brothers burger streetfood все рестораны">
           <div class="restaurant-cover is-red">
             <img src="images/mi_xao_ga.png" alt="Shaurma & Brothers">
-            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-discount" data-i18n="discountText">Скидка до -500 ₴</span>
             <span class="restaurant-heart">♡</span>
             <span class="restaurant-rating">★ 4.6 (250+)</span>
           </div>
           <h2>Shaurma & Brothers</h2>
           <div class="restaurant-meta">
             <span>🛵 31,30 ₴</span>
-            <span>⏱ 10–25 мин</span>
+            <span data-duration="10–25">⏱ 10–25 мин</span>
           </div>
         </a>
 
@@ -1415,7 +1815,7 @@
           <h2>I LOVE PHO</h2>
           <div class="restaurant-meta">
             <span>🛵 29,90 ₴</span>
-            <span>⏱ 10–20 мин</span>
+            <span data-duration="10–20">⏱ 10–20 мин</span>
           </div>
         </a>
 
@@ -1428,7 +1828,7 @@
           <h2>Pho House</h2>
           <div class="restaurant-meta">
             <span>🛵 39,90 ₴</span>
-            <span>⏱ 20–35 мин</span>
+            <span data-duration="20–35">⏱ 20–35 мин</span>
           </div>
         </a>
       </div>
@@ -1455,7 +1855,7 @@
           <span class="more-ico">📍</span>
           <span>
             <div><b>Героїв Крут, 22</b></div>
-            <div class="muted">Черёмушки · Одесса</div>
+            <div class="muted" data-i18n="contactArea">Черёмушки · Одесса</div>
           </span>
         </span>
         <span class="more-arrow">›</span>
@@ -1467,8 +1867,8 @@
         <span class="more-left">
           <span class="more-ico">💳</span>
           <span>
-            <div><b>Оплатить / Pay QR</b></div>
-            <div class="muted">Universal Bank QR</div>
+            <div><b data-i18n="payLabel">Оплатить / Pay QR</b></div>
+            <div class="muted" data-i18n="payNote">Universal Bank QR</div>
           </span>
         </span>
         <span class="more-arrow">›</span>
@@ -1476,7 +1876,7 @@
     </section>
   </main>
 
-  <nav class="dock" aria-label="Bottom navigation">
+  <nav class="dock" aria-label="Bottom navigation" data-i18n-aria-label="bottomNavLabel">
     <button class="dock-btn active" id="dockHome" data-label="Главная">
       <img src="images/icon/home.png" alt="Home">
     </button>
@@ -1496,12 +1896,47 @@
     </button>
   </nav>
 
+  <div class="orders-overlay" id="ordersOverlay" aria-hidden="true"></div>
+  <section class="orders-sheet" id="ordersSheet" role="dialog" aria-modal="true" aria-labelledby="ordersTitle" aria-hidden="true">
+    <div class="orders-head">
+      <div>
+        <div class="orders-kicker" id="ordersKicker">Быстрый заказ</div>
+        <h2 class="orders-title" id="ordersTitle">Ваши заказы</h2>
+      </div>
+      <button class="orders-close" id="ordersClose" type="button" aria-label="Закрыть" data-i18n-aria-label="ordersCloseLabel">✕</button>
+    </div>
+    <div class="orders-summary">
+      <div class="orders-row">
+        <span id="ordersCountLabel">Блюд в корзине</span>
+        <strong id="ordersCountValue">0</strong>
+      </div>
+      <div class="orders-row">
+        <span id="ordersVenueLabel">Текущая точка</span>
+        <strong id="ordersVenueValue">DRAGON</strong>
+      </div>
+    </div>
+    <p class="orders-copy" id="ordersCopy">Корзина пока пуста. Откройте меню и добавьте любимые блюда.</p>
+    <div class="orders-actions">
+      <button class="orders-action primary" id="ordersPrimaryBtn" type="button">Открыть меню</button>
+      <button class="orders-action secondary" id="ordersClearBtn" type="button">Очистить корзину</button>
+    </div>
+  </section>
+
   <script>
     (() => {
       const $ = selector => document.querySelector(selector);
       const VENUE_KEY = "DRAGON_SELECTED_POINT";
       const LANG_KEY = "CD_LANG";
+      const CART_KEY = "CD_CART_V2";
       const SUPPORTED_LANGS = ["ru", "ua", "vn", "zh", "pl", "de"];
+      const VENUE_FALLBACK = "dragon";
+      const SUPPORTED_VENUES = ["dragon", "dlv", "asian", "shaurma"];
+      const VENUE_LABELS = {
+        dragon: "DRAGON",
+        dlv: "PHO VIET",
+        asian: "HA NOI",
+        shaurma: "Shaurma & Brothers"
+      };
       const I18N = {
         ru: {
           navHome: "Главная",
@@ -1518,7 +1953,18 @@
           geoDone: "Локация подтверждена.",
           geoFallback: "Можно выбрать точку вручную.",
           dock: { home: "Главная", stores: "Магазины", orders: "Заказы", search: "Поиск", profile: "Аккаунт" },
-          profile: "Профиль"
+          profile: "Профиль",
+          cart: {
+            kicker: "Быстрый заказ",
+            title: "Ваши заказы",
+            empty: "Корзина пока пуста. Откройте меню и добавьте любимые блюда.",
+            items: "Блюд в корзине",
+            selectedVenue: "Текущая точка",
+            continue: "Продолжить заказ",
+            openMenu: "Открыть меню",
+            clear: "Очистить корзину",
+            cleared: "Корзина очищена."
+          }
         },
         ua: {
           navHome: "Головна",
@@ -1535,7 +1981,18 @@
           geoDone: "Локацію підтверджено.",
           geoFallback: "Можна вибрати точку вручну.",
           dock: { home: "Головна", stores: "Магазини", orders: "Замовлення", search: "Пошук", profile: "Профіль" },
-          profile: "Профіль"
+          profile: "Профіль",
+          cart: {
+            kicker: "Швидке замовлення",
+            title: "Ваші замовлення",
+            empty: "Кошик поки порожній. Відкрийте меню та додайте улюблені страви.",
+            items: "Страв у кошику",
+            selectedVenue: "Поточна точка",
+            continue: "Продовжити замовлення",
+            openMenu: "Відкрити меню",
+            clear: "Очистити кошик",
+            cleared: "Кошик очищено."
+          }
         },
         vn: {
           navHome: "Trang chủ",
@@ -1552,7 +2009,18 @@
           geoDone: "Đã xác nhận vị trí.",
           geoFallback: "Có thể chọn cửa hàng thủ công.",
           dock: { home: "Trang chủ", stores: "Cửa hàng", orders: "Đơn hàng", search: "Tìm kiếm", profile: "Hồ sơ" },
-          profile: "Hồ sơ"
+          profile: "Hồ sơ",
+          cart: {
+            kicker: "Đặt nhanh",
+            title: "Đơn hàng của bạn",
+            empty: "Giỏ hàng đang trống. Hãy mở menu và thêm món bạn thích.",
+            items: "Món trong giỏ",
+            selectedVenue: "Điểm hiện tại",
+            continue: "Tiếp tục đặt món",
+            openMenu: "Mở menu",
+            clear: "Xóa giỏ hàng",
+            cleared: "Đã xóa giỏ hàng."
+          }
         },
         zh: {
           navHome: "首页",
@@ -1569,7 +2037,18 @@
           geoDone: "位置已确认。",
           geoFallback: "可以手动选择门店。",
           dock: { home: "首页", stores: "门店", orders: "订单", search: "搜索", profile: "个人资料" },
-          profile: "个人资料"
+          profile: "个人资料",
+          cart: {
+            kicker: "快速下单",
+            title: "您的订单",
+            empty: "购物车还是空的。打开菜单并添加喜欢的菜品。",
+            items: "购物车菜品",
+            selectedVenue: "当前门店",
+            continue: "继续下单",
+            openMenu: "打开菜单",
+            clear: "清空购物车",
+            cleared: "购物车已清空。"
+          }
         },
         pl: {
           navHome: "Strona główna",
@@ -1586,7 +2065,18 @@
           geoDone: "Lokalizacja potwierdzona.",
           geoFallback: "Punkt można wybrać ręcznie.",
           dock: { home: "Start", stores: "Sklepy", orders: "Zamówienia", search: "Szukaj", profile: "Profil" },
-          profile: "Profil"
+          profile: "Profil",
+          cart: {
+            kicker: "Szybkie zamówienie",
+            title: "Twoje zamówienia",
+            empty: "Koszyk jest pusty. Otwórz menu i dodaj ulubione dania.",
+            items: "Dań w koszyku",
+            selectedVenue: "Aktualny punkt",
+            continue: "Kontynuuj zamówienie",
+            openMenu: "Otwórz menu",
+            clear: "Wyczyść koszyk",
+            cleared: "Koszyk został wyczyszczony."
+          }
         },
         de: {
           navHome: "Startseite",
@@ -1603,15 +2093,320 @@
           geoDone: "Standort bestätigt.",
           geoFallback: "Standort kann manuell ausgewählt werden.",
           dock: { home: "Start", stores: "Shops", orders: "Bestellungen", search: "Suche", profile: "Profil" },
-          profile: "Profil"
+          profile: "Profil",
+          cart: {
+            kicker: "Schnellbestellung",
+            title: "Ihre Bestellungen",
+            empty: "Der Warenkorb ist leer. Öffnen Sie das Menü und fügen Sie Lieblingsgerichte hinzu.",
+            items: "Gerichte im Warenkorb",
+            selectedVenue: "Aktueller Standort",
+            continue: "Bestellung fortsetzen",
+            openMenu: "Menü öffnen",
+            clear: "Warenkorb leeren",
+            cleared: "Warenkorb geleert."
+          }
         }
       };
+
+      const I18N_EXTRA = {
+        ru: {
+          mainMenuLabel: "Главное меню",
+          langLabel: "Выбор языка",
+          langMenuLabel: "Выбор языка в меню",
+          heroLocationTitle: "вулиця Героїв Крут, 22",
+          heroLocationMeta: "Одесса · доставка 10-30 мин",
+          heroLocationBadge: "online",
+          heroTitle: "Найди еду, магазины и доставку",
+          heroCopy: "Поиск по ресторанам, маркетам и любимым точкам DRAGON GO.",
+          heroCta: "Смотреть TOP",
+          searchLabel: "Поиск",
+          searchPlaceholder: "Блюдо, ресторан или магазин...",
+          filtersLabel: "Фильтры",
+          categoriesLabel: "Категории",
+          chips: {
+            grocery: "Продукты",
+            pizza: "Пицца",
+            burgers: "Бургеры",
+            drinks: "Напитки",
+            wok: "WOK",
+            shaurma: "Шаурма",
+            soup: "Супы",
+            sushi: "Суши"
+          },
+          seeAll: "Все",
+          shopsTitle: "Магазины",
+          allRestaurantsTitle: "Показать все рестораны",
+          discountText: "Скидка до -500 ₴",
+          minutesShort: "мин",
+          markets: {
+            loko: "Продукты и быстрая доставка",
+            kopilka: "Ежедневные покупки и напитки",
+            atb: "Снеки, покупки и базовые товары",
+            hophey: "Пиво, снеки и вечерние покупки",
+            zoo: "Зоотовары и корм рядом",
+            sushi: "Роллы и азиатские наборы"
+          },
+          contactArea: "Черёмушки · Одесса",
+          payLabel: "Оплатить / Pay QR",
+          payNote: "Universal Bank QR",
+          bottomNavLabel: "Нижняя навигация",
+          ordersCloseLabel: "Закрыть",
+          searchNoResults: "Ничего не найдено: {value}",
+          searchFound: "Найдено: {count}",
+          marketSoon: "{name} скоро будет доступен."
+        },
+        ua: {
+          mainMenuLabel: "Головне меню",
+          langLabel: "Вибір мови",
+          langMenuLabel: "Вибір мови в меню",
+          heroLocationTitle: "вулиця Героїв Крут, 22",
+          heroLocationMeta: "Одеса · доставка 10-30 хв",
+          heroLocationBadge: "online",
+          heroTitle: "Знайди їжу, магазини та доставку",
+          heroCopy: "Пошук по ресторанах, маркетах і улюблених точках DRAGON GO.",
+          heroCta: "Дивитися TOP",
+          searchLabel: "Пошук",
+          searchPlaceholder: "Страва, ресторан або магазин...",
+          filtersLabel: "Фільтри",
+          categoriesLabel: "Категорії",
+          chips: {
+            grocery: "Продукти",
+            pizza: "Піца",
+            burgers: "Бургери",
+            drinks: "Напої",
+            wok: "WOK",
+            shaurma: "Шаурма",
+            soup: "Супи",
+            sushi: "Суші"
+          },
+          seeAll: "Усе",
+          shopsTitle: "Магазини",
+          allRestaurantsTitle: "Показати всі ресторани",
+          discountText: "Знижка до -500 ₴",
+          minutesShort: "хв",
+          markets: {
+            loko: "Продукти та швидка доставка",
+            kopilka: "Щоденні покупки та напої",
+            atb: "Снеки, покупки та базові товари",
+            hophey: "Пиво, снеки та вечірні покупки",
+            zoo: "Зоотовари й корм поруч",
+            sushi: "Роли та азійські набори"
+          },
+          contactArea: "Черемушки · Одеса",
+          payLabel: "Оплатити / Pay QR",
+          payNote: "Universal Bank QR",
+          bottomNavLabel: "Нижня навігація",
+          ordersCloseLabel: "Закрити",
+          searchNoResults: "Нічого не знайдено: {value}",
+          searchFound: "Знайдено: {count}",
+          marketSoon: "{name} скоро буде доступний."
+        },
+        vn: {
+          mainMenuLabel: "Menu chính",
+          langLabel: "Chọn ngôn ngữ",
+          langMenuLabel: "Chọn ngôn ngữ trong menu",
+          heroLocationTitle: "vulytsia Heroiv Krut, 22",
+          heroLocationMeta: "Odessa · giao trong 10-30 phút",
+          heroLocationBadge: "trực tuyến",
+          heroTitle: "Tìm món ăn, cửa hàng và giao hàng",
+          heroCopy: "Tìm kiếm nhà hàng, cửa hàng và các điểm DRAGON GO yêu thích.",
+          heroCta: "Xem TOP",
+          searchLabel: "Tìm kiếm",
+          searchPlaceholder: "Món ăn, nhà hàng hoặc cửa hàng...",
+          filtersLabel: "Bộ lọc",
+          categoriesLabel: "Danh mục",
+          chips: {
+            grocery: "Tạp hóa",
+            pizza: "Pizza",
+            burgers: "Burger",
+            drinks: "Đồ uống",
+            wok: "WOK",
+            shaurma: "Shawarma",
+            soup: "Súp",
+            sushi: "Sushi"
+          },
+          seeAll: "Tất cả",
+          shopsTitle: "Cửa hàng",
+          allRestaurantsTitle: "Xem tất cả nhà hàng",
+          discountText: "Giảm giá đến -500 ₴",
+          minutesShort: "phút",
+          markets: {
+            loko: "Tạp hóa và giao nhanh",
+            kopilka: "Mua sắm hằng ngày và đồ uống",
+            atb: "Đồ ăn vặt, mua sắm và nhu yếu phẩm",
+            hophey: "Bia, đồ ăn vặt và mua sắm buổi tối",
+            zoo: "Đồ thú cưng và thức ăn gần bạn",
+            sushi: "Sushi cuộn và set châu Á"
+          },
+          contactArea: "Cheremushki · Odessa",
+          payLabel: "Thanh toán / Pay QR",
+          payNote: "Mã QR Universal Bank",
+          bottomNavLabel: "Điều hướng dưới",
+          ordersCloseLabel: "Đóng",
+          searchNoResults: "Không tìm thấy: {value}",
+          searchFound: "Tìm thấy: {count}",
+          marketSoon: "{name} sẽ sớm có mặt."
+        },
+        zh: {
+          mainMenuLabel: "主菜单",
+          langLabel: "选择语言",
+          langMenuLabel: "菜单语言选择",
+          heroLocationTitle: "Героїв Крут 街 22 号",
+          heroLocationMeta: "敖德萨 · 10-30 分钟送达",
+          heroLocationBadge: "在线",
+          heroTitle: "查找美食、商店和配送",
+          heroCopy: "搜索餐厅、商店和你喜爱的 DRAGON GO 门店。",
+          heroCta: "查看 TOP",
+          searchLabel: "搜索",
+          searchPlaceholder: "菜品、餐厅或商店...",
+          filtersLabel: "筛选",
+          categoriesLabel: "分类",
+          chips: {
+            grocery: "杂货",
+            pizza: "披萨",
+            burgers: "汉堡",
+            drinks: "饮品",
+            wok: "WOK",
+            shaurma: "沙威玛",
+            soup: "汤品",
+            sushi: "寿司"
+          },
+          seeAll: "全部",
+          shopsTitle: "商店",
+          allRestaurantsTitle: "查看所有餐厅",
+          discountText: "最高优惠 -500 ₴",
+          minutesShort: "分钟",
+          markets: {
+            loko: "杂货和快速配送",
+            kopilka: "日常购物和饮品",
+            atb: "零食、采购和基础用品",
+            hophey: "啤酒、零食和夜间采购",
+            zoo: "附近的宠物用品和宠物粮",
+            sushi: "寿司卷和亚洲套餐"
+          },
+          contactArea: "Cheremushki · 敖德萨",
+          payLabel: "支付 / Pay QR",
+          payNote: "Universal Bank 二维码",
+          bottomNavLabel: "底部导航",
+          ordersCloseLabel: "关闭",
+          searchNoResults: "未找到：{value}",
+          searchFound: "找到：{count}",
+          marketSoon: "{name} 即将上线。"
+        },
+        pl: {
+          mainMenuLabel: "Menu główne",
+          langLabel: "Wybór języka",
+          langMenuLabel: "Wybór języka w menu",
+          heroLocationTitle: "ul. Heroiv Krut 22",
+          heroLocationMeta: "Odessa · dostawa 10-30 min",
+          heroLocationBadge: "online",
+          heroTitle: "Znajdź jedzenie, sklepy i dostawę",
+          heroCopy: "Szukaj restauracji, sklepów i ulubionych punktów DRAGON GO.",
+          heroCta: "Zobacz TOP",
+          searchLabel: "Szukaj",
+          searchPlaceholder: "Danie, restauracja lub sklep...",
+          filtersLabel: "Filtry",
+          categoriesLabel: "Kategorie",
+          chips: {
+            grocery: "Produkty",
+            pizza: "Pizza",
+            burgers: "Burgery",
+            drinks: "Napoje",
+            wok: "WOK",
+            shaurma: "Shoarma",
+            soup: "Zupy",
+            sushi: "Sushi"
+          },
+          seeAll: "Wszystko",
+          shopsTitle: "Sklepy",
+          allRestaurantsTitle: "Pokaż wszystkie restauracje",
+          discountText: "Rabat do -500 ₴",
+          minutesShort: "min",
+          markets: {
+            loko: "Produkty i szybka dostawa",
+            kopilka: "Codzienne zakupy i napoje",
+            atb: "Przekąski, zakupy i podstawowe produkty",
+            hophey: "Piwo, przekąski i wieczorne zakupy",
+            zoo: "Artykuły dla zwierząt i karma w pobliżu",
+            sushi: "Rolki sushi i zestawy azjatyckie"
+          },
+          contactArea: "Czeriomuszki · Odessa",
+          payLabel: "Zapłać / Pay QR",
+          payNote: "Kod QR Universal Bank",
+          bottomNavLabel: "Dolna nawigacja",
+          ordersCloseLabel: "Zamknij",
+          searchNoResults: "Nie znaleziono: {value}",
+          searchFound: "Znaleziono: {count}",
+          marketSoon: "{name} będzie wkrótce dostępny."
+        },
+        de: {
+          mainMenuLabel: "Hauptmenü",
+          langLabel: "Sprache auswählen",
+          langMenuLabel: "Sprache im Menü auswählen",
+          heroLocationTitle: "Heroiv-Krut-Straße 22",
+          heroLocationMeta: "Odessa · Lieferung in 10-30 Min.",
+          heroLocationBadge: "online",
+          heroTitle: "Finde Essen, Shops und Lieferung",
+          heroCopy: "Suche nach Restaurants, Märkten und deinen Lieblingsorten bei DRAGON GO.",
+          heroCta: "TOP ansehen",
+          searchLabel: "Suche",
+          searchPlaceholder: "Gericht, Restaurant oder Shop...",
+          filtersLabel: "Filter",
+          categoriesLabel: "Kategorien",
+          chips: {
+            grocery: "Lebensmittel",
+            pizza: "Pizza",
+            burgers: "Burger",
+            drinks: "Getränke",
+            wok: "WOK",
+            shaurma: "Schawarma",
+            soup: "Suppen",
+            sushi: "Sushi"
+          },
+          seeAll: "Alle",
+          shopsTitle: "Shops",
+          allRestaurantsTitle: "Alle Restaurants anzeigen",
+          discountText: "Rabatt bis zu -500 ₴",
+          minutesShort: "Min.",
+          markets: {
+            loko: "Lebensmittel und schnelle Lieferung",
+            kopilka: "Tägliche Einkäufe und Getränke",
+            atb: "Snacks, Einkäufe und Grundbedarf",
+            hophey: "Bier, Snacks und Abend-Einkäufe",
+            zoo: "Tierbedarf und Futter in der Nähe",
+            sushi: "Sushi-Rollen und asiatische Sets"
+          },
+          contactArea: "Tscherjomuschki · Odessa",
+          payLabel: "Bezahlen / Pay QR",
+          payNote: "Universal Bank QR",
+          bottomNavLabel: "Untere Navigation",
+          ordersCloseLabel: "Schließen",
+          searchNoResults: "Nichts gefunden: {value}",
+          searchFound: "Gefunden: {count}",
+          marketSoon: "{name} ist bald verfügbar."
+        }
+      };
+
+      for (const lang of SUPPORTED_LANGS) {
+        I18N[lang] = {
+          ...I18N[lang],
+          ...(I18N_EXTRA[lang] || {}),
+          chips: {
+            ...((I18N[lang] || {}).chips || {}),
+            ...((I18N_EXTRA[lang] || {}).chips || {})
+          },
+          markets: {
+            ...((I18N[lang] || {}).markets || {}),
+            ...((I18N_EXTRA[lang] || {}).markets || {})
+          }
+        };
+      }
 
       function normalizeLang(value) {
         return SUPPORTED_LANGS.includes(value) ? value : "ru";
       }
 
-      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || "ru");
+      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || "ua");
       document.documentElement.lang = LANG;
 
       const status = document.getElementById("homeStatus");
@@ -1632,13 +2427,30 @@
       const dockHome = document.getElementById("dockHome");
       const dockStores = document.getElementById("dockStores");
       const dockCart = document.getElementById("dockCart");
+      const cartBadge = document.getElementById("cartBadge");
       const dockSearch = document.getElementById("dockSearch");
       const dockProfil = document.getElementById("dockProfil");
+      const ordersOverlay = document.getElementById("ordersOverlay");
+      const ordersSheet = document.getElementById("ordersSheet");
+      const ordersClose = document.getElementById("ordersClose");
+      const ordersKicker = document.getElementById("ordersKicker");
+      const ordersTitle = document.getElementById("ordersTitle");
+      const ordersCountLabel = document.getElementById("ordersCountLabel");
+      const ordersCountValue = document.getElementById("ordersCountValue");
+      const ordersVenueLabel = document.getElementById("ordersVenueLabel");
+      const ordersVenueValue = document.getElementById("ordersVenueValue");
+      const ordersCopy = document.getElementById("ordersCopy");
+      const ordersPrimaryBtn = document.getElementById("ordersPrimaryBtn");
+      const ordersClearBtn = document.getElementById("ordersClearBtn");
       const venueCards = Array.from(document.querySelectorAll("[data-store]"));
       const searchCards = Array.from(document.querySelectorAll("[data-search-card]"));
       const filterSections = Array.from(document.querySelectorAll("[data-filter-section]"));
       const categoryChips = Array.from(document.querySelectorAll("[data-query-chip]"));
       const marketCards = Array.from(document.querySelectorAll("[data-market-label]"));
+      const durationNodes = Array.from(document.querySelectorAll("[data-duration]"));
+      const i18nNodes = Array.from(document.querySelectorAll("[data-i18n]"));
+      const i18nPlaceholders = Array.from(document.querySelectorAll("[data-i18n-placeholder]"));
+      const i18nAriaLabels = Array.from(document.querySelectorAll("[data-i18n-aria-label]"));
 
       function setStatus(text) {
         if (status) status.textContent = text || "";
@@ -1646,6 +2458,136 @@
 
       function L() {
         return I18N[LANG] || I18N.ru;
+      }
+
+      function textByKey(key) {
+        return String(key || "")
+          .split(".")
+          .reduce((value, part) => (value && Object.prototype.hasOwnProperty.call(value, part) ? value[part] : undefined), L());
+      }
+
+      function formatText(template, values = {}) {
+        return String(template || "").replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+      }
+
+      function applyTranslatedNodes() {
+        i18nNodes.forEach(node => {
+          const value = textByKey(node.dataset.i18n);
+          if (typeof value === "string") node.textContent = value;
+        });
+
+        i18nPlaceholders.forEach(node => {
+          const value = textByKey(node.dataset.i18nPlaceholder);
+          if (typeof value === "string") node.setAttribute("placeholder", value);
+        });
+
+        i18nAriaLabels.forEach(node => {
+          const value = textByKey(node.dataset.i18nAriaLabel);
+          if (typeof value === "string") node.setAttribute("aria-label", value);
+        });
+
+        const minutesShort = L().minutesShort || "мин";
+        durationNodes.forEach(node => {
+          if (node.dataset.duration) {
+            node.textContent = `⏱ ${node.dataset.duration} ${minutesShort}`;
+          }
+        });
+      }
+
+      function normalizeVenue(value) {
+        return SUPPORTED_VENUES.includes(value) ? value : VENUE_FALLBACK;
+      }
+
+      function selectedVenue() {
+        return normalizeVenue(localStorage.getItem(VENUE_KEY) || VENUE_FALLBACK);
+      }
+
+      function selectedVenueLabel() {
+        return VENUE_LABELS[selectedVenue()] || VENUE_LABELS[VENUE_FALLBACK];
+      }
+
+      function readCartSnapshot() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(CART_KEY) || "{}");
+          let itemsCount = 0;
+          let distinctCount = 0;
+          for (const entry of Object.values(raw || {})) {
+            if (!entry || typeof entry.qty !== "number") continue;
+            const qty = Math.max(0, entry.qty | 0);
+            if (!qty) continue;
+            itemsCount += qty;
+            distinctCount += 1;
+          }
+          return { itemsCount, distinctCount };
+        } catch (_) {
+          return { itemsCount: 0, distinctCount: 0 };
+        }
+      }
+
+      function cartMenuUrl() {
+        const url = new URL("menu.html", window.location.href);
+        url.searchParams.set("point", selectedVenue());
+        return url.toString();
+      }
+
+      function updateCartBadge() {
+        const { itemsCount } = readCartSnapshot();
+        if (!cartBadge || !dockCart) return itemsCount;
+        cartBadge.textContent = String(itemsCount);
+        cartBadge.classList.toggle("is-empty", itemsCount === 0);
+        dockCart.setAttribute("aria-label", `${L().dock?.orders || "Заказы"}: ${itemsCount}`);
+        return itemsCount;
+      }
+
+      function renderOrdersSheet() {
+        const t = L().cart || {};
+        const { itemsCount } = readCartSnapshot();
+        const hasItems = itemsCount > 0;
+        if (ordersKicker) ordersKicker.textContent = t.kicker || "Быстрый заказ";
+        if (ordersTitle) ordersTitle.textContent = t.title || "Ваши заказы";
+        if (ordersCountLabel) ordersCountLabel.textContent = t.items || "Блюд в корзине";
+        if (ordersCountValue) ordersCountValue.textContent = String(itemsCount);
+        if (ordersVenueLabel) ordersVenueLabel.textContent = t.selectedVenue || "Текущая точка";
+        if (ordersVenueValue) ordersVenueValue.textContent = selectedVenueLabel();
+        if (ordersCopy) {
+          ordersCopy.textContent = hasItems
+            ? `${itemsCount} · ${selectedVenueLabel()}`
+            : (t.empty || "Корзина пока пуста. Откройте меню и добавьте любимые блюда.");
+        }
+        if (ordersPrimaryBtn) {
+          ordersPrimaryBtn.textContent = hasItems
+            ? (t.continue || "Продолжить заказ")
+            : (t.openMenu || "Открыть меню");
+        }
+        if (ordersClearBtn) {
+          ordersClearBtn.textContent = t.clear || "Очистить корзину";
+          ordersClearBtn.hidden = !hasItems;
+        }
+      }
+
+      function openOrdersSheet() {
+        closeNavPop();
+        renderOrdersSheet();
+        document.body.style.overflow = "hidden";
+        ordersOverlay?.classList.add("show");
+        ordersOverlay?.setAttribute("aria-hidden", "false");
+        ordersSheet?.classList.add("open");
+        ordersSheet?.setAttribute("aria-hidden", "false");
+      }
+
+      function closeOrdersSheet() {
+        document.body.style.overflow = "";
+        ordersOverlay?.classList.remove("show");
+        ordersOverlay?.setAttribute("aria-hidden", "true");
+        ordersSheet?.classList.remove("open");
+        ordersSheet?.setAttribute("aria-hidden", "true");
+      }
+
+      function clearOrdersCart() {
+        localStorage.removeItem(CART_KEY);
+        updateCartBadge();
+        renderOrdersSheet();
+        setStatus(L().cart?.cleared || "Корзина очищена.");
       }
 
       function closeNavPop() {
@@ -1671,16 +2613,23 @@
         if (navContact) navContact.textContent = "📞 " + t.navContact;
         if (restaurantsTitle) restaurantsTitle.textContent = t.homeTitle;
         if (contactTitle) contactTitle.textContent = "📞 " + (t.contactTitle || t.navContact);
+        applyTranslatedNodes();
         applyDockLabels();
+        renderOrdersSheet();
+        updateCartBadge();
       }
 
-      function setLang(value) {
+      function applyLang(value) {
         LANG = normalizeLang(value);
-        localStorage.setItem(LANG_KEY, LANG);
         document.documentElement.lang = LANG;
         if (langSel) langSel.value = LANG;
         if (langSelMenu) langSelMenu.value = LANG;
         setUITexts();
+      }
+
+      function setLang(value) {
+        applyLang(value);
+        localStorage.setItem(LANG_KEY, LANG);
         document.dispatchEvent(new CustomEvent("CD_LANG_CHANGED"));
       }
 
@@ -1718,11 +2667,11 @@
         }
 
         if (!visibleCount) {
-          setStatus(`Ничего не найдено: ${value}`);
+          setStatus(formatText(L().searchNoResults || "Ничего не найдено: {value}", { value }));
           return;
         }
 
-        setStatus(`Найдено: ${visibleCount}`);
+        setStatus(formatText(L().searchFound || "Найдено: {count}", { count: visibleCount }));
       }
 
       function rememberVenueFromLink(event) {
@@ -1762,7 +2711,7 @@
       marketCards.forEach(card => {
         card.addEventListener("click", event => {
           event.preventDefault();
-          setStatus(`${card.dataset.marketLabel} скоро будет доступен.`);
+          setStatus(formatText(L().marketSoon || "{name} скоро будет доступен.", { name: card.dataset.marketLabel }));
         });
       });
 
@@ -1773,7 +2722,7 @@
 
       document.addEventListener("click", event => {
         if (!navPop) return;
-        if (!navPop.contains(event.target) && event.target !== burgerBtn) {
+        if (!navPop.contains(event.target) && !burgerBtn?.contains(event.target)) {
           closeNavPop();
         }
       });
@@ -1822,7 +2771,7 @@
 
       dockCart?.addEventListener("click", () => {
         setActiveDock(dockCart);
-        window.location.href = "menu.html?point=dragon";
+        openOrdersSheet();
       });
 
       dockSearch?.addEventListener("click", () => {
@@ -1844,9 +2793,47 @@
         setStatus(L().filtersSoon);
       });
 
-      setLang(LANG);
+      ordersOverlay?.addEventListener("click", closeOrdersSheet);
+      ordersClose?.addEventListener("click", closeOrdersSheet);
+      ordersPrimaryBtn?.addEventListener("click", () => {
+        localStorage.setItem(VENUE_KEY, selectedVenue());
+        window.location.href = cartMenuUrl();
+      });
+      ordersClearBtn?.addEventListener("click", clearOrdersCart);
 
-      if ("serviceWorker" in navigator) {
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && ordersSheet?.classList.contains("open")) {
+          closeOrdersSheet();
+        }
+      });
+
+      setLang(LANG);
+      updateCartBadge();
+      renderOrdersSheet();
+
+      window.addEventListener("storage", event => {
+        if (event.key === LANG_KEY) {
+          applyLang(event.newValue || "ua");
+          return;
+        }
+        if (event.key && event.key !== CART_KEY && event.key !== VENUE_KEY) return;
+        updateCartBadge();
+        renderOrdersSheet();
+      });
+
+      window.addEventListener("pageshow", () => {
+        updateCartBadge();
+        renderOrdersSheet();
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          updateCartBadge();
+          renderOrdersSheet();
+        }
+      });
+
+      if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("sw.js").catch(error => {
             console.warn("Service worker registration failed", error);

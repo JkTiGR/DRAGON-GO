@@ -161,7 +161,7 @@ body.dragon-entry-home {
   --entry-bar-padding: 10px 12px;
   --entry-bar-radius: 28px;
   --entry-bar-margin-bottom: 18px;
-  --entry-bar-border: rgba(245, 239, 255, 0.24);
+  --entry-bar-border: rgba(245, 239, 255, 0.096);
   --entry-bar-bg: var(--ng-panel);
   --entry-bar-shadow:
     var(--ng-outer-shadow),
