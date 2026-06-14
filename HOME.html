@@ -1,0 +1,1859 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0818" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DRAGON GO" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>DRAGON GO - Delivery Home</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="app-icon-180.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dragon-theme.css" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --green: #2f9b6a;
+      --green-dark: #77e8b1;
+      --ink: #f7f2ff;
+      --muted: rgba(222, 214, 248, 0.72);
+      --soft: rgba(255, 255, 255, 0.06);
+      --line: rgba(228, 214, 255, 0.12);
+      --card: rgba(14, 10, 28, 0.56);
+      --shadow: 0 18px 40px rgba(5, 2, 18, 0.24);
+      --glass-panel: linear-gradient(180deg, rgba(28, 21, 48, 0.34), rgba(10, 8, 22, 0.52));
+      --glass-panel-strong: linear-gradient(180deg, rgba(32, 24, 58, 0.44), rgba(10, 8, 22, 0.62));
+      --glass-outline: rgba(233, 220, 255, 0.1);
+      --glass-shine: rgba(255, 255, 255, 0.07);
+      --glass-glow: rgba(153, 110, 255, 0.1);
+      --font: "Manrope", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #05030c;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(420px 320px at 84% 8%, rgba(71, 214, 151, 0.1), transparent 60%),
+        radial-gradient(380px 320px at 18% 14%, rgba(143, 118, 255, 0.12), transparent 58%),
+        linear-gradient(180deg, rgba(8, 6, 18, 0.66), rgba(4, 3, 12, 0.9)),
+        url("fonHOME1.png") center top / cover no-repeat fixed,
+        #05030c;
+      font: 16px/1.35 var(--font);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: none;
+    }
+
+    .app h1:not(.brand),
+    .app h2,
+    .app h3 {
+      font-family: var(--font);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(100%, 760px);
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 14px calc(94px + env(safe-area-inset-bottom));
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .app::before {
+      content: none;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    body.dragon-entry-home .header .bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      justify-content: initial;
+      gap: 10px;
+      padding: 10px 8px;
+      overflow: visible;
+    }
+
+    body.dragon-entry-home .header .bar::before {
+      opacity: 0.88;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 178px;
+      display: grid;
+      align-content: end;
+      gap: 14px;
+      margin: 4px 0 18px;
+      padding: 28px 22px 24px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 78% 24%, rgba(95, 230, 165, 0.16), transparent 22%),
+        radial-gradient(circle at 20% 18%, rgba(144, 118, 255, 0.16), transparent 26%),
+        linear-gradient(145deg, rgba(25, 20, 46, 0.82) 0%, rgba(14, 12, 30, 0.88) 48%, rgba(8, 8, 20, 0.92) 100%);
+      border: 1px solid rgba(233, 220, 255, 0.14);
+      border-radius: 30px;
+      box-shadow:
+        0 22px 44px rgba(4, 2, 16, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px) saturate(108%);
+      -webkit-backdrop-filter: blur(16px) saturate(108%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 24%),
+        radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.08), transparent 22%);
+      opacity: 0.88;
+    }
+
+    .hero-kicker {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(11, 10, 24, 0.48);
+      border: 1px solid rgba(233, 220, 255, 0.12);
+      color: var(--green-dark);
+      font-size: 0.82rem;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero-location {
+      display: grid;
+      gap: 2px;
+    }
+
+    .hero-location strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1.06rem;
+      font-weight: 900;
+    }
+
+    .hero-location span {
+      display: block;
+      color: rgba(233, 226, 249, 0.72);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 11ch;
+      margin: 0;
+      font-size: clamp(2.05rem, 10vw, 4.2rem);
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 320px;
+      margin: 0;
+      color: rgba(233, 226, 249, 0.76);
+      font-weight: 800;
+    }
+
+    .hero-link {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 900;
+      background: linear-gradient(135deg, rgb(0, 0, 0), rgba(76, 0, 255, 0.94));
+      box-shadow: 0 10px 24px rgba(47, 155, 106, 0.22);
+    }
+
+    .hero-float {
+      position: absolute;
+      z-index: 0;
+      display: block;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 12px 24px rgba(47, 155, 106, 0.12));
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-float.ball {
+      top: 22px;
+      right: 62px;
+      width: 132px;
+      height: 132px;
+      background-image: url("glass1.png");
+      transform: rotate(-8deg);
+    }
+
+    .hero-float.pizza {
+      top: 22px;
+      right: 18px;
+      width: 84px;
+      height: 284px;
+      background-image: url("pizza-glass.png");
+      transform: rotate(18deg);
+    }
+
+    .hero-float.fries {
+      right: 88px;
+      bottom: 34px;
+      width: 104px;
+      height: 104px;
+      background-image: url("shaurma-glass.png");
+      transform: rotate(12deg);
+    }
+
+    .hero-float.burger {
+      right: 18px;
+      bottom: 20px;
+      width: 98px;
+      height: 98px;
+      background-image: url("pepsi-glass.png");
+      border: 0;
+      box-shadow: none;
+      filter: none;
+      transform: rotate(-10deg);
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      gap: 4px;
+      min-height: 58px;
+      margin-bottom: 20px;
+      padding: 0 8px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(23, 18, 40, 0.72), rgba(11, 9, 24, 0.84));
+      border: 1px solid rgba(233, 220, 255, 0.12);
+      box-shadow:
+        0 16px 30px rgba(5, 2, 18, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .search span,
+    .search button {
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-size: 1.25rem;
+    }
+
+    .search input {
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .search input::placeholder {
+      color: rgba(222, 214, 248, 0.48);
+    }
+
+    .search button {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 13px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .search button svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+
+    .chips {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(86px, 1fr);
+      gap: 12px;
+      overflow-x: auto;
+      margin: 0 -14px 28px;
+      padding: 0 14px 4px;
+      scrollbar-width: none;
+    }
+
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      text-decoration: none;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .chip-icon {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.08), transparent 24%),
+        linear-gradient(180deg, rgba(28, 21, 48, 0.76), rgba(11, 9, 24, 0.92));
+      border: 1px solid rgba(233, 220, 255, 0.12);
+      box-shadow:
+        0 12px 28px rgba(5, 2, 18, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      font-size: 2rem;
+      color: var(--ink);
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .chip.active .chip-icon,
+    .chip:hover .chip-icon {
+      transform: translateY(-2px);
+      background:
+        radial-gradient(circle at 34% 22%, rgba(119, 232, 177, 0.16), transparent 24%),
+        linear-gradient(135deg, rgba(33, 53, 45, 0.96), rgba(17, 28, 25, 0.98));
+      box-shadow:
+        0 16px 30px rgba(5, 2, 18, 0.24),
+        0 0 18px rgba(119, 232, 177, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.55rem, 7vw, 2.15rem);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .see-all {
+      flex: 0 0 auto;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+
+    .top-grid,
+    .market-grid,
+    .rail {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: start;
+      gap: 16px;
+      overflow-x: auto;
+      margin: 0 -14px;
+      padding: 0 14px 4px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .top-grid {
+      grid-auto-columns: minmax(270px, 84%);
+    }
+
+    .market-grid {
+      grid-auto-columns: minmax(184px, 62%);
+    }
+
+    .rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .top-grid::-webkit-scrollbar,
+    .market-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .top-grid > *,
+    .market-grid > * {
+      scroll-snap-align: start;
+    }
+
+    .store-card {
+      min-width: 0;
+      color: var(--ink);
+      text-decoration: none;
+      scroll-snap-align: start;
+    }
+
+    .market-card {
+      display: grid;
+      gap: 8px;
+    }
+
+    .market-card h3 {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 4px;
+      color: var(--ink);
+      font-size: 1.22rem;
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .market-title-text {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .market-title-logo {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 10px 18px rgba(5, 2, 18, 0.16);
+    }
+
+    .market-media {
+      position: relative;
+      overflow: hidden;
+      height: 132px;
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 24px rgba(5, 2, 18, 0.16);
+    }
+
+    .market-media::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 22%);
+    }
+
+    .market-stamp,
+    .market-logo {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      border-radius: 999px;
+      font-weight: 900;
+    }
+
+    .market-stamp {
+      padding: 6px 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .market-logo {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      padding: 9px 14px;
+      color: #f7f2ff;
+      background: rgba(13, 11, 26, 0.68);
+      border: 1px solid rgba(233, 220, 255, 0.12);
+      box-shadow: 0 8px 18px rgba(5, 2, 18, 0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .market-logo img {
+      display: block;
+      height: 20px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-loko {
+      background:
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.16), transparent 22%),
+        linear-gradient(135deg, #ff5eae, #ff7cc3);
+    }
+
+    .brand-kopilka {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.18), transparent 20%),
+        linear-gradient(135deg, #ff9129, #6a2cff);
+    }
+
+    .brand-atb {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 20%),
+        linear-gradient(135deg, #ff5252, #d61f1f);
+    }
+
+    .brand-hophey {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.14), transparent 20%),
+        linear-gradient(135deg, #7d4319, #e8a135);
+    }
+
+    .brand-zoo {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.16), transparent 20%),
+        linear-gradient(135deg, #1e7a5d, #6ae0a4);
+    }
+
+    .brand-sushi {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12), transparent 20%),
+        linear-gradient(135deg, #0c0f16, #4a3921);
+    }
+
+    .store-media {
+      position: relative;
+      overflow: hidden;
+      height: 158px;
+      border-radius: 16px;
+      background: rgba(19, 14, 36, 0.94);
+      box-shadow: 0 16px 30px rgba(5, 2, 18, 0.22);
+    }
+
+    .store-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .store-media.contain img {
+      object-fit: contain;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(26, 20, 44, 0.88), rgba(14, 36, 28, 0.72));
+    }
+
+    .heart,
+    .rating,
+    .discount {
+      position: absolute;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 10px;
+      font-weight: 900;
+    }
+
+    .heart {
+      top: 11px;
+      right: 11px;
+      width: 36px;
+      height: 36px;
+      justify-content: center;
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(8px);
+    }
+
+    .rating {
+      right: 11px;
+      bottom: 11px;
+      padding: 7px 10px;
+      color: #111;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .discount {
+      left: 11px;
+      top: 11px;
+      padding: 8px 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .store-card h3 {
+      overflow: hidden;
+      margin: 10px 0 4px;
+      color: var(--ink);
+      font-size: 1.45rem;
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .wide-card {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 116px;
+      align-items: stretch;
+      min-height: 132px;
+      border-radius: 22px;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, #17201c, #2f9b6a);
+      box-shadow: var(--shadow);
+    }
+
+    .wide-copy {
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 18px;
+    }
+
+    .wide-copy strong {
+      font-size: 1.55rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .wide-copy span {
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 800;
+    }
+
+    .wide-card img {
+      width: 116px;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .status {
+      min-height: 1.3em;
+      margin: -4px 0 22px;
+      color: var(--green-dark);
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-shadow: 0 0 18px rgba(119, 232, 177, 0.12);
+    }
+
+    .page-title-block {
+      display: grid;
+      gap: 0;
+    }
+
+    .page-title {
+      margin: 14px 0 0;
+      color: var(--ink);
+      font-size: clamp(1.35rem, 6vw, 2rem);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .restaurant-section {
+      display: grid;
+      gap: 20px;
+    }
+
+    .contact-section {
+      margin-top: 8px;
+    }
+
+    .all-restaurants-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .restaurant-card {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      gap: 8px;
+      padding: 12px 12px 14px;
+      border: 1px solid rgba(233, 220, 255, 0.08);
+      border-radius: 26px;
+      color: var(--ink);
+      text-decoration: none;
+      background:
+        radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, rgba(28, 21, 48, 0.24), rgba(10, 8, 22, 0.42));
+      box-shadow:
+        0 10px 22px rgba(5, 2, 18, 0.14),
+        0 0 14px rgba(153, 110, 255, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px) saturate(112%);
+      -webkit-backdrop-filter: blur(12px) saturate(112%);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .restaurant-card::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 255, 255, 0.06), transparent 18%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 24%);
+      opacity: 0.6;
+    }
+
+    .restaurant-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -12% -44% 46%;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(111, 209, 170, 0.05), transparent 68%);
+      filter: blur(24px);
+      pointer-events: none;
+      opacity: 0.42;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(233, 220, 255, 0.1);
+      box-shadow:
+        0 14px 26px rgba(5, 2, 18, 0.18),
+        0 0 18px rgba(153, 110, 255, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .restaurant-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .restaurant-cover {
+      position: relative;
+      overflow: hidden;
+      height: clamp(176px, 50vw, 274px);
+      border-radius: 18px;
+      background: rgba(17, 12, 32, 0.72);
+      border: 1px solid rgba(233, 220, 255, 0.06);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 10px 22px rgba(5, 2, 18, 0.14);
+    }
+
+    .restaurant-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%, rgba(6, 4, 14, 0.12) 100%),
+        radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.12), transparent 18%);
+    }
+
+    .restaurant-cover.is-yellow {
+      background:
+        radial-gradient(circle at 24% 24%, rgba(255, 255, 255, 0.22), transparent 26%),
+        linear-gradient(135deg, #ffc400, #f4b000);
+    }
+
+    .restaurant-cover.is-dark {
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.42)),
+        #302923;
+    }
+
+    .restaurant-cover.is-red {
+      background:
+        radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.22), transparent 28%),
+        linear-gradient(135deg, #ff3c4e, #45135d);
+    }
+
+    .restaurant-cover img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .restaurant-cover.is-contain img {
+      object-fit: contain;
+      padding: 6px 8px 2px;
+      transform: scale(1.08);
+      transform-origin: center 56%;
+    }
+
+    .restaurant-cover.is-yellow.is-contain img {
+      object-fit: cover;
+      object-position: center;
+      padding: 0;
+      transform: scale(1.02);
+    }
+
+    .restaurant-heart,
+    .restaurant-rating,
+    .restaurant-discount {
+      position: absolute;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .restaurant-heart {
+      top: 11px;
+      right: 11px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 1.25rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+      background: rgba(14, 10, 28, 0.18);
+      border: 1px solid rgba(233, 220, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .restaurant-rating {
+      right: 10px;
+      bottom: 10px;
+      gap: 5px;
+      padding: 6px 9px;
+      border-radius: 6px;
+      color: #f7f2ff;
+      background: rgba(14, 10, 28, 0.38);
+      border: 1px solid rgba(233, 220, 255, 0.1);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    body.dragon-entry-home {
+      --entry-dock-border: transparent;
+    }
+
+    body.dragon-entry-home .dock {
+      border-color: transparent;
+      outline: none;
+      box-shadow:
+        0 22px 42px rgba(5, 2, 18, 0.28),
+        inset 0 6px 12px rgba(255, 255, 255, 0.1),
+        inset 0 2px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    body.dragon-entry-home .dock::before {
+      inset: 0;
+      opacity: 0.76;
+    }
+
+    body.dragon-entry-home .dock .dock-btn,
+    body.dragon-entry-home .dock .dock-btn:focus,
+    body.dragon-entry-home .dock .dock-btn:focus-visible {
+      outline: none;
+      border: 0;
+    }
+
+    .restaurant-discount {
+      left: 10px;
+      top: 10px;
+      padding: 7px 10px;
+      border-radius: 5px;
+      color: #fff;
+      background: rgba(14, 10, 28, 0.34);
+      border: 1px solid rgba(233, 220, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .restaurant-card h2 {
+      overflow: hidden;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.28rem, 6vw, 1.7rem);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .restaurant-address {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 6px 10px;
+      border: 1px solid rgba(228, 214, 255, 0.1);
+      border-radius: 999px;
+      color: #f7f2ff;
+      background: rgba(14, 10, 28, 0.34);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 6px 14px rgba(5, 2, 18, 0.14);
+    }
+
+    .restaurant-cover .restaurant-address {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      z-index: 1;
+      max-width: calc(100% - 124px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .restaurant-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px 10px;
+      flex-wrap: wrap;
+      color: rgba(233, 226, 249, 0.84);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .all-restaurants-list .restaurant-card {
+      gap: 12px;
+      padding: 0 0 16px;
+    }
+
+    .all-restaurants-list .restaurant-card > h2,
+    .all-restaurants-list .restaurant-card > .restaurant-head,
+    .all-restaurants-list .restaurant-card > .restaurant-meta {
+      padding-inline: 14px;
+    }
+
+    .all-restaurants-list .restaurant-cover {
+      height: clamp(198px, 56vw, 252px);
+      border-radius: 24px 24px 18px 18px;
+    }
+
+    .restaurant-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contact-section {
+      position: relative;
+      overflow: visible;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .contact-section::before {
+      content: none;
+    }
+
+    .contact-section > * {
+      position: static;
+      z-index: auto;
+    }
+
+    .contact-section .more-row {
+      background: rgba(255, 255, 255, 0.03);
+      border: 0;
+      border-top: 1px solid rgba(233, 220, 255, 0.08);
+    }
+
+    .contact-section .more-row:hover {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    @media (min-width: 620px) {
+      .top-grid {
+        grid-auto-columns: minmax(292px, 46%);
+      }
+
+      .market-grid {
+        grid-auto-columns: minmax(212px, 31%);
+      }
+
+      .app {
+        border-inline: 0;
+      }
+
+      .hero {
+        margin-inline: 0;
+        border-radius: 30px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .top-grid {
+        grid-auto-columns: minmax(248px, 86%);
+      }
+
+      .market-grid {
+        grid-auto-columns: minmax(172px, 68%);
+      }
+
+      .store-media {
+        height: 142px;
+      }
+
+      .rail {
+        grid-auto-columns: minmax(230px, 76%);
+      }
+
+      .restaurant-cover {
+        height: 148px;
+      }
+    }
+  </style>
+</head>
+<body class="dragon-entry dragon-entry-home">
+  <main class="app">
+    <header class="header">
+      <div class="bar">
+        <h1 class="brand" id="brandTap">
+          <img class="mark" src="logo.png" alt="Logo">
+          <span class="brand-label">DRAGON GO</span>
+        </h1>
+
+        <div class="lang">
+          <select id="langSel" aria-label="Language">
+            <option value="ru">🇺🇦 RU</option>
+            <option value="ua">🇺🇦 UA</option>
+            <option value="vn">🇻🇳 VN</option>
+            <option value="zh">🇨🇳 ZH</option>
+            <option value="pl">🇵🇱 PL</option>
+            <option value="de">🇩🇪 DE</option>
+          </select>
+        </div>
+
+        <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">☰</button>
+
+        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu">
+          <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
+          <a href="menu.html?point=dragon" id="navMenu" role="menuitem">🍜 MENU</a>
+          <a href="#" id="navKaraoke" role="menuitem">🎤 KARAOKE</a>
+          <a href="profil.html" id="navProfil" role="menuitem">👤 PROFILE</a>
+          <a href="#" id="navContact" role="menuitem">📞 CONTACT</a>
+          <hr>
+          <div class="lang-inline" role="none">🌐
+            <select id="langSelMenu" aria-label="Language (menu)">
+              <option value="ru">🇺🇦 RU</option>
+              <option value="ua">🇺🇦 UA</option>
+              <option value="vn">🇻🇳 VN</option>
+              <option value="zh">🇨🇳 ZH</option>
+              <option value="pl">🇵🇱 PL</option>
+              <option value="de">🇩🇪 DE</option>
+            </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-kicker hero-location">
+        <strong>вулиця Героїв Крут 22</strong>
+        <span>Одеса 65000</span>
+      </div>
+      <h1 id="heroTitle">Найди еду, магазины и доставку</h1>
+      <p>Поиск по ресторанам, маркетам и любимым точкам DRAGON GO.</p>
+      <a class="hero-link" href="#topSection">Смотреть TOP</a>
+      <span class="hero-float ball" aria-hidden="true"></span>
+      <span class="hero-float pizza" aria-hidden="true"></span>
+      <span class="hero-float fries" aria-hidden="true"></span>
+      <span class="hero-float burger" aria-hidden="true"></span>
+    </section>
+
+    <label class="search" aria-label="Поиск">
+      <span aria-hidden="true">🔎</span>
+      <input id="searchInput" type="search" placeholder="Блюдо, ресторан или магазин..." autocomplete="off" />
+      <button id="filterButton" type="button" aria-label="Фильтры">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h16"/>
+          <path d="M7 7v0"/>
+          <circle cx="9" cy="7" r="2"/>
+          <path d="M4 17h16"/>
+          <circle cx="15" cy="17" r="2"/>
+        </svg>
+      </button>
+    </label>
+
+    <nav class="chips" aria-label="Категории">
+      <button class="chip" type="button" data-query-chip data-query="продукты">
+        <span class="chip-icon">🛒</span>
+        <span>Продукты</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="pizza">
+        <span class="chip-icon">🍕</span>
+        <span>Пицца</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="burger">
+        <span class="chip-icon">🍔</span>
+        <span>Бургеры</span>
+      </button>
+      <button class="chip" type="button" data-query-chip data-query="напитки">
+        <span class="chip-icon">🥤</span>
+        <span>Напитки</span>
+      </button>
+    </nav>
+
+    <section class="section restaurant-section" id="topSection" aria-labelledby="restaurantsTitle" data-filter-section>
+      <div class="section-head">
+        <h2 class="page-title" id="restaurantsTitle">TOP</h2>
+        <a class="see-all" href="#topSection" data-clear-search>Все</a>
+      </div>
+      <p class="status" id="homeStatus" aria-live="polite"></p>
+
+      <div class="top-grid" data-store-list>
+        <a class="restaurant-card" href="menu.html?point=dragon" data-store="dragon" data-search-card data-search="dragon азия top noodles wok pho продукты напитки улица героїв крут">
+          <div class="restaurant-cover is-yellow is-contain">
+            <img src="images/dragon22point.png" alt="DRAGON">
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-address">вулиця Героїв Крут, 22</span>
+            <span class="restaurant-rating">★ 4.8 (500+)</span>
+          </div>
+          <div class="restaurant-head">
+            <h2>DRAGON</h2>
+          </div>
+          <div class="restaurant-meta">
+            <span>🛵 200-250 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=dlv" data-store="dlv" data-search-card data-search="pho viet burger pizza combo напитки top">
+          <div class="restaurant-cover is-dark">
+            <img src="promo.jpg" alt="PHO VIET">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+          </div>
+          <h2>PHO VIET</h2>
+          <div class="restaurant-meta">
+            <span>🛵 0,00 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=asian" data-store="asian" data-search-card data-search="ha noi sushi rolls wok все рестораны">
+          <div class="restaurant-cover">
+            <img src="images/spring_rolls.jpeg" alt="HA NOI">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.7 (500+)</span>
+          </div>
+          <h2>HA NOI</h2>
+          <div class="restaurant-meta">
+            <span>🛵 34,60 ₴</span>
+            <span>⏱ 20–40 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=shaurma" data-store="shaurma" data-search-card data-search="shaurma burger fastfood top streetfood delivery">
+          <div class="restaurant-cover is-red">
+            <img src="images/mi_xao_ga.png" alt="Shaurma">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.6 (250+)</span>
+          </div>
+          <h2>Shaurma & Brothers</h2>
+          <div class="restaurant-meta">
+            <span>🛵 31,30 ₴</span>
+            <span>⏱ 10–25 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=dragon" data-store="dragon" data-search-card data-search="i love pho burger pizza drinks top combo">
+          <div class="restaurant-cover">
+            <img src="images/nem_ran.png" alt="i love PHO">
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.9 (1 000+)</span>
+          </div>
+          <h2>i love PHO</h2>
+          <div class="restaurant-meta">
+            <span>🛵 29,90 ₴</span>
+            <span>⏱ 10–20 мин</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="shopsSection" aria-labelledby="shopsTitle" data-filter-section>
+      <div class="section-head">
+        <h2 id="shopsTitle">MAGAZINY</h2>
+        <a class="see-all" href="#shopsSection" data-clear-search>Все</a>
+      </div>
+
+      <div class="market-grid">
+        <a class="store-card market-card" href="#" data-search-card data-search="loko silpo продукты market shop grocery" data-market-label="LOKO від Сільпо">
+          <div class="market-media brand-loko">
+            <span class="market-stamp">Быстро</span>
+            <span class="market-logo"><img src="images/shop-logos/loko-logo.png" alt="LOKO"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/loko-logo.png" alt=""><span class="market-title-text">LOKO від Сільпо</span></h3>
+          <div class="meta">
+            <span>🛵 0,00 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="store-card market-card" href="#" data-search-card data-search="копилка kopilka продукты market drinks" data-market-label="Копійка">
+          <div class="market-media brand-kopilka">
+            <span class="market-stamp">TOP</span>
+            <span class="market-logo"><img src="images/shop-logos/kopilka-logo.png" alt="KOPILKA"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/kopilka-logo.png" alt=""><span class="market-title-text">Копійка</span></h3>
+          <div class="meta">
+            <span>🛵 34,60 ₴</span>
+            <span>⏱ 20–40 мин</span>
+          </div>
+        </a>
+
+        <a class="store-card market-card" href="#" data-search-card data-search="atb продукты market grocery food" data-market-label="ATB Market">
+          <div class="market-media brand-atb">
+            <span class="market-stamp">Продукты</span>
+            <span class="market-logo"><img src="images/shop-logos/atb-logo.png" alt="ATB"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/atb-logo.png" alt=""><span class="market-title-text">ATB Market</span></h3>
+          <div class="meta">
+            <span>🛵 29,90 ₴</span>
+            <span>⏱ 15–35 мин</span>
+          </div>
+        </a>
+
+        <a class="store-card market-card" href="#" data-search-card data-search="hop hey напитки beer market alcohol" data-market-label="Hop Hey">
+          <div class="market-media brand-hophey">
+            <span class="market-stamp">Напитки</span>
+            <span class="market-logo"><img src="images/shop-logos/hophey-logo.png" alt="Hop Hey"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/hophey-logo.png" alt=""><span class="market-title-text">Hop Hey</span></h3>
+          <div class="meta">
+            <span>🛵 39,90 ₴</span>
+            <span>⏱ 20–35 мин</span>
+          </div>
+        </a>
+
+        <a class="store-card market-card" href="#" data-search-card data-search="zoo market zootovary pets shop" data-market-label="ZooMarket">
+          <div class="market-media brand-zoo">
+            <span class="market-stamp">Pets</span>
+            <span class="market-logo"><img src="images/shop-logos/zoomarket-logo.png" alt="ZooMarket"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/zoomarket-logo.png" alt=""><span class="market-title-text">ZooMarket</span></h3>
+          <div class="meta">
+            <span>🛵 25,00 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="store-card market-card" href="#" data-search-card data-search="sushi market rolls asian food top" data-market-label="SUSHI spot">
+          <div class="market-media brand-sushi">
+            <span class="market-stamp">Sushi</span>
+            <span class="market-logo"><img src="images/shop-logos/sushi-logo.png" alt="SUSHI"></span>
+          </div>
+          <h3><img class="market-title-logo" src="images/shop-logos/sushi-logo.png" alt=""><span class="market-title-text">SUSHI spot</span></h3>
+          <div class="meta">
+            <span>🛵 31,30 ₴</span>
+            <span>⏱ 10–25 мин</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="allRestaurantsSection" aria-labelledby="allRestaurantsTitle" data-filter-section>
+      <div class="section-head">
+        <h2 id="allRestaurantsTitle">Показать все рестораны</h2>
+        <a class="see-all" href="#allRestaurantsSection" data-clear-search>Все</a>
+      </div>
+
+      <div class="all-restaurants-list">
+        <a class="restaurant-card" href="menu.html?point=dragon" data-store="dragon" data-search-card data-search="dragon pho wok noodles все рестораны heroiv krut">
+          <div class="restaurant-cover is-yellow is-contain">
+            <img src="images/dragon22point.png" alt="DRAGON">
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-address">вулиця Героїв Крут, 22</span>
+            <span class="restaurant-rating">★ 4.8 (500+)</span>
+          </div>
+          <div class="restaurant-head">
+            <h2>DRAGON</h2>
+          </div>
+          <div class="restaurant-meta">
+            <span>🛵 200-250 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=dlv" data-store="dlv" data-search-card data-search="pho viet delivery burger combo все рестораны discount">
+          <div class="restaurant-cover is-dark">
+            <img src="promo.jpg" alt="PHO VIET">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+          </div>
+          <h2>PHO VIET</h2>
+          <div class="restaurant-meta">
+            <span>🛵 0,00 ₴</span>
+            <span>⏱ 15–30 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=asian" data-store="asian" data-search-card data-search="HA NOI sushi rolls wok все рестораны">
+          <div class="restaurant-cover">
+            <img src="images/spring_rolls.jpeg" alt="HA NOI">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.7 (500+)</span>
+          </div>
+          <h2>HA NOI</h2>
+          <div class="restaurant-meta">
+            <span>🛵 34,60 ₴</span>
+            <span>⏱ 20–40 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=shaurma" data-store="shaurma" data-search-card data-search="shaurma brothers burger streetfood все рестораны">
+          <div class="restaurant-cover is-red">
+            <img src="images/mi_xao_ga.png" alt="Shaurma & Brothers">
+            <span class="restaurant-discount">Скидка до -500 ₴</span>
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.6 (250+)</span>
+          </div>
+          <h2>Shaurma & Brothers</h2>
+          <div class="restaurant-meta">
+            <span>🛵 31,30 ₴</span>
+            <span>⏱ 10–25 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=dragon" data-store="dragon" data-search-card data-search="dragon terminal pizza burger combo все рестораны">
+          <div class="restaurant-cover">
+            <img src="images/nem_ran.png" alt="DRAGON Terminal">
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.9 (1 000+)</span>
+          </div>
+          <h2>I LOVE PHO</h2>
+          <div class="restaurant-meta">
+            <span>🛵 29,90 ₴</span>
+            <span>⏱ 10–20 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="menu.html?point=asian" data-store="asian" data-search-card data-search="pho house soup vietnam все рестораны">
+          <div class="restaurant-cover">
+            <img src="images/ZUPA_PHO_Z_WOLOWINA.png" alt="Pho House">
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">★ 4.8 (320+)</span>
+          </div>
+          <h2>Pho House</h2>
+          <div class="restaurant-meta">
+            <span>🛵 39,90 ₴</span>
+            <span>⏱ 20–35 мин</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="contactSection" class="contact glass contact-section">
+      <h2 id="contactTitle">📞 CONTACT</h2>
+
+      <a class="more-row" href="tel:+380632637999" style="border-top:none">
+        <span class="more-left">
+          <span class="more-ico">📞</span>
+          <span>
+            <div><b>+380 632 637 999</b></div>
+            <div class="muted">Cyber Dragon / DRAGON</div>
+          </span>
+        </span>
+        <span class="more-arrow">›</span>
+      </a>
+
+      <a class="more-row"
+         href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса"
+         target="_blank" rel="noopener noreferrer">
+        <span class="more-left">
+          <span class="more-ico">📍</span>
+          <span>
+            <div><b>Героїв Крут, 22</b></div>
+            <div class="muted">Черёмушки · Одесса</div>
+          </span>
+        </span>
+        <span class="more-arrow">›</span>
+      </a>
+
+      <a class="more-row"
+         href="https://bank.gov.ua/qr/QkNECjAwMgoxClVDVAoK0JvRlCDQotGF0ZYg0JrRhdCw0L3RjCDQm9GWClVBNDczMjIwMDEwMDAwMDI2MjAwMzQ0NTAzNjYwCgozMzAwMzIxNzYyCgoK0J_QvtC_0L7QstC90LXQvdC90Y8g0YDQsNGF0YPQvdC60YMKCg=="
+         target="_blank" rel="noopener noreferrer">
+        <span class="more-left">
+          <span class="more-ico">💳</span>
+          <span>
+            <div><b>Оплатить / Pay QR</b></div>
+            <div class="muted">Universal Bank QR</div>
+          </span>
+        </span>
+        <span class="more-arrow">›</span>
+      </a>
+    </section>
+  </main>
+
+  <nav class="dock" aria-label="Bottom navigation">
+    <button class="dock-btn active" id="dockHome" data-label="Главная">
+      <img src="images/icon/home.png" alt="Home">
+    </button>
+    <button class="dock-btn" id="dockStores" data-label="Магазины">
+      <img src="images/icon/market.png" alt="Stores">
+      <span class="cart-badge" id="dockLangFlag">🛵</span>
+    </button>
+    <button class="dock-btn" id="dockCart" data-label="Заказы">
+      <img src="DockIconKorzina.png" alt="Cart">
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="dock-btn" id="dockSearch" data-label="Поиск">
+      <img src="images/icon/search.png" alt="Search">
+    </button>
+    <button class="dock-btn" id="dockProfil" data-label="Аккаунт">
+      <img src="images/icon/profile.png" alt="Profil">
+    </button>
+  </nav>
+
+  <script>
+    (() => {
+      const $ = selector => document.querySelector(selector);
+      const VENUE_KEY = "DRAGON_SELECTED_POINT";
+      const LANG_KEY = "CD_LANG";
+      const SUPPORTED_LANGS = ["ru", "ua", "vn", "zh", "pl", "de"];
+      const I18N = {
+        ru: {
+          navHome: "Главная",
+          navMenu: "Меню",
+          navKaraoke: "Караоке",
+          navContact: "Контакты",
+          contactTitle: "Контакты",
+          homeTitle: "TOP",
+          karaokeSoon: "Karaoke скоро появится.",
+          searchSoon: "Поиск скоро появится на отдельном экране.",
+          filtersSoon: "Фильтры скоро: доставка, самовывоз, рейтинг, время.",
+          geoUnsupported: "Геолокация недоступна в этом браузере.",
+          geoPending: "Запрашиваю геолокацию...",
+          geoDone: "Локация подтверждена.",
+          geoFallback: "Можно выбрать точку вручную.",
+          dock: { home: "Главная", stores: "Магазины", orders: "Заказы", search: "Поиск", profile: "Аккаунт" },
+          profile: "Профиль"
+        },
+        ua: {
+          navHome: "Головна",
+          navMenu: "Меню",
+          navKaraoke: "Караоке",
+          navContact: "Контакти",
+          contactTitle: "Контакти",
+          homeTitle: "TOP",
+          karaokeSoon: "Karaoke скоро з’явиться.",
+          searchSoon: "Пошук скоро буде на окремому екрані.",
+          filtersSoon: "Фільтри скоро: доставка, самовивіз, рейтинг, час.",
+          geoUnsupported: "Геолокація недоступна у цьому браузері.",
+          geoPending: "Запитую геолокацію...",
+          geoDone: "Локацію підтверджено.",
+          geoFallback: "Можна вибрати точку вручну.",
+          dock: { home: "Головна", stores: "Магазини", orders: "Замовлення", search: "Пошук", profile: "Профіль" },
+          profile: "Профіль"
+        },
+        vn: {
+          navHome: "Trang chủ",
+          navMenu: "Thực đơn",
+          navKaraoke: "Karaoke",
+          navContact: "Liên hệ",
+          contactTitle: "Liên hệ",
+          homeTitle: "TOP",
+          karaokeSoon: "Karaoke sẽ sớm xuất hiện.",
+          searchSoon: "Màn hình tìm kiếm riêng sẽ sớm có.",
+          filtersSoon: "Bộ lọc sắp có: giao hàng, mang đi, đánh giá, thời gian.",
+          geoUnsupported: "Trình duyệt này không hỗ trợ định vị.",
+          geoPending: "Đang yêu cầu vị trí...",
+          geoDone: "Đã xác nhận vị trí.",
+          geoFallback: "Có thể chọn cửa hàng thủ công.",
+          dock: { home: "Trang chủ", stores: "Cửa hàng", orders: "Đơn hàng", search: "Tìm kiếm", profile: "Hồ sơ" },
+          profile: "Hồ sơ"
+        },
+        zh: {
+          navHome: "首页",
+          navMenu: "菜单",
+          navKaraoke: "卡拉OK",
+          navContact: "联系",
+          contactTitle: "联系",
+          homeTitle: "TOP",
+          karaokeSoon: "卡拉OK 即将推出。",
+          searchSoon: "搜索页即将上线。",
+          filtersSoon: "筛选即将推出：配送、自取、评分、时间。",
+          geoUnsupported: "此浏览器不支持定位。",
+          geoPending: "正在请求定位...",
+          geoDone: "位置已确认。",
+          geoFallback: "可以手动选择门店。",
+          dock: { home: "首页", stores: "门店", orders: "订单", search: "搜索", profile: "个人资料" },
+          profile: "个人资料"
+        },
+        pl: {
+          navHome: "Strona główna",
+          navMenu: "Menu",
+          navKaraoke: "Karaoke",
+          navContact: "Kontakt",
+          contactTitle: "Kontakt",
+          homeTitle: "TOP",
+          karaokeSoon: "Karaoke wkrótce będzie dostępne.",
+          searchSoon: "Oddzielny ekran wyszukiwania pojawi się wkrótce.",
+          filtersSoon: "Wkrótce filtry: dostawa, odbiór, ocena, czas.",
+          geoUnsupported: "Geolokalizacja nie jest dostępna w tej przeglądarce.",
+          geoPending: "Pobieram geolokalizację...",
+          geoDone: "Lokalizacja potwierdzona.",
+          geoFallback: "Punkt można wybrać ręcznie.",
+          dock: { home: "Start", stores: "Sklepy", orders: "Zamówienia", search: "Szukaj", profile: "Profil" },
+          profile: "Profil"
+        },
+        de: {
+          navHome: "Startseite",
+          navMenu: "Menü",
+          navKaraoke: "Karaoke",
+          navContact: "Kontakt",
+          contactTitle: "Kontakt",
+          homeTitle: "TOP",
+          karaokeSoon: "Karaoke kommt bald.",
+          searchSoon: "Ein eigener Suchbildschirm kommt bald.",
+          filtersSoon: "Filter kommen bald: Lieferung, Abholung, Bewertung, Zeit.",
+          geoUnsupported: "Geolokalisierung ist in diesem Browser nicht verfügbar.",
+          geoPending: "Standort wird abgefragt...",
+          geoDone: "Standort bestätigt.",
+          geoFallback: "Standort kann manuell ausgewählt werden.",
+          dock: { home: "Start", stores: "Shops", orders: "Bestellungen", search: "Suche", profile: "Profil" },
+          profile: "Profil"
+        }
+      };
+
+      function normalizeLang(value) {
+        return SUPPORTED_LANGS.includes(value) ? value : "ru";
+      }
+
+      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || "ru");
+      document.documentElement.lang = LANG;
+
+      const status = document.getElementById("homeStatus");
+      const searchInput = document.getElementById("searchInput");
+      const brandTap = document.getElementById("brandTap");
+      const burgerBtn = document.getElementById("burgerBtn");
+      const navPop = document.getElementById("navPop");
+      const navHome = document.getElementById("navHome");
+      const navMenu = document.getElementById("navMenu");
+      const navKaraoke = document.getElementById("navKaraoke");
+      const navProfil = document.getElementById("navProfil");
+      const navContact = document.getElementById("navContact");
+      const langSel = document.getElementById("langSel");
+      const langSelMenu = document.getElementById("langSelMenu");
+      const restaurantsTitle = document.getElementById("restaurantsTitle");
+      const contactTitle = document.getElementById("contactTitle");
+      const shopsSection = document.getElementById("shopsSection");
+      const dockHome = document.getElementById("dockHome");
+      const dockStores = document.getElementById("dockStores");
+      const dockCart = document.getElementById("dockCart");
+      const dockSearch = document.getElementById("dockSearch");
+      const dockProfil = document.getElementById("dockProfil");
+      const venueCards = Array.from(document.querySelectorAll("[data-store]"));
+      const searchCards = Array.from(document.querySelectorAll("[data-search-card]"));
+      const filterSections = Array.from(document.querySelectorAll("[data-filter-section]"));
+      const categoryChips = Array.from(document.querySelectorAll("[data-query-chip]"));
+      const marketCards = Array.from(document.querySelectorAll("[data-market-label]"));
+
+      function setStatus(text) {
+        if (status) status.textContent = text || "";
+      }
+
+      function L() {
+        return I18N[LANG] || I18N.ru;
+      }
+
+      function closeNavPop() {
+        navPop?.classList.remove("open");
+        burgerBtn?.setAttribute("aria-expanded", "false");
+      }
+
+      function applyDockLabels() {
+        const dock = L().dock || {};
+        if (dockHome) dockHome.dataset.label = dock.home || "Главная";
+        if (dockStores) dockStores.dataset.label = dock.stores || "Магазины";
+        if (dockCart) dockCart.dataset.label = dock.orders || "Заказы";
+        if (dockSearch) dockSearch.dataset.label = dock.search || "Поиск";
+        if (dockProfil) dockProfil.dataset.label = dock.profile || "Аккаунт";
+      }
+
+      function setUITexts() {
+        const t = L();
+        if (navHome) navHome.textContent = "🏠 " + t.navHome;
+        if (navMenu) navMenu.textContent = "🍜 " + t.navMenu;
+        if (navKaraoke) navKaraoke.textContent = "🎤 " + t.navKaraoke;
+        if (navProfil) navProfil.textContent = "👤 " + t.profile;
+        if (navContact) navContact.textContent = "📞 " + t.navContact;
+        if (restaurantsTitle) restaurantsTitle.textContent = t.homeTitle;
+        if (contactTitle) contactTitle.textContent = "📞 " + (t.contactTitle || t.navContact);
+        applyDockLabels();
+      }
+
+      function setLang(value) {
+        LANG = normalizeLang(value);
+        localStorage.setItem(LANG_KEY, LANG);
+        document.documentElement.lang = LANG;
+        if (langSel) langSel.value = LANG;
+        if (langSelMenu) langSelMenu.value = LANG;
+        setUITexts();
+        document.dispatchEvent(new CustomEvent("CD_LANG_CHANGED"));
+      }
+
+      function setActiveDock(button) {
+        document.querySelectorAll(".dock-btn").forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+      }
+
+      function applySearch(value) {
+        const query = String(value || "").trim().toLowerCase();
+        let visibleCount = 0;
+
+        searchCards.forEach(card => {
+          const haystack = `${card.dataset.search || ""} ${card.textContent || ""}`.toLowerCase();
+          const match = !query || haystack.includes(query);
+          card.hidden = !match;
+          if (match) visibleCount += 1;
+        });
+
+        filterSections.forEach(section => {
+          const sectionCards = Array.from(section.querySelectorAll("[data-search-card]"));
+          if (!sectionCards.length) return;
+          const hasVisibleCards = sectionCards.some(card => !card.hidden);
+          section.hidden = section.id === "topSection" ? false : !hasVisibleCards;
+        });
+
+        categoryChips.forEach(chip => {
+          chip.classList.toggle("active", !!query && chip.dataset.query.toLowerCase() === query);
+        });
+
+        if (!query) {
+          setStatus("");
+          return;
+        }
+
+        if (!visibleCount) {
+          setStatus(`Ничего не найдено: ${value}`);
+          return;
+        }
+
+        setStatus(`Найдено: ${visibleCount}`);
+      }
+
+      function rememberVenueFromLink(event) {
+        const card = event.currentTarget;
+        if (card?.dataset.store) {
+          localStorage.setItem(VENUE_KEY, card.dataset.store);
+        }
+      }
+
+      venueCards.forEach(card => {
+        card.addEventListener("click", rememberVenueFromLink);
+      });
+
+      searchInput?.addEventListener("input", () => {
+        applySearch(searchInput.value);
+      });
+
+      categoryChips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          if (!searchInput) return;
+          const query = chip.dataset.query || "";
+          const nextValue = searchInput.value.trim().toLowerCase() === query.toLowerCase() ? "" : query;
+          searchInput.value = nextValue;
+          applySearch(nextValue);
+        });
+      });
+
+      document.querySelectorAll("[data-clear-search]").forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          if (searchInput) searchInput.value = "";
+          applySearch("");
+          link.getAttribute("href") && document.querySelector(link.getAttribute("href"))?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      marketCards.forEach(card => {
+        card.addEventListener("click", event => {
+          event.preventDefault();
+          setStatus(`${card.dataset.marketLabel} скоро будет доступен.`);
+        });
+      });
+
+      burgerBtn?.addEventListener("click", () => {
+        const open = navPop?.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(Boolean(open)));
+      });
+
+      document.addEventListener("click", event => {
+        if (!navPop) return;
+        if (!navPop.contains(event.target) && event.target !== burgerBtn) {
+          closeNavPop();
+        }
+      });
+
+      langSel?.addEventListener("change", event => setLang(event.target.value));
+      langSelMenu?.addEventListener("change", event => setLang(event.target.value));
+
+      brandTap?.addEventListener("click", () => {
+        closeNavPop();
+        setActiveDock(dockHome);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      navHome?.addEventListener("click", event => {
+        event.preventDefault();
+        closeNavPop();
+        setActiveDock(dockHome);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      navMenu?.addEventListener("click", () => {
+        localStorage.setItem(VENUE_KEY, "dragon");
+      });
+
+      navKaraoke?.addEventListener("click", event => {
+        event.preventDefault();
+        closeNavPop();
+        setStatus(L().karaokeSoon);
+      });
+
+      navContact?.addEventListener("click", event => {
+        event.preventDefault();
+        closeNavPop();
+        document.getElementById("contactSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      dockHome?.addEventListener("click", () => {
+        setActiveDock(dockHome);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      dockStores?.addEventListener("click", () => {
+        setActiveDock(dockStores);
+        shopsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      dockCart?.addEventListener("click", () => {
+        setActiveDock(dockCart);
+        window.location.href = "menu.html?point=dragon";
+      });
+
+      dockSearch?.addEventListener("click", () => {
+        setActiveDock(dockSearch);
+        if (!searchInput) {
+          setStatus(L().searchSoon);
+          return;
+        }
+        searchInput?.focus();
+        searchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      dockProfil?.addEventListener("click", () => {
+        setActiveDock(dockProfil);
+        window.location.href = "profil.html";
+      });
+
+      document.getElementById("filterButton")?.addEventListener("click", () => {
+        setStatus(L().filtersSoon);
+      });
+
+      setLang(LANG);
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(error => {
+            console.warn("Service worker registration failed", error);
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

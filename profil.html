@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070101" />
+  <title>CYBER DRAGON — Profile</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="dragon-theme.css">
+  <style>
+    .profile-shell{display:grid;gap:14px;margin-top:10px}
+    .profile-brand-link{display:flex;align-items:center;gap:10px;text-decoration:none}
+    body.profile-brand-compact .profile-brand-link{gap:0}
+    body.profile-brand-compact .brand-label{display:none}
+    .profile-shell > section{border-radius:26px}
+    .profile-card-shell{padding:18px;border-radius:26px}
+    .profile-title{margin:0 0 6px;font-size:1.12rem}
+    .profile-intro{margin:0 0 14px;color:rgba(255,255,255,.68);font-size:13px;line-height:1.5}
+    .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+    .profile-card{display:grid;gap:10px;padding:14px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(171,122,255,.05));border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+    .profile-card.profile-card-wide{grid-column:1 / -1}
+    .profile-card span{font-size:13px;color:rgba(255,255,255,.72)}
+    .profile-card input,.profile-card textarea{width:100%;min-height:48px;padding:12px 14px;border-radius:18px;border:1px solid rgba(224,214,255,.16);outline:none;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(171,122,255,.05));color:#f7f2ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.1);appearance:none;-webkit-appearance:none;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    .profile-card input::placeholder,.profile-card textarea::placeholder{color:rgba(222,212,248,.56)}
+    .profile-card input:focus,.profile-card textarea:focus{border-color:rgba(236,224,255,.26);box-shadow:0 0 0 3px rgba(171,123,255,.12),inset 0 1px 0 rgba(255,255,255,.12)}
+    .profile-card textarea{min-height:110px;resize:vertical}
+    .profile-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+    .profile-shell .btn{border-radius:20px}
+    .profile-shell .btn.primary{background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(171,122,255,.26),rgba(90,59,187,.34));border:1px solid rgba(231,220,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 12px 22px rgba(89,56,188,.2)}
+    .profile-shell .btn.ghost{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(214,196,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+    .profile-note{font-size:13px;line-height:1.5;color:rgba(255,255,255,.66)}
+    .profile-feedback{font-size:13px;line-height:1.5;color:#9ad7ff;min-height:20px}
+    .orders-shell{display:grid;gap:14px;padding:18px;border-radius:26px}
+    .orders-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .orders-toolbar .statusbar{margin:0;border-radius:22px;padding:8px 10px;background:linear-gradient(180deg,rgba(57,35,104,.22),rgba(16,10,31,.58));border:1px solid rgba(214,196,255,.12);box-shadow:0 10px 18px rgba(7,4,16,.18),inset 0 1px 0 rgba(255,255,255,.1)}
+    .orders-toolbar .statusbar input::placeholder{color:rgba(215,204,247,.58)}
+    .orders-toolbar .statusbar .btn.mini{min-width:104px;color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(171,122,255,.26),rgba(90,59,187,.34));border:1px solid rgba(231,220,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 10px 18px rgba(89,56,188,.18)}
+    .orders-intro{margin:0;color:rgba(255,255,255,.68);font-size:13px;line-height:1.5}
+    .orders-list{display:grid;gap:10px}
+    .orders-list-empty{padding:14px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.68);font-size:13px;line-height:1.5}
+    .order-list-card{display:grid;gap:10px;padding:14px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1)}
+    .order-list-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .order-list-meta{color:rgba(255,255,255,.62);font-size:13px;line-height:1.5}
+    .order-list-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .status-card{padding:12px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1)}
+    .pill-mini{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.06);font-size:12px}
+    .status-card-tracking{display:grid;gap:14px;padding:16px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));box-shadow:0 18px 40px rgba(0,0,0,.18)}
+    .tracking-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .tracking-kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+    .tracking-code{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .tracking-code b{font-size:20px}
+    .tracking-status-pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.1)}
+    .tracking-status-new{background:rgba(255,198,82,.12);color:#ffd277}
+    .tracking-status-cooking{background:rgba(255,143,92,.14);color:#ffb18a}
+    .tracking-status-ready{background:rgba(114,214,176,.14);color:#87f0c4}
+    .tracking-status-handed{background:rgba(103,196,255,.14);color:#9ad7ff}
+    .tracking-status-cancelled{background:rgba(255,116,116,.14);color:#ff9a9a}
+    .tracking-meta{color:rgba(255,255,255,.66);font-size:13px;line-height:1.5}
+    .tracking-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .tracking-stat{padding:12px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.028));border:1px solid rgba(255,255,255,.08)}
+    .tracking-stat span{display:block;font-size:12px;color:rgba(255,255,255,.58);margin-bottom:6px}
+    .tracking-stat strong{display:block;font-size:15px;line-height:1.35}
+    .tracking-timeline{display:grid;gap:10px}
+    .tracking-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+    .tracking-step:first-child{border-top:none;padding-top:0}
+    .tracking-dot{width:14px;height:14px;border-radius:999px;border:2px solid rgba(255,255,255,.18);background:transparent;flex:0 0 auto;margin-top:3px;box-shadow:0 0 0 4px rgba(255,255,255,.02)}
+    .tracking-step.is-done .tracking-dot{background:#8be8b7;border-color:#8be8b7}
+    .tracking-step.is-current .tracking-dot{background:#ffd277;border-color:#ffd277;box-shadow:0 0 0 4px rgba(255,210,119,.18)}
+    .tracking-step.is-cancelled .tracking-dot{background:#ff8f8f;border-color:#ff8f8f}
+    .tracking-step strong{display:block;margin-bottom:4px}
+    .tracking-step span{display:block;color:rgba(255,255,255,.62);font-size:13px;line-height:1.4}
+    .tracking-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .tracking-actions .btn,.tracking-actions a.btn{text-decoration:none}
+    .tracking-items{display:grid;gap:8px}
+    .tracking-item{padding:10px 12px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.024));border:1px solid rgba(255,255,255,.08)}
+    .tracking-item-head{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+    .tracking-item-meta{margin-top:4px;color:rgba(255,255,255,.58);font-size:12px;line-height:1.45}
+    .courier-card{padding:14px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);display:grid;gap:12px}
+    .courier-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .courier-title{font-size:15px;font-weight:700}
+    .courier-subtitle{margin-top:4px;color:rgba(255,255,255,.62);font-size:13px}
+    .courier-map{overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18)}
+    .courier-map iframe{display:block;width:100%;height:220px;border:0}
+    .courier-empty{padding:18px 14px;color:rgba(255,255,255,.68);font-size:13px;line-height:1.5}
+    .courier-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .courier-facts .tracking-stat strong{font-size:14px}
+    .contact{margin:0 0 14px;padding:16px;border-radius:26px}
+    @media (max-width: 640px){
+      .profile-shell{margin-top:12px}
+      .profile-grid,
+      .tracking-grid,
+      .courier-facts,
+      .orders-toolbar{grid-template-columns:1fr}
+      .tracking-code b{font-size:18px}
+      .tracking-status-pill{width:100%;justify-content:center}
+      .courier-map iframe{height:200px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="bar">
+        <h1 class="brand"><a href="HOME.html" class="profile-brand-link"><img class="mark" src="logo.png" alt="Logo"><span class="brand-label">DRAGON GO</span></a></h1>
+        <div class="lang">
+          <select id="langSel" aria-label="Language">
+            <option value="ru">🇷🇺 RU</option>
+            <option value="ua">🇺🇦 UA</option>
+            <option value="vn">🇻🇳 VN</option>
+            <option value="zh">🇨🇳 ZH</option>
+            <option value="pl">🇵🇱 PL</option>
+            <option value="de">🇩🇪 DE</option>
+          </select>
+        </div>
+        <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">☰</button>
+        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu">
+          <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
+          <a href="profil.html" id="navAccount" role="menuitem">👤 PROFILE</a>
+          <a href="#ordersSection" id="navOrders" role="menuitem">📦 ORDERS</a>
+          <a href="#contactSection" id="navContact" role="menuitem">📞 CONTACT</a>
+          <hr>
+          <div class="lang-inline" role="none">🌐
+            <select id="langSelMenu" aria-label="Language (menu)">
+              <option value="ru">🇷🇺 RU</option>
+              <option value="ua">🇺🇦 UA</option>
+              <option value="vn">🇻🇳 VN</option>
+              <option value="zh">🇨🇳 ZH</option>
+              <option value="pl">🇵🇱 PL</option>
+              <option value="de">🇩🇪 DE</option>
+            </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="profile-shell">
+      <section class="contact glass profile-card-shell">
+        <h2 class="profile-title" id="profileTitle">👤 Профиль</h2>
+        <p class="profile-intro" id="profileIntro">Сохрани телефон и адрес на этом устройстве, чтобы быстрее оформлять доставку и открывать статус заказа.</p>
+        <div class="profile-grid">
+          <label class="profile-card">
+            <span id="profilePhoneLabel">Телефон</span>
+            <input id="profilePhoneInput" type="tel" placeholder="+380 63 000 00 00">
+          </label>
+          <label class="profile-card profile-card-wide">
+            <span id="profileAddressLabel">Адрес доставки</span>
+            <textarea id="profileAddressInput" placeholder="Город, улица, дом, подъезд..."></textarea>
+          </label>
+        </div>
+        <div class="profile-actions">
+          <button class="btn primary" id="profileSaveBtn" type="button">Сохранить профиль</button>
+          <button class="btn ghost" id="profileTrackBtn" type="button">Мои заказы</button>
+        </div>
+        <div class="profile-note" id="profileNote">Профиль сохраняется только в этом браузере.</div>
+        <div class="profile-feedback" id="profileFeedback" aria-live="polite"></div>
+      </section>
+
+      <section id="ordersSection" class="contact glass orders-shell">
+        <h2 class="profile-title" id="ordersTitle">📦 Мои заказы</h2>
+        <p class="orders-intro" id="ordersIntro">Введи код заказа или выбери недавний заказ ниже, чтобы открыть подробный трекинг.</p>
+        <div class="orders-toolbar">
+          <div class="statusbar glass">
+            <span class="icon">📦</span>
+            <input id="statusCode" type="text" placeholder="Код заказа (например, a123)" autocomplete="off" />
+            <button class="btn mini" id="statusBtn">Статус</button>
+          </div>
+          <button class="btn ghost" id="latestOrderBtn" type="button">Последний заказ</button>
+        </div>
+        <div class="orders-list" id="ordersList"></div>
+        <div class="status-result" id="statusResult" aria-live="polite"></div>
+      </section>
+
+      <section id="contactSection" class="contact glass">
+        <h2 style="margin:0 0 10px 0;" id="contactTitle">📞 CONTACT</h2>
+        <a class="more-row" href="tel:+380632637999" style="border-top:none">
+          <span class="more-left">
+            <span class="more-ico">📞</span>
+            <span>
+              <div><b>+380 632 637 999</b></div>
+              <div class="muted">Cyber Dragon / DRAGON</div>
+            </span>
+          </span>
+          <span class="more-arrow">›</span>
+        </a>
+        <a class="more-row" href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса" target="_blank" rel="noopener noreferrer">
+          <span class="more-left">
+            <span class="more-ico">📍</span>
+            <span>
+              <div><b>Героїв Крут, 22</b></div>
+              <div class="muted">Черёмушки · Одесса</div>
+            </span>
+          </span>
+          <span class="more-arrow">›</span>
+        </a>
+      </section>
+    </main>
+
+    <script src="dragon_static_config.js"></script>
+    <script>
+      const LANG_KEY = 'CD_LANG';
+      const PROFILE_KEY = 'CD_PROFILE_V1';
+      const ORDERS_KEY = 'CD_ORDERS_V1';
+      const API_BASE = "https://script.google.com/macros/s/AKfycbywwekrmdJvCnKuXKXY-D1_fkJDNm6ES9xAsptqRpoCOS6u9QidiSnGizIK0wybcGTl/exec";
+      const LOCAL_API_BASE = window.DRAGON_STATIC?.localOrdersApi || '';
+      const LOCAL_EVENTS_URL = window.DRAGON_STATIC?.localEventsUrl || '';
+      const CURRENCY = 'грн';
+      const STORE_PHONE = '+380632637999';
+      const SUPPORTED_LANGS = ['ru', 'ua', 'vn', 'zh', 'pl', 'de'];
+
+      function normalizeLang(value) {
+        return SUPPORTED_LANGS.includes(value) ? value : 'ru';
+      }
+
+      function cloneLocaleData(value) {
+        return value ? JSON.parse(JSON.stringify(value)) : value;
+      }
+
+      function mergeLocaleData(target, source) {
+        if (!source || typeof source !== 'object') return target;
+        Object.entries(source).forEach(([key, value]) => {
+          if (value && typeof value === 'object' && !Array.isArray(value)) {
+            if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) target[key] = {};
+            mergeLocaleData(target[key], value);
+            return;
+          }
+          target[key] = value;
+        });
+        return target;
+      }
+
+      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || 'ru');
+      document.documentElement.lang = LANG;
+
+      const I18N = {
+        ru: {
+          navHome:'Главная',
+          navAccount:'Профиль',
+          navOrders:'Заказы',
+          navContact:'Контакты',
+          contactTitle:'Контакты',
+          statusBtn:'Статус',
+          statusPlaceholder:'Код заказа (например, a123)',
+          latestOrder:'Последний заказ',
+          latestMissing:'На этом устройстве пока нет заказов.',
+          orderOpen:'Открыть трекинг',
+          ordersTitle:'Мои заказы',
+          ordersIntro:'Введи код заказа или выбери недавний заказ ниже, чтобы открыть подробный трекинг.',
+          noOrders:'Локальные заказы появятся здесь после первого оформления.',
+          profile:{
+            title:'Профиль',
+            intro:'Сохрани телефон и адрес на этом устройстве, чтобы быстрее оформлять доставку и открывать статус заказа.',
+            phone:'Телефон',
+            address:'Адрес доставки',
+            save:'Сохранить профиль',
+            track:'Мои заказы',
+            note:'Профиль сохраняется только в этом браузере.',
+            saved:'Профиль сохранен.',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'Город, улица, дом, подъезд...'
+          },
+          tracking:{
+            title:'Статус доставки',
+            notFound:'Заказ {code} не найден на этом устройстве.',
+            live:'Live статус заказа',
+            courierTitle:'Курьер на карте',
+            courierHint:'Когда курьер передаст геопозицию, здесь появится его точка на карте.',
+            courierFallback:'Курьер DRAGON',
+            noCourier:'Курьер еще не назначен.',
+            openMap:'Открыть карту',
+            callCourier:'Позвонить курьеру',
+            callStore:'Позвонить в DRAGON',
+            lastSignal:'Последний сигнал',
+            receipt:'Чек в Telegram',
+            waitingMap:'Карта появится, когда у заказа будут координаты курьера.',
+            labels:{
+              created:'Создан',
+              updated:'Обновлен',
+              type:'Тип',
+              payment:'Оплата',
+              delivery:'Доставка',
+              total:'Итого',
+              address:'Адрес',
+              courier:'Курьер',
+              phone:'Телефон',
+              transport:'Транспорт',
+              items:'Позиции'
+            },
+            payment:{ card:'Карта', cash:'Наличные' },
+            orderType:{ on_site:'На месте', takeaway:'На вынос', delivery:'Доставка' },
+            status:{ NEW:'Принят', COOKING:'Готовится', READY:'Курьер в пути', HANDED:'Доставлен', CANCELLED:'Отменен' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'Заказ принят', subtitle:'Ресторан подтвердил заказ и готовит его к кухне.' },
+                { key:'COOKING', title:'Готовим заказ', subtitle:'Блюда уже на кухне.' },
+                { key:'READY', title:'Курьер в пути', subtitle:'Заказ собран, курьер едет к вам.' },
+                { key:'HANDED', title:'Доставка завершена', subtitle:'Заказ передан клиенту.' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'Заказ принят', subtitle:'Ресторан получил заказ.' },
+                { key:'COOKING', title:'Готовим заказ', subtitle:'Кухня уже работает.' },
+                { key:'READY', title:'Можно забирать', subtitle:'Заказ ждет на выдаче.' },
+                { key:'HANDED', title:'Заказ получен', subtitle:'Спасибо за визит.' }
+              ],
+              on_site:[
+                { key:'NEW', title:'Заказ принят', subtitle:'Официант передал заказ на кухню.' },
+                { key:'COOKING', title:'Готовим заказ', subtitle:'Позиции в процессе приготовления.' },
+                { key:'READY', title:'Подача', subtitle:'Заказ уже несут к столу.' },
+                { key:'HANDED', title:'Подано', subtitle:'Приятного аппетита.' }
+              ]
+            }
+          }
+        },
+        ua: {
+          navHome:'Головна',
+          navAccount:'Профіль',
+          navOrders:'Замовлення',
+          navContact:'Контакти',
+          contactTitle:'Контакти',
+          statusBtn:'Статус',
+          statusPlaceholder:'Код замовлення (наприклад, a123)',
+          latestOrder:'Останнє замовлення',
+          latestMissing:'На цьому пристрої ще немає замовлень.',
+          orderOpen:'Відкрити трекінг',
+          ordersTitle:'Мої замовлення',
+          ordersIntro:'Введи код замовлення або обери недавнє замовлення нижче, щоб відкрити детальний трекінг.',
+          noOrders:'Локальні замовлення з’являться тут після першого оформлення.',
+          profile:{
+            title:'Профіль',
+            intro:'Збережи телефон і адресу на цьому пристрої, щоб швидше оформлювати доставку та відкривати статус замовлення.',
+            phone:'Телефон',
+            address:'Адреса доставки',
+            save:'Зберегти профіль',
+            track:'Мої замовлення',
+            note:'Профіль зберігається лише у цьому браузері.',
+            saved:'Профіль збережено.',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'Місто, вулиця, будинок, під’їзд...'
+          },
+          tracking:{
+            title:'Статус доставки',
+            notFound:'Замовлення {code} не знайдено на цьому пристрої.',
+            live:'Live статус замовлення',
+            courierTitle:'Кур’єр на мапі',
+            courierHint:'Коли кур’єр передасть геопозицію, тут з’явиться його точка на мапі.',
+            courierFallback:'Кур’єр DRAGON',
+            noCourier:'Кур’єра ще не призначено.',
+            openMap:'Відкрити мапу',
+            callCourier:'Зателефонувати кур’єру',
+            callStore:'Зателефонувати в DRAGON',
+            lastSignal:'Останній сигнал',
+            receipt:'Чек у Telegram',
+            waitingMap:'Мапа з’явиться, коли у замовлення будуть координати кур’єра.',
+            labels:{
+              created:'Створено',
+              updated:'Оновлено',
+              type:'Тип',
+              payment:'Оплата',
+              delivery:'Доставка',
+              total:'Разом',
+              address:'Адреса',
+              courier:'Кур’єр',
+              phone:'Телефон',
+              transport:'Транспорт',
+              items:'Позиції'
+            },
+            payment:{ card:'Картка', cash:'Готівка' },
+            orderType:{ on_site:'У закладі', takeaway:'На виніс', delivery:'Доставка' },
+            status:{ NEW:'Прийнято', COOKING:'Готується', READY:'Кур’єр у дорозі', HANDED:'Доставлено', CANCELLED:'Скасовано' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'Замовлення прийнято', subtitle:'Ресторан підтвердив замовлення та передав його на кухню.' },
+                { key:'COOKING', title:'Готуємо замовлення', subtitle:'Страви вже в роботі.' },
+                { key:'READY', title:'Кур’єр у дорозі', subtitle:'Замовлення зібране, кур’єр їде до вас.' },
+                { key:'HANDED', title:'Доставку завершено', subtitle:'Замовлення передано клієнту.' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'Замовлення прийнято', subtitle:'Ресторан отримав замовлення.' },
+                { key:'COOKING', title:'Готуємо замовлення', subtitle:'Кухня вже працює.' },
+                { key:'READY', title:'Можна забирати', subtitle:'Замовлення чекає на видачі.' },
+                { key:'HANDED', title:'Замовлення отримано', subtitle:'Дякуємо за візит.' }
+              ],
+              on_site:[
+                { key:'NEW', title:'Замовлення прийнято', subtitle:'Замовлення передано на кухню.' },
+                { key:'COOKING', title:'Готуємо замовлення', subtitle:'Позиції вже готуються.' },
+                { key:'READY', title:'Подача', subtitle:'Замовлення вже несуть до столу.' },
+                { key:'HANDED', title:'Подано', subtitle:'Смачного.' }
+              ]
+            }
+          }
+        },
+        vn: {
+          navHome:'Trang chủ',
+          navAccount:'Tai khoan',
+          navOrders:'Don hang',
+          navContact:'Lien he',
+          contactTitle:'Lien he',
+          statusBtn:'Trang thai',
+          statusPlaceholder:'Ma don hang (vi du: a123)',
+          latestOrder:'Don gan nhat',
+          latestMissing:'Thiet bi nay chua co don hang nao.',
+          orderOpen:'Mo theo doi',
+          ordersTitle:'Don hang cua toi',
+          ordersIntro:'Nhap ma don hang hoac chon mot don gan day ben duoi de mo theo doi chi tiet.',
+          noOrders:'Don hang cuc bo se hien o day sau lan dat dau tien.',
+          profile:{
+            title:'Tai khoan',
+            intro:'Luu so dien thoai va dia chi tren thiet bi nay de dat giao hang nhanh hon va mo trang thai don hang.',
+            phone:'Dien thoai',
+            address:'Dia chi giao hang',
+            save:'Luu tai khoan',
+            track:'Don hang cua toi',
+            note:'Thong tin chi duoc luu tren trinh duyet nay.',
+            saved:'Da luu tai khoan.',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'Thanh pho, duong, so nha, cong vao...'
+          },
+          tracking:{
+            title:'Trang thai giao hang',
+            notFound:'Khong tim thay don {code} tren thiet bi nay.',
+            live:'Trang thai don hang',
+            courierTitle:'Tai xe tren ban do',
+            courierHint:'Khi tai xe gui vi tri, ban do se hien diem hien tai cua ho.',
+            courierFallback:'Tai xe DRAGON',
+            noCourier:'Chua co tai xe nhan don.',
+            openMap:'Mo ban do',
+            callCourier:'Goi tai xe',
+            callStore:'Goi DRAGON',
+            lastSignal:'Lan cap nhat cuoi',
+            receipt:'Hoa don Telegram',
+            waitingMap:'Ban do se hien khi don hang co toa do tai xe.',
+            labels:{
+              created:'Tao luc',
+              updated:'Cap nhat',
+              type:'Hinh thuc',
+              payment:'Thanh toan',
+              delivery:'Phi giao',
+              total:'Tong cong',
+              address:'Dia chi',
+              courier:'Tai xe',
+              phone:'Dien thoai',
+              transport:'Phuong tien',
+              items:'Mon'
+            },
+            payment:{ card:'The', cash:'Tien mat' },
+            orderType:{ on_site:'An tai cho', takeaway:'Mang di', delivery:'Giao hang' },
+            status:{ NEW:'Da nhan', COOKING:'Dang nau', READY:'Tai xe dang den', HANDED:'Da giao', CANCELLED:'Da huy' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'Da nhan don', subtitle:'Nha hang da xac nhan don hang.' },
+                { key:'COOKING', title:'Dang chuan bi', subtitle:'Bep dang nau mon cho ban.' },
+                { key:'READY', title:'Tai xe dang den', subtitle:'Don da dong goi va dang tren duong.' },
+                { key:'HANDED', title:'Da giao xong', subtitle:'Don hang da den tay khach.' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'Da nhan don', subtitle:'Cua hang da nhan don.' },
+                { key:'COOKING', title:'Dang chuan bi', subtitle:'Bep dang lam mon.' },
+                { key:'READY', title:'San sang lay', subtitle:'Don hang dang cho tai quay.' },
+                { key:'HANDED', title:'Da nhan', subtitle:'Cam on ban.' }
+              ],
+              on_site:[
+                { key:'NEW', title:'Da nhan don', subtitle:'Don da duoc dua xuong bep.' },
+                { key:'COOKING', title:'Dang chuan bi', subtitle:'Mon an dang duoc nau.' },
+                { key:'READY', title:'Dang phuc vu', subtitle:'Mon dang duoc mang ra ban.' },
+                { key:'HANDED', title:'Da phuc vu', subtitle:'Chuc ngon mieng.' }
+              ]
+            }
+          }
+        }
+      };
+      if (!I18N.zh) I18N.zh = cloneLocaleData(I18N.vn);
+      if (!I18N.pl) I18N.pl = cloneLocaleData(I18N.ua || I18N.ru);
+      if (!I18N.de) I18N.de = cloneLocaleData(I18N.ua || I18N.ru);
+      const PROFILE_I18N_OVERRIDES = {
+        zh: {
+          navHome:'首页',
+          navAccount:'个人资料',
+          navOrders:'订单',
+          navContact:'联系',
+          contactTitle:'联系方式',
+          statusBtn:'状态',
+          statusPlaceholder:'订单号（例如 a123）',
+          latestOrder:'最近订单',
+          latestMissing:'此设备上还没有订单。',
+          orderOpen:'打开追踪',
+          ordersTitle:'我的订单',
+          ordersIntro:'输入订单号，或从下面选择最近的订单以查看详细追踪。',
+          noOrders:'首次下单后，本地订单会显示在这里。',
+          profile:{
+            title:'个人资料',
+            intro:'将电话和地址保存在此设备上，以便更快下单并查看订单状态。',
+            phone:'电话',
+            address:'配送地址',
+            save:'保存资料',
+            track:'我的订单',
+            note:'资料仅保存在此浏览器中。',
+            saved:'资料已保存。',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'城市、街道、门牌号、入口…'
+          },
+          tracking:{
+            title:'配送状态',
+            notFound:'此设备上未找到订单 {code}。',
+            live:'订单实时状态',
+            courierTitle:'地图上的配送员',
+            courierHint:'当配送员共享位置后，这里会显示他当前的位置。',
+            courierFallback:'DRAGON 配送员',
+            noCourier:'暂未分配配送员。',
+            openMap:'打开地图',
+            callCourier:'致电配送员',
+            callStore:'致电 DRAGON',
+            lastSignal:'最近信号',
+            receipt:'Telegram 小票',
+            waitingMap:'订单出现配送坐标后，这里会显示地图。',
+            labels:{
+              created:'创建时间',
+              updated:'更新时间',
+              type:'类型',
+              payment:'支付',
+              delivery:'配送',
+              total:'合计',
+              address:'地址',
+              courier:'配送员',
+              phone:'电话',
+              transport:'交通工具',
+              items:'菜品'
+            },
+            payment:{ card:'银行卡', cash:'现金' },
+            orderType:{ on_site:'堂食', takeaway:'自取', delivery:'配送' },
+            status:{ NEW:'已接单', COOKING:'制作中', READY:'配送中', HANDED:'已送达', CANCELLED:'已取消' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'订单已接收', subtitle:'餐厅已确认订单并开始准备。' },
+                { key:'COOKING', title:'正在制作', subtitle:'厨房正在准备菜品。' },
+                { key:'READY', title:'配送员在路上', subtitle:'订单已打包，正在送往您处。' },
+                { key:'HANDED', title:'配送完成', subtitle:'订单已交付给顾客。' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'订单已接收', subtitle:'餐厅已收到订单。' },
+                { key:'COOKING', title:'正在制作', subtitle:'厨房已经开始制作。' },
+                { key:'READY', title:'可以取餐', subtitle:'订单已在取餐处等候。' },
+                { key:'HANDED', title:'订单已领取', subtitle:'感谢您的光临。' }
+              ],
+              on_site:[
+                { key:'NEW', title:'订单已接收', subtitle:'服务员已将订单传至厨房。' },
+                { key:'COOKING', title:'正在制作', subtitle:'菜品正在烹饪中。' },
+                { key:'READY', title:'准备上桌', subtitle:'订单马上送到您的餐桌。' },
+                { key:'HANDED', title:'已上桌', subtitle:'祝您用餐愉快。' }
+              ]
+            }
+          }
+        },
+        pl: {
+          navHome:'Strona główna',
+          navAccount:'Profil',
+          navOrders:'Zamówienia',
+          navContact:'Kontakt',
+          contactTitle:'Kontakt',
+          statusBtn:'Status',
+          statusPlaceholder:'Kod zamówienia (np. a123)',
+          latestOrder:'Ostatnie zamówienie',
+          latestMissing:'Na tym urządzeniu nie ma jeszcze żadnych zamówień.',
+          orderOpen:'Otwórz śledzenie',
+          ordersTitle:'Moje zamówienia',
+          ordersIntro:'Wpisz kod zamówienia albo wybierz jedno z ostatnich zamówień poniżej, aby otworzyć szczegółowe śledzenie.',
+          noOrders:'Lokalne zamówienia pojawią się tutaj po pierwszym złożeniu zamówienia.',
+          profile:{
+            title:'Profil',
+            intro:'Zapisz telefon i adres na tym urządzeniu, aby szybciej składać zamówienia i sprawdzać ich status.',
+            phone:'Telefon',
+            address:'Adres dostawy',
+            save:'Zapisz profil',
+            track:'Moje zamówienia',
+            note:'Profil jest zapisywany tylko w tej przeglądarce.',
+            saved:'Profil został zapisany.',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'Miasto, ulica, numer domu, wejście…'
+          },
+          tracking:{
+            title:'Status dostawy',
+            notFound:'Nie znaleziono zamówienia {code} na tym urządzeniu.',
+            live:'Status zamówienia na żywo',
+            courierTitle:'Kurier na mapie',
+            courierHint:'Gdy kurier udostępni geolokalizację, tutaj pojawi się jego pozycja.',
+            courierFallback:'Kurier DRAGON',
+            noCourier:'Kurier nie został jeszcze przypisany.',
+            openMap:'Otwórz mapę',
+            callCourier:'Zadzwoń do kuriera',
+            callStore:'Zadzwoń do DRAGON',
+            lastSignal:'Ostatni sygnał',
+            receipt:'Paragon w Telegramie',
+            waitingMap:'Mapa pojawi się, gdy zamówienie otrzyma współrzędne kuriera.',
+            labels:{
+              created:'Utworzono',
+              updated:'Zaktualizowano',
+              type:'Typ',
+              payment:'Płatność',
+              delivery:'Dostawa',
+              total:'Razem',
+              address:'Adres',
+              courier:'Kurier',
+              phone:'Telefon',
+              transport:'Transport',
+              items:'Pozycje'
+            },
+            payment:{ card:'Karta', cash:'Gotówka' },
+            orderType:{ on_site:'Na miejscu', takeaway:'Na wynos', delivery:'Dostawa' },
+            status:{ NEW:'Przyjęte', COOKING:'W przygotowaniu', READY:'Kurier w drodze', HANDED:'Dostarczone', CANCELLED:'Anulowane' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'Zamówienie przyjęte', subtitle:'Restauracja potwierdziła zamówienie i przekazała je do kuchni.' },
+                { key:'COOKING', title:'Przygotowujemy zamówienie', subtitle:'Dania są już w trakcie przygotowania.' },
+                { key:'READY', title:'Kurier w drodze', subtitle:'Zamówienie jest spakowane i jedzie do Ciebie.' },
+                { key:'HANDED', title:'Dostawa zakończona', subtitle:'Zamówienie zostało przekazane klientowi.' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'Zamówienie przyjęte', subtitle:'Restauracja otrzymała zamówienie.' },
+                { key:'COOKING', title:'Przygotowujemy zamówienie', subtitle:'Kuchnia już pracuje.' },
+                { key:'READY', title:'Gotowe do odbioru', subtitle:'Zamówienie czeka przy wydawce.' },
+                { key:'HANDED', title:'Zamówienie odebrane', subtitle:'Dziękujemy za wizytę.' }
+              ],
+              on_site:[
+                { key:'NEW', title:'Zamówienie przyjęte', subtitle:'Kelner przekazał zamówienie do kuchni.' },
+                { key:'COOKING', title:'Przygotowujemy zamówienie', subtitle:'Pozycje są właśnie przygotowywane.' },
+                { key:'READY', title:'Podanie', subtitle:'Zamówienie jest już niesione do stolika.' },
+                { key:'HANDED', title:'Podano', subtitle:'Smacznego.' }
+              ]
+            }
+          }
+        },
+        de: {
+          navHome:'Startseite',
+          navAccount:'Profil',
+          navOrders:'Bestellungen',
+          navContact:'Kontakt',
+          contactTitle:'Kontakt',
+          statusBtn:'Status',
+          statusPlaceholder:'Bestellcode (z. B. a123)',
+          latestOrder:'Letzte Bestellung',
+          latestMissing:'Auf diesem Gerät gibt es noch keine Bestellungen.',
+          orderOpen:'Tracking öffnen',
+          ordersTitle:'Meine Bestellungen',
+          ordersIntro:'Gib einen Bestellcode ein oder wähle unten eine aktuelle Bestellung aus, um das detaillierte Tracking zu öffnen.',
+          noOrders:'Lokale Bestellungen erscheinen hier nach der ersten Bestellung.',
+          profile:{
+            title:'Profil',
+            intro:'Speichere Telefon und Adresse auf diesem Gerät, um schneller zu bestellen und den Status zu öffnen.',
+            phone:'Telefon',
+            address:'Lieferadresse',
+            save:'Profil speichern',
+            track:'Meine Bestellungen',
+            note:'Das Profil wird nur in diesem Browser gespeichert.',
+            saved:'Profil wurde gespeichert.',
+            phonePlaceholder:'+380 63 000 00 00',
+            addressPlaceholder:'Stadt, Straße, Hausnummer, Eingang…'
+          },
+          tracking:{
+            title:'Lieferstatus',
+            notFound:'Bestellung {code} wurde auf diesem Gerät nicht gefunden.',
+            live:'Live-Status der Bestellung',
+            courierTitle:'Kurier auf der Karte',
+            courierHint:'Sobald der Kurier seine Position sendet, erscheint sie hier auf der Karte.',
+            courierFallback:'DRAGON Kurier',
+            noCourier:'Es wurde noch kein Kurier zugewiesen.',
+            openMap:'Karte öffnen',
+            callCourier:'Kurier anrufen',
+            callStore:'DRAGON anrufen',
+            lastSignal:'Letztes Signal',
+            receipt:'Beleg in Telegram',
+            waitingMap:'Die Karte erscheint, sobald Koordinaten des Kuriers vorliegen.',
+            labels:{
+              created:'Erstellt',
+              updated:'Aktualisiert',
+              type:'Typ',
+              payment:'Zahlung',
+              delivery:'Lieferung',
+              total:'Gesamt',
+              address:'Adresse',
+              courier:'Kurier',
+              phone:'Telefon',
+              transport:'Transport',
+              items:'Positionen'
+            },
+            payment:{ card:'Karte', cash:'Bar' },
+            orderType:{ on_site:'Vor Ort', takeaway:'Zum Mitnehmen', delivery:'Lieferung' },
+            status:{ NEW:'Angenommen', COOKING:'In Zubereitung', READY:'Kurier unterwegs', HANDED:'Zugestellt', CANCELLED:'Storniert' },
+            timeline:{
+              delivery:[
+                { key:'NEW', title:'Bestellung angenommen', subtitle:'Das Restaurant hat die Bestellung bestätigt und an die Küche weitergegeben.' },
+                { key:'COOKING', title:'Wir bereiten Ihre Bestellung vor', subtitle:'Die Gerichte sind bereits in Arbeit.' },
+                { key:'READY', title:'Kurier ist unterwegs', subtitle:'Die Bestellung ist verpackt und auf dem Weg zu Ihnen.' },
+                { key:'HANDED', title:'Lieferung abgeschlossen', subtitle:'Die Bestellung wurde dem Kunden übergeben.' }
+              ],
+              takeaway:[
+                { key:'NEW', title:'Bestellung angenommen', subtitle:'Das Restaurant hat die Bestellung erhalten.' },
+                { key:'COOKING', title:'Wir bereiten Ihre Bestellung vor', subtitle:'Die Küche arbeitet bereits.' },
+                { key:'READY', title:'Abholbereit', subtitle:'Die Bestellung wartet an der Ausgabe.' },
+                { key:'HANDED', title:'Bestellung abgeholt', subtitle:'Vielen Dank für Ihren Besuch.' }
+              ],
+              on_site:[
+                { key:'NEW', title:'Bestellung angenommen', subtitle:'Der Service hat die Bestellung an die Küche übergeben.' },
+                { key:'COOKING', title:'Wir bereiten Ihre Bestellung vor', subtitle:'Die Positionen werden gerade zubereitet.' },
+                { key:'READY', title:'Servieren', subtitle:'Die Bestellung wird gerade an den Tisch gebracht.' },
+                { key:'HANDED', title:'Serviert', subtitle:'Guten Appetit.' }
+              ]
+            }
+          }
+        }
+      };
+      Object.entries(PROFILE_I18N_OVERRIDES).forEach(([locale, overrides]) => {
+        mergeLocaleData(I18N[locale], overrides);
+      });
+
+      const $ = selector => document.querySelector(selector);
+      const $$ = selector => document.querySelectorAll(selector);
+      const L = () => I18N[LANG] || I18N.ru;
+      const escapeHtml = (value='') => String(value)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+      const fmt = amount => `${Number(amount || 0).toFixed(2)} ${CURRENCY}`;
+
+      const dom = {
+        navPop: $('#navPop'),
+        burgerBtn: $('#burgerBtn'),
+        langSel: $('#langSel'),
+        langSelMenu: $('#langSelMenu'),
+        navHome: $('#navHome'),
+        navAccount: $('#navAccount'),
+        navOrders: $('#navOrders'),
+        navContact: $('#navContact'),
+        profileTitle: $('#profileTitle'),
+        profileIntro: $('#profileIntro'),
+        profilePhoneLabel: $('#profilePhoneLabel'),
+        profileAddressLabel: $('#profileAddressLabel'),
+        profilePhoneInput: $('#profilePhoneInput'),
+        profileAddressInput: $('#profileAddressInput'),
+        profileSaveBtn: $('#profileSaveBtn'),
+        profileTrackBtn: $('#profileTrackBtn'),
+        profileNote: $('#profileNote'),
+        profileFeedback: $('#profileFeedback'),
+        ordersTitle: $('#ordersTitle'),
+        ordersIntro: $('#ordersIntro'),
+        statusCode: $('#statusCode'),
+        statusBtn: $('#statusBtn'),
+        latestOrderBtn: $('#latestOrderBtn'),
+        ordersList: $('#ordersList'),
+        statusResult: $('#statusResult'),
+        contactTitle: $('#contactTitle')
+      };
+
+      function loadProfile() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}') || {};
+          return {
+            phone: String(raw.phone || '').trim(),
+            address: String(raw.address || '').trim()
+          };
+        } catch (error) {
+          return { phone: '', address: '' };
+        }
+      }
+
+      function saveProfileData(profile) {
+        try {
+          localStorage.setItem(PROFILE_KEY, JSON.stringify({
+            phone: String(profile?.phone || '').trim(),
+            address: String(profile?.address || '').trim()
+          }));
+        } catch (error) {}
+      }
+
+      function loadOrders() {
+        try {
+          return JSON.parse(localStorage.getItem(ORDERS_KEY) || '{}') || {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function saveOrders(payload) {
+        try {
+          localStorage.setItem(ORDERS_KEY, JSON.stringify(payload || {}));
+        } catch (error) {}
+      }
+
+      function nowIso() {
+        return new Date().toISOString();
+      }
+
+      function safeExternalUrl(value) {
+        const helper = window.DRAGON_STATIC?.normalizeExternalUrl;
+        if (typeof helper === 'function') return helper(value);
+        try {
+          const url = new URL(String(value || '').trim(), window.location.href);
+          return url.protocol === 'http:' || url.protocol === 'https:' ? url.toString() : '';
+        } catch (_) {
+          return '';
+        }
+      }
+
+      function normalizeStatus(value) {
+        const raw = String(value || '').trim().toUpperCase();
+        if (!raw || raw === 'SENT' || raw === 'FAILED') return 'NEW';
+        if (raw === 'CONFIRMED') return 'COOKING';
+        if (raw === 'COMPLETED' || raw === 'DONE') return 'HANDED';
+        return raw;
+      }
+
+      function syncStamp(sync) {
+        if (!sync || typeof sync !== 'object') return 0;
+        const raw = sync.updated_at || sync.attempted_at || sync.requested_at || sync.created_at;
+        const stamp = raw ? new Date(raw).getTime() : 0;
+        return Number.isFinite(stamp) ? stamp : 0;
+      }
+
+      function syncScore(channel, sync) {
+        if (!sync || typeof sync !== 'object') return 0;
+        if (channel === 'sheet') {
+          if (sync.ok || sync.id) return 4;
+          if (sync.pending || sync.retrying) return 3;
+          return 2;
+        }
+        if (channel === 'local') return sync.ok ? 3 : 1;
+        return sync.ok ? 2 : 1;
+      }
+
+      function pickBetterSync(channel, left, right) {
+        const leftScore = syncScore(channel, left);
+        const rightScore = syncScore(channel, right);
+        if (leftScore !== rightScore) return leftScore > rightScore ? left : right;
+        return syncStamp(left) >= syncStamp(right) ? left : right;
+      }
+
+      function normalizeOrderRecord(raw) {
+        const code = String(raw?.code || raw?.order_code || raw?.id || '').trim().toLowerCase();
+        const createdAt = raw?.created_at || raw?.createdAt || nowIso();
+        const updatedAt = raw?.updated_at || raw?.updatedAt || createdAt;
+        const sync = raw?.sync && typeof raw.sync === 'object' ? raw.sync : {};
+        return {
+          ...raw,
+          id: String(raw?.id || raw?.order_id || code).trim(),
+          code,
+          status: normalizeStatus(raw?.status),
+          created_at: createdAt,
+          updated_at: updatedAt,
+          currency: raw?.currency || CURRENCY,
+          receipt_link: safeExternalUrl(raw?.receipt_link || raw?.receiptLink || ''),
+          items: Array.isArray(raw?.items) ? raw.items : [],
+          sync: {
+            ...sync,
+            local: sync.local || raw?.local_sync || null,
+            telegram: sync.telegram || raw?.tg || null,
+            telegram_vn: sync.telegram_vn || raw?.vn_tg || null,
+            sheet: sync.sheet || raw?.sheet || null
+          }
+        };
+      }
+
+      function mergeOrderRecord(current, incoming) {
+        const base = current ? normalizeOrderRecord(current) : null;
+        const draft = normalizeOrderRecord(incoming);
+        if (!base) return draft;
+
+        const useDraft = new Date(draft.updated_at || draft.created_at).getTime() >= new Date(base.updated_at || base.created_at).getTime();
+        const primary = useDraft ? draft : base;
+        const fallback = useDraft ? base : draft;
+
+        return normalizeOrderRecord({
+          ...fallback,
+          ...primary,
+          sync: {
+            ...(fallback.sync || {}),
+            ...(primary.sync || {}),
+            local: pickBetterSync('local', fallback.sync?.local, primary.sync?.local),
+            telegram: pickBetterSync('telegram', fallback.sync?.telegram, primary.sync?.telegram),
+            telegram_vn: pickBetterSync('telegram', fallback.sync?.telegram_vn, primary.sync?.telegram_vn),
+            sheet: pickBetterSync('sheet', fallback.sync?.sheet, primary.sync?.sheet)
+          }
+        });
+      }
+
+      function persistOrderRecord(order) {
+        const orders = loadOrders();
+        const normalized = normalizeOrderRecord(order);
+        orders[normalized.code] = mergeOrderRecord(orders[normalized.code], normalized);
+        saveOrders(orders);
+        return orders[normalized.code];
+      }
+
+      function orderList() {
+        return Object.values(loadOrders())
+          .map(normalizeOrderRecord)
+          .sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
+      }
+
+      function trackingCopy() {
+        return L().tracking || I18N.ru.tracking;
+      }
+
+      function trackingStatusLabel(value) {
+        const status = normalizeStatus(value);
+        return trackingCopy().status?.[status] || status || '—';
+      }
+
+      function trackingOrderTypeLabel(value) {
+        return trackingCopy().orderType?.[value] || value || '—';
+      }
+
+      function trackingPaymentLabel(value) {
+        return trackingCopy().payment?.[String(value || '').toLowerCase()] || trackingCopy().payment?.card || '—';
+      }
+
+      function trackingStatusRank(value) {
+        const status = normalizeStatus(value);
+        return { NEW:0, COOKING:1, READY:2, HANDED:3 }[status] ?? 0;
+      }
+
+      function trackingStepsFor(order) {
+        const type = String(order?.type || 'delivery');
+        return trackingCopy().timeline?.[type] || trackingCopy().timeline?.delivery || [];
+      }
+
+      function formatLocalDate(value) {
+        if (!value) return '—';
+        const stamp = new Date(value);
+        return Number.isNaN(stamp.getTime()) ? String(value) : stamp.toLocaleString();
+      }
+
+      function readCoordPair(candidate) {
+        if (!candidate) return null;
+        if (Array.isArray(candidate) && candidate.length >= 2) {
+          const lat = Number(candidate[0]);
+          const lng = Number(candidate[1]);
+          if (Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+        }
+        if (typeof candidate === 'string') {
+          const parts = candidate.split(/[,\s;]+/).filter(Boolean);
+          if (parts.length >= 2) {
+            const lat = Number(parts[0]);
+            const lng = Number(parts[1]);
+            if (Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+          }
+          return null;
+        }
+        if (typeof candidate === 'object') {
+          if (candidate.coords) {
+            const nestedCoords = readCoordPair(candidate.coords);
+            if (nestedCoords) return nestedCoords;
+          }
+          if (candidate.location) {
+            const nestedLocation = readCoordPair(candidate.location);
+            if (nestedLocation) return nestedLocation;
+          }
+          const lat = Number(candidate.lat ?? candidate.latitude);
+          const lng = Number(candidate.lng ?? candidate.lon ?? candidate.long ?? candidate.longitude);
+          if (Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+        }
+        return null;
+      }
+
+      function buildCourierMapUrl(coords) {
+        if (!coords) return '';
+        return `https://maps.google.com/?q=${encodeURIComponent(`${coords.lat},${coords.lng}`)}`;
+      }
+
+      function buildCourierEmbedUrl(coords) {
+        if (!coords) return '';
+        const lat = Number(coords.lat);
+        const lng = Number(coords.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return '';
+        const deltaLat = 0.006;
+        const deltaLng = 0.01;
+        const bbox = [
+          (lng - deltaLng).toFixed(6),
+          (lat - deltaLat).toFixed(6),
+          (lng + deltaLng).toFixed(6),
+          (lat + deltaLat).toFixed(6)
+        ].join('%2C');
+        const marker = encodeURIComponent(`${lat.toFixed(6)},${lng.toFixed(6)}`);
+        return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+      }
+
+      function extractCourierState(order) {
+        const copy = trackingCopy();
+        const courier = order?.courier && typeof order.courier === 'object' ? order.courier : {};
+        const coords =
+          readCoordPair(courier.location) ||
+          readCoordPair(courier.coords) ||
+          readCoordPair(courier) ||
+          readCoordPair(order?.courier_location) ||
+          readCoordPair(order?.courier_coords) ||
+          readCoordPair(order?.courier_geo) ||
+          readCoordPair(order?.courier_position);
+        const name = String(courier.name || courier.full_name || order?.courier_name || copy.courierFallback);
+        const phone = String(courier.phone || order?.courier_phone || '');
+        const transport = String(courier.transport || order?.courier_transport || '');
+        const updatedAt = String(courier.updated_at || order?.courier_updated_at || order?.updated_at || '');
+        const address = String(courier.address || order?.courier_address || '');
+        const mapUrl = coords ? buildCourierMapUrl(coords) : (address ? `https://maps.google.com/?q=${encodeURIComponent(address)}` : '');
+        return { coords, name, phone, transport, updatedAt, address, mapUrl };
+      }
+
+      function renderTrackingTimeline(order) {
+        const steps = trackingStepsFor(order);
+        const status = normalizeStatus(order?.status);
+        const isCancelled = status === 'CANCELLED';
+        const currentRank = trackingStatusRank(status);
+        return `
+          <div class="tracking-timeline">
+            ${steps.map((step, index) => {
+              let stateClass = '';
+              if (isCancelled) {
+                stateClass = index === 0 ? 'is-cancelled' : '';
+              } else if (status === 'HANDED') {
+                stateClass = 'is-done';
+              } else if (index < currentRank) {
+                stateClass = 'is-done';
+              } else if (index === currentRank) {
+                stateClass = 'is-current';
+              }
+              return `
+                <div class="tracking-step ${stateClass}">
+                  <span class="tracking-dot" aria-hidden="true"></span>
+                  <div>
+                    <strong>${escapeHtml(step.title)}</strong>
+                    <span>${escapeHtml(step.subtitle)}</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      function renderTrackingItems(order) {
+        const items = Array.isArray(order?.items) ? order.items : [];
+        if (!items.length) return '';
+        return `
+          <div class="tracking-items">
+            ${items.map(item => {
+              const code = item?.code ? ` · ${escapeHtml(item.code)}` : '';
+              const note = String(item?.note || '').trim();
+              return `
+                <div class="tracking-item">
+                  <div class="tracking-item-head">
+                    <strong>${escapeHtml(item.name || '-')} × ${Number(item.qty || 0)}</strong>
+                    <span>${escapeHtml(fmt(item.price || 0))}${code}</span>
+                  </div>
+                  ${note ? `<div class="tracking-item-meta">${escapeHtml(note)}</div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      function renderCourierCard(order) {
+        if (String(order?.type || '') !== 'delivery') return '';
+        const copy = trackingCopy();
+        const courier = extractCourierState(order);
+        const embedUrl = buildCourierEmbedUrl(courier.coords);
+        const signal = courier.updatedAt ? formatLocalDate(courier.updatedAt) : '—';
+        const phoneAction = courier.phone
+          ? `<a class="btn mini" href="tel:${escapeHtml(courier.phone)}">${escapeHtml(copy.callCourier)}</a>`
+          : `<a class="btn mini" href="tel:${escapeHtml(STORE_PHONE)}">${escapeHtml(copy.callStore)}</a>`;
+        const mapAction = courier.mapUrl
+          ? `<a class="btn mini primary" href="${courier.mapUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(copy.openMap)}</a>`
+          : '';
+
+        return `
+          <div class="courier-card">
+            <div class="courier-head">
+              <div>
+                <div class="courier-title">${escapeHtml(copy.courierTitle)}</div>
+                <div class="courier-subtitle">${escapeHtml(embedUrl ? copy.live : copy.courierHint)}</div>
+              </div>
+              <span class="pill-mini">${escapeHtml(trackingStatusLabel(order.status))}</span>
+            </div>
+            ${embedUrl
+              ? `<div class="courier-map"><iframe src="${embedUrl}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`
+              : `<div class="courier-empty">${escapeHtml(courier.name === copy.courierFallback ? copy.noCourier : copy.waitingMap)}</div>`
+            }
+            <div class="courier-facts">
+              <div class="tracking-stat">
+                <span>${escapeHtml(copy.labels.courier)}</span>
+                <strong>${escapeHtml(courier.name)}</strong>
+              </div>
+              <div class="tracking-stat">
+                <span>${escapeHtml(copy.lastSignal)}</span>
+                <strong>${escapeHtml(signal)}</strong>
+              </div>
+              ${courier.phone ? `
+                <div class="tracking-stat">
+                  <span>${escapeHtml(copy.labels.phone)}</span>
+                  <strong>${escapeHtml(courier.phone)}</strong>
+                </div>
+              ` : ''}
+              ${courier.transport ? `
+                <div class="tracking-stat">
+                  <span>${escapeHtml(copy.labels.transport)}</span>
+                  <strong>${escapeHtml(courier.transport)}</strong>
+                </div>
+              ` : ''}
+            </div>
+            <div class="tracking-actions">
+              ${mapAction}
+              ${phoneAction}
+            </div>
+          </div>
+        `;
+      }
+
+      async function fetchOrdersRemoteStatus() {
+        const response = await fetch(`${API_BASE}?action=get_orders`, { cache: 'no-store' });
+        return response.json();
+      }
+
+      async function fetchOrdersLocalBridge() {
+        if (!LOCAL_API_BASE) return { ok:false, orders:[] };
+        const response = await fetch(LOCAL_API_BASE, { cache: 'no-store' });
+        return response.json();
+      }
+
+      async function fetchOrderFromLocalBridge(code) {
+        if (!LOCAL_API_BASE) return null;
+        const response = await fetch(`${LOCAL_API_BASE}?code=${encodeURIComponent(code)}`, { cache: 'no-store' });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data?.order || null;
+      }
+
+      function renderOrdersList() {
+        const orders = orderList();
+        if (!orders.length) {
+          dom.ordersList.innerHTML = `<div class="orders-list-empty">${escapeHtml(L().noOrders)}</div>`;
+          return;
+        }
+
+        dom.ordersList.innerHTML = orders.map(order => `
+          <article class="order-list-card">
+            <div class="order-list-head">
+              <div>
+                <strong>#${escapeHtml(order.code)}</strong>
+                <div class="order-list-meta">${escapeHtml(trackingStatusLabel(order.status))} · ${escapeHtml(formatLocalDate(order.created_at))}</div>
+              </div>
+              <strong>${escapeHtml(fmt(order.total || order.subtotal || 0))}</strong>
+            </div>
+            <div class="order-list-meta">${escapeHtml(trackingOrderTypeLabel(order.type))}${order.address ? ` · ${escapeHtml(order.address)}` : ''}</div>
+            <div class="order-list-actions">
+              <button class="btn primary" type="button" data-open-order="${escapeHtml(order.code)}">${escapeHtml(L().orderOpen)}</button>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      function renderStatus(code) {
+        const orders = loadOrders();
+        const rec = orders[(code || '').trim().toLowerCase()];
+        const copy = trackingCopy();
+        if (!code) {
+          dom.statusResult.innerHTML = '';
+          return;
+        }
+        if (!rec) {
+          dom.statusResult.innerHTML = `<div class="orders-list-empty">${escapeHtml(copy.notFound.replace('{code}', String(code).trim().toUpperCase()))}</div>`;
+          return;
+        }
+
+        const order = normalizeOrderRecord(rec);
+        const status = normalizeStatus(order.status);
+        const statusClass = {
+          NEW: 'tracking-status-new',
+          COOKING: 'tracking-status-cooking',
+          READY: 'tracking-status-ready',
+          HANDED: 'tracking-status-handed',
+          CANCELLED: 'tracking-status-cancelled'
+        }[status] || 'tracking-status-new';
+
+        const itemCount = (order.items || []).reduce((sum, item) => sum + Number(item?.qty || 0), 0);
+        const total = Number(order.total || Number(order.subtotal || 0) + Number(order.delivery_fee || 0));
+        const stats = [
+          { label: copy.labels.created, value: formatLocalDate(order.created_at) },
+          { label: copy.labels.updated, value: formatLocalDate(order.updated_at || order.created_at) },
+          { label: copy.labels.type, value: trackingOrderTypeLabel(order.type) },
+          { label: copy.labels.payment, value: trackingPaymentLabel(order.payment_type) },
+          { label: copy.labels.delivery, value: fmt(order.delivery_fee || 0) },
+          { label: copy.labels.total, value: fmt(total) }
+        ];
+        if (order.address) stats.push({ label: copy.labels.address, value: order.address });
+        if (itemCount) stats.push({ label: copy.labels.items, value: String(itemCount) });
+
+        const addressMapUrl = order.address ? `https://maps.google.com/?q=${encodeURIComponent(order.address)}` : '';
+        const quickActions = [
+          order.receipt_link
+            ? `<a class="btn primary" href="${order.receipt_link}" target="_blank" rel="noopener noreferrer">📩 ${escapeHtml(copy.receipt)}</a>`
+            : '',
+          addressMapUrl
+            ? `<a class="btn mini" href="${addressMapUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(copy.openMap)}</a>`
+            : ''
+        ].filter(Boolean).join('');
+
+        dom.statusResult.innerHTML = `
+          <div class="status-card status-card-tracking">
+            <div class="tracking-head">
+              <div>
+                <div class="tracking-kicker">${escapeHtml(copy.title)}</div>
+                <div class="tracking-code">
+                  <b>#${escapeHtml(order.code || '')}</b>
+                  <span class="tracking-status-pill ${statusClass}">${escapeHtml(trackingStatusLabel(status))}</span>
+                </div>
+              </div>
+              <div class="tracking-meta">${escapeHtml(copy.live)}</div>
+            </div>
+            <div class="tracking-meta">ID: ${escapeHtml(order.id)} · ${escapeHtml(formatLocalDate(order.created_at))}</div>
+            <div class="tracking-grid">
+              ${stats.map(stat => `
+                <div class="tracking-stat">
+                  <span>${escapeHtml(stat.label)}</span>
+                  <strong>${escapeHtml(stat.value)}</strong>
+                </div>
+              `).join('')}
+            </div>
+            ${renderTrackingTimeline(order)}
+            ${renderCourierCard(order)}
+            ${renderTrackingItems(order)}
+            ${quickActions ? `<div class="tracking-actions">${quickActions}</div>` : ''}
+          </div>
+        `;
+      }
+
+      async function refreshStatus(code) {
+        const normalizedCode = String(code || '').trim().toLowerCase();
+        renderStatus(normalizedCode);
+        if (!normalizedCode) return;
+
+        let latest = null;
+        const storedOrders = loadOrders();
+        if (storedOrders[normalizedCode]) latest = storedOrders[normalizedCode];
+
+        const [bridgeResult, remoteResult] = await Promise.allSettled([
+          fetchOrderFromLocalBridge(normalizedCode),
+          fetchOrdersRemoteStatus()
+        ]);
+
+        if (bridgeResult.status === 'fulfilled' && bridgeResult.value) {
+          latest = mergeOrderRecord(latest, bridgeResult.value);
+        }
+
+        if (remoteResult.status === 'fulfilled' && Array.isArray(remoteResult.value?.orders)) {
+          const remoteMatch = remoteResult.value.orders.find(order => String(order?.code || order?.id || '').trim().toLowerCase() === normalizedCode);
+          if (remoteMatch) latest = mergeOrderRecord(latest, remoteMatch);
+        }
+
+        if (latest) {
+          persistOrderRecord(latest);
+          renderOrdersList();
+          renderStatus(normalizedCode);
+        }
+      }
+
+      async function refreshOrders() {
+        const orders = loadOrders();
+        const [bridgeResult, remoteResult] = await Promise.allSettled([
+          fetchOrdersLocalBridge(),
+          fetchOrdersRemoteStatus()
+        ]);
+
+        if (bridgeResult.status === 'fulfilled' && Array.isArray(bridgeResult.value?.orders)) {
+          for (const order of bridgeResult.value.orders) {
+            const normalized = normalizeOrderRecord(order);
+            orders[normalized.code] = mergeOrderRecord(orders[normalized.code], normalized);
+          }
+        }
+
+        if (remoteResult.status === 'fulfilled' && Array.isArray(remoteResult.value?.orders)) {
+          for (const order of remoteResult.value.orders) {
+            const normalized = normalizeOrderRecord(order);
+            orders[normalized.code] = mergeOrderRecord(orders[normalized.code], normalized);
+          }
+        }
+
+        saveOrders(orders);
+        renderOrdersList();
+        if (dom.statusCode.value.trim()) {
+          renderStatus(dom.statusCode.value.trim());
+        }
+      }
+
+      function applyProfile() {
+        const profile = loadProfile();
+        dom.profilePhoneInput.value = profile.phone || '';
+        dom.profileAddressInput.value = profile.address || '';
+      }
+
+      function saveProfile() {
+        saveProfileData({
+          phone: dom.profilePhoneInput.value,
+          address: dom.profileAddressInput.value
+        });
+        dom.profileFeedback.textContent = L().profile?.saved || 'Saved';
+      }
+
+      function openLatestOrder() {
+        const latest = orderList()[0];
+        if (!latest) {
+          dom.profileFeedback.textContent = L().latestMissing;
+          return;
+        }
+        dom.statusCode.value = latest.code;
+        document.getElementById('ordersSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
+        refreshStatus(latest.code);
+      }
+
+      function setLang(value) {
+        value = normalizeLang(value);
+        LANG = value;
+        localStorage.setItem(LANG_KEY, value);
+        document.documentElement.lang = value;
+        dom.langSel.value = value;
+        dom.langSelMenu.value = value;
+        const t = L();
+        const p = t.profile || {};
+        dom.navHome.textContent = '🏠 ' + t.navHome;
+        dom.navAccount.textContent = '👤 ' + t.navAccount;
+        dom.navOrders.textContent = '📦 ' + t.navOrders;
+        dom.navContact.textContent = '📞 ' + t.navContact;
+        dom.profileTitle.textContent = '👤 ' + (p.title || t.navAccount);
+        dom.profileIntro.textContent = p.intro || '';
+        dom.profilePhoneLabel.textContent = p.phone || '';
+        dom.profileAddressLabel.textContent = p.address || '';
+        dom.profileSaveBtn.textContent = p.save || 'Save';
+        dom.profileTrackBtn.textContent = p.track || 'Orders';
+        dom.profileNote.textContent = p.note || '';
+        dom.profilePhoneInput.placeholder = p.phonePlaceholder || '';
+        dom.profileAddressInput.placeholder = p.addressPlaceholder || '';
+        dom.ordersTitle.textContent = '📦 ' + t.ordersTitle;
+        dom.ordersIntro.textContent = t.ordersIntro;
+        dom.statusBtn.textContent = t.statusBtn;
+        dom.statusCode.placeholder = t.statusPlaceholder;
+        dom.latestOrderBtn.textContent = t.latestOrder;
+        dom.contactTitle.textContent = '📞 ' + t.contactTitle;
+        renderOrdersList();
+        if (dom.statusCode.value.trim()) {
+          renderStatus(dom.statusCode.value.trim());
+        } else {
+          dom.statusResult.innerHTML = '';
+        }
+      }
+
+      function connectLocalEvents() {
+        if (!window.EventSource || !LOCAL_EVENTS_URL) return;
+        const source = new EventSource(LOCAL_EVENTS_URL);
+        source.addEventListener('orders_updated', () => {
+          refreshOrders();
+        });
+        window.addEventListener('beforeunload', () => source.close(), { once: true });
+      }
+
+      function syncProfileBrand() {
+        document.body.classList.toggle('profile-brand-compact', window.scrollY > 18);
+      }
+
+      function bindEvents() {
+        dom.burgerBtn?.addEventListener('click', () => {
+          const open = dom.navPop.classList.toggle('open');
+          dom.burgerBtn.setAttribute('aria-expanded', String(open));
+        });
+
+        document.addEventListener('click', event => {
+          if (!dom.navPop) return;
+          if (!dom.navPop.contains(event.target) && event.target !== dom.burgerBtn) {
+            dom.navPop.classList.remove('open');
+            dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        dom.navOrders?.addEventListener('click', event => {
+          event.preventDefault();
+          dom.navPop?.classList.remove('open');
+          dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+          document.getElementById('ordersSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+
+        dom.navContact?.addEventListener('click', event => {
+          event.preventDefault();
+          dom.navPop?.classList.remove('open');
+          dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+          document.getElementById('contactSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+
+        dom.langSel?.addEventListener('change', event => setLang(event.target.value));
+        dom.langSelMenu?.addEventListener('change', event => setLang(event.target.value));
+        dom.profileSaveBtn?.addEventListener('click', saveProfile);
+        dom.profileTrackBtn?.addEventListener('click', openLatestOrder);
+        dom.latestOrderBtn?.addEventListener('click', openLatestOrder);
+        dom.statusBtn?.addEventListener('click', () => refreshStatus(dom.statusCode.value));
+        dom.statusCode?.addEventListener('keydown', event => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            refreshStatus(dom.statusCode.value);
+          }
+        });
+
+        dom.ordersList?.addEventListener('click', event => {
+          const button = event.target.closest('[data-open-order]');
+          if (!button) return;
+          const code = button.dataset.openOrder || '';
+          dom.statusCode.value = code;
+          refreshStatus(code);
+          dom.statusResult.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+
+        window.addEventListener('storage', event => {
+          if (event.key === ORDERS_KEY) {
+            renderOrdersList();
+            if (dom.statusCode.value.trim()) renderStatus(dom.statusCode.value.trim());
+          }
+          if (event.key === PROFILE_KEY) {
+            applyProfile();
+          }
+          if (event.key === LANG_KEY) {
+            setLang(localStorage.getItem(LANG_KEY) || 'ru');
+          }
+        });
+
+        window.addEventListener('scroll', syncProfileBrand, { passive:true });
+        window.addEventListener('resize', syncProfileBrand);
+      }
+
+      async function init() {
+        dom.langSel.value = LANG;
+        dom.langSelMenu.value = LANG;
+        applyProfile();
+        bindEvents();
+        syncProfileBrand();
+        setLang(LANG);
+        renderOrdersList();
+        await refreshOrders();
+
+        const trackCode = String(new URLSearchParams(window.location.search).get('track') || '').trim().toLowerCase();
+        if (trackCode) {
+          dom.statusCode.value = trackCode;
+          await refreshStatus(trackCode);
+        }
+        connectLocalEvents();
+      }
+
+      init();
+    </script>
+  </div>
+</body>
+</html>

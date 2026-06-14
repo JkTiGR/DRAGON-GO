@@ -1,0 +1,23 @@
+{
+  "name": "DRAGON GO",
+  "short_name": "DRAGON GO",
+  "start_url": "./menu.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c1030",
+  "theme_color": "#16133a",
+  "description": "Cyber Dragon menu as an installable web app.",
+  "icons": [
+    {
+      "src": "DockIconLang.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "DockIconKorzina.png",
+      "sizes": "1000x1000",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

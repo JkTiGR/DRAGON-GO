@@ -1,0 +1,3299 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0616" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DRAGON GO" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>DRAGON GO — Menu</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="apple-touch-icon" href="app-icon-180.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dragon-theme.css">
+
+  <style>
+    .more-row{display:flex;align-items:center;justify-content:space-between;padding:16px 14px;border-top:1px solid rgba(255,255,255,.08);text-decoration:none;color:inherit}
+    .more-row:first-child{border-top:none}
+    .more-left{display:flex;align-items:center;gap:12px}
+    .more-ico{width:22px;display:inline-flex;justify-content:center;opacity:.9}
+    .more-arrow{opacity:.6;font-size:22px;line-height:1}
+    .contact{margin:14px 0 0;padding:14px;border-radius:18px}
+    .status-card{padding:12px;border-radius:16px;background:radial-gradient(circle at 14% 12%,rgba(255,255,255,.12),transparent 22%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(86,53,160,.1),rgba(16,10,31,.72));border:1px solid rgba(226,214,255,.14);box-shadow:0 10px 22px rgba(7,4,16,.2),0 0 18px rgba(149,106,255,.1),inset 0 6px 10px rgba(255,255,255,.08),inset 0 -18px 24px rgba(6,3,18,.16),inset 0 2px 1px rgba(255,255,255,.62);color:#f7f2ff}
+    .pill-mini{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(102,66,184,.12),rgba(255,255,255,.04));border:1px solid rgba(226,214,255,.16);font-size:12px;color:#f0e8ff;box-shadow:inset 0 2px 4px rgba(255,255,255,.08),0 0 12px rgba(149,106,255,.08)}
+    .code {
+      font-family: "Space Grotesk", monospace;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(214,196,255,0.12);
+      padding: 0.2rem 0.5rem;
+      border-radius: 30px;
+      margin-left: 0.5rem;
+      font-weight: normal;
+      color: #efe6ff;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 560px) {
+      .code { font-size: 0.7rem; padding: 0.15rem 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="bar">
+        <h1 class="brand" id="brandTap"><img class="mark" src="logo.png" alt="Logo"><span class="brand-label">DRAGON GO</span></h1>
+
+        <div class="lang">
+          <select id="langSel" aria-label="Language">
+            <option value="ru">🇺🇦 RU</option>
+            <option value="ua">🇺🇦 UA</option>
+            <option value="vn">🇻🇳 VN</option>
+            <option value="zh">🇨🇳 ZH</option>
+            <option value="pl">🇵🇱 PL</option>
+            <option value="de">🇩🇪 DE</option>
+          </select>
+        </div>
+
+        <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">☰</button>
+
+        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu">
+          <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
+          <a href="#" id="navMenu" role="menuitem">🍜 MENU</a>
+          <a href="#" id="navKaraoke" role="menuitem">🎤 KARAOKE</a>
+          <a href="profil.html" id="navProfil" role="menuitem">👤 PROFILE</a>
+          <a href="#" id="navContact" role="menuitem">📞 CONTACT</a>
+          <hr>
+          <div class="lang-inline" role="none">🌐
+            <select id="langSelMenu" aria-label="Language (menu)">
+              <option value="ru">🇺🇦 RU</option>
+              <option value="ua">🇺🇦 UA</option>
+              <option value="vn">🇻🇳 VN</option>
+              <option value="zh">🇨🇳 ZH</option>
+              <option value="pl">🇵🇱 PL</option>
+              <option value="de">🇩🇪 DE</option>
+            </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-media" id="heroMedia">
+        <video class="promo promo-video" autoplay muted loop playsinline preload="auto" poster="promo.jpg" id="heroVideo">
+          <source src="promo.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
+        <img class="promo promo-fallback" id="heroFallback" src="promo.jpg" data-gif-src="promo.gif" alt="Cyber Dragon promo" loading="eager" decoding="async">
+      </div>
+
+      <div class="social">
+        <a href="#" class="social-link pay-switcher" id="paySwitcher" aria-label="Payment methods">
+          <img id="payIcon" src="images/icon/pay.png" alt="LiqPay payment" class="pay-icon">
+          <span id="payText" class="pay-text">Оплатить</span>
+        </a>
+
+        <a href="https://www.instagram.com/cyber_dragon_dlv/" class="social-link social-neon ig-neon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <img src="images/icon/ig.png" alt="Instagram">
+        </a>
+
+        <a href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="googleMAPS">
+          <img src="images/icon/maps.png" alt="googleMAPS">
+        </a>
+
+        <a href="https://www.tiktok.com/@cyber_dragon_dlv" class="social-link social-neon tt-neon" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <img src="images/icon/tt.png" alt="TikTok">
+        </a>
+      </div>
+    </div>
+
+    <section class="workspace-shell" id="menuShell">
+      <!-- Category pills -->
+      <nav class="cat-nav glass-nav">
+        <div class="h-scroll" id="catPills" aria-label="Categories"></div>
+      </nav>
+
+      <!-- Top tools -->
+      <div class="top-tools">
+        <div class="searchbar glass">
+          <span class="icon">🔎</span>
+          <input id="searchIn" type="search" placeholder="Поиск блюда / Search…" autocomplete="off" />
+          <button class="icon-btn" id="searchClear" aria-label="Clear">✕</button>
+        </div>
+
+        <div class="statusbar glass">
+          <span class="icon">📦</span>
+          <input id="statusCode" type="text" placeholder="Код заказа (например, a123)" autocomplete="off" />
+          <button class="btn mini" id="statusBtn">Статус</button>
+        </div>
+
+        <div class="status-result" id="statusResult" aria-live="polite"></div>
+      </div>
+
+      <!-- Content -->
+      <main id="content"></main>
+
+      <!-- CONTACT SECTION -->
+      <section id="contactSection" class="contact glass">
+        <h2 style="margin:0 0 10px 0;" id="contactTitle">📞 CONTACT</h2>
+
+        <a class="more-row" href="tel:+380632637999" style="border-top:none">
+          <span class="more-left">
+            <span class="more-ico">📞</span>
+            <span>
+              <div><b>+380 632 637 999</b></div>
+              <div class="muted">Cyber Dragon / DRAGON</div>
+            </span>
+          </span>
+          <span class="more-arrow">›</span>
+        </a>
+
+        <a class="more-row"
+           href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса"
+           target="_blank" rel="noopener noreferrer">
+          <span class="more-left">
+            <span class="more-ico">📍</span>
+            <span>
+              <div><b>Героїв Крут, 22</b></div>
+              <div class="muted">Черёмушки · Одесса</div>
+            </span>
+          </span>
+          <span class="more-arrow">›</span>
+        </a>
+
+        <a class="more-row"
+           href="https://bank.gov.ua/qr/QkNECjAwMgoxClVDVAoK0JvRlCDQotGF0ZYg0JrRhdCw0L3RjCDQm9GWClVBNDczMjIwMDEwMDAwMDI2MjAwMzQ0NTAzNjYwCgozMzAwMzIxNzYyCgoK0J_QvtC_0L7QstC90LXQvdC90Y8g0YDQsNGF0YPQvdC60YMKCg=="
+           target="_blank" rel="noopener noreferrer">
+          <span class="more-left">
+            <span class="more-ico">💳</span>
+            <span>
+              <div><b>Оплатить / Pay QR</b></div>
+              <div class="muted">Universal Bank QR</div>
+            </span>
+          </span>
+          <span class="more-arrow">›</span>
+        </a>
+      </section>
+    </section>
+
+    <!-- Categories Sheet -->
+    <div class="overlay" id="catOverlay"></div>
+    <div class="sheet" id="catSheet" role="dialog" aria-modal="true" aria-labelledby="catSheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" id="catSheetClose" aria-label="Закрыть">✕</button>
+      <h3 id="catSheetTitle">Категории</h3>
+      <div class="group" id="catSheetList"></div>
+    </div>
+
+    <!-- Bank Selection Sheet -->
+    <div class="overlay" id="bankOverlay"></div>
+    <div class="sheet" id="bankSheet" role="dialog" aria-modal="true" aria-labelledby="bankSheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" id="bankSheetClose" aria-label="Закрыть">✕</button>
+      <h3 id="bankSheetTitle">Выберите способ оплаты</h3>
+      <div class="group" id="bankList"></div>
+    </div>
+
+    <!-- Bottom Dock -->
+    <nav class="dock" aria-label="Bottom navigation">
+      <button class="dock-btn" id="dockCat" data-label="Menu">
+        <img src="DockIconMenu.png" alt="Menu">
+      </button>
+      <button class="dock-btn" id="dockLang" data-label="Lang">
+        <img src="DockIconLang.png" alt="Language">
+        <span class="cart-badge" id="dockLangFlag">🇺🇦</span>
+      </button>
+      <button class="dock-btn" id="dockCart" data-label="Cart">
+        <img src="DockIconKorzina.png" alt="Cart">
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="dock-btn" id="dockView" data-label="View">
+        <img src="DockIconWien.png" alt="View">
+      </button>
+      <button class="dock-btn" id="dockProfil" data-label="Profil">
+        <img src="profile.png" alt="Profil">
+      </button>
+    </nav>
+
+    <!-- Mini language popup -->
+    <div class="mini-popup mini-popup-lang" id="langPopup">
+      <button data-lang="ru">🇺🇦 RU</button>
+      <button data-lang="ua">🇺🇦 UA</button>
+      <button data-lang="vn">🇻🇳 VN</button>
+      <button data-lang="zh">🇨🇳 ZH</button>
+      <button data-lang="pl">🇵🇱 PL</button>
+      <button data-lang="de">🇩🇪 DE</button>
+    </div>
+
+    <!-- More Sheet -->
+    <div class="overlay" id="moreOverlay"></div>
+    <div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreSheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" id="moreSheetClose" aria-label="Закрыть">✕</button>
+      <h3 id="moreSheetTitle">Більше</h3>
+      <div class="group" id="moreSheetList"></div>
+    </div>
+
+    <!-- Cart Sheet -->
+    <div class="overlay" id="overlay"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" id="sheetClose" aria-label="Закрыть">✕</button>
+      <h3 id="sheetTitle">Ваш заказ</h3>
+
+      <div class="cart-lines" id="cartLines"></div>
+
+      <div class="section">
+        <div class="muted" id="orderTypeTitle" style="margin-bottom:6px">Тип заказа</div>
+
+        <div class="group" id="orderType">
+          <button class="chip active" data-ot="on_site" id="otOnSite">На месте</button>
+          <button class="chip" data-ot="takeaway" id="otTakeaway">На вынос</button>
+          <button class="chip" data-ot="delivery" id="otDelivery">Доставка</button>
+        </div>
+
+        <div class="field" id="tableField" style="display:grid">
+          <label for="tableNo" id="tableLbl">Стол <span class="muted" id="tableHint">(обязательно)</span></label>
+          <input id="tableNo" type="number" min="1" inputmode="numeric" placeholder="Например, 5">
+        </div>
+
+        <div class="field" id="takeawayField" style="display:none">
+          <label for="pickupIn" id="pickupLbl">Через сколько забрать (мин) <span class="muted" id="pickupHint">(обязательно)</span></label>
+          <input id="pickupIn" type="number" min="5" step="5" placeholder="15">
+        </div>
+
+        <div class="field" id="addrField" style="display:none">
+          <label for="address" id="addrLbl">Адрес доставки <span class="muted" id="addrHint">(обязательно)</span></label>
+          <textarea id="address" placeholder="Город, улица, дом, подъезд..."></textarea>
+        </div>
+
+        <div class="field" id="phoneField">
+          <label for="phone" id="phoneLbl">Телефон <span class="muted" id="phoneHint">(необязательно)</span></label>
+          <input id="phone" type="tel" placeholder="+380 63 000 00 00">
+        </div>
+      </div>
+
+      <div class="checkout">
+        <div class="muted" id="cartMeta">Итого: 0.00 грн</div>
+        <button class="btn primary" id="checkoutBtn">Оформить</button>
+        <button class="btn ghost" id="clearBtn">Очистить корзину</button>
+      </div>
+    </div>
+
+    <!-- Dish Details Sheet -->
+    <div class="overlay" id="dishOverlay"></div>
+    <div class="sheet dish-sheet" id="dishSheet" role="dialog" aria-modal="true" aria-labelledby="dishTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-close" id="dishClose" aria-label="Закрыть">✕</button>
+
+      <div class="dish-head">
+        <div class="dish-title">
+          <h3 id="dishTitle">—</h3>
+          <div class="muted" id="dishSub">—</div>
+        </div>
+        <div class="dish-price" id="dishPrice">0.00 грн</div>
+      </div>
+
+      <div class="dish-media" id="dishMedia"></div>
+
+      <div class="dish-body">
+        <div class="dish-desc" id="dishDesc">—</div>
+        <div class="dish-options" id="dishOptions"></div>
+
+        <div class="dish-note">
+          <label for="dishNote" class="muted">Комментарий</label>
+          <textarea id="dishNote" placeholder="Например: без лука, больше соуса…"></textarea>
+        </div>
+      </div>
+
+      <div class="dish-actions">
+        <button class="btn ghost" id="dishMinus">−</button>
+        <div class="dish-qty" id="dishQty">0</div>
+        <button class="btn ghost" id="dishPlus">+</button>
+        <button class="btn primary" id="dishAddBtn">Добавить</button>
+      </div>
+    </div>
+
+    <script src="dragon_static_config.js"></script>
+    <script src="menu.js"></script>
+    <script src="menu_availability.js"></script>
+    <script>
+      /* ==== CONFIG ==== */
+      const UNIVERSAL_PAY_LINK = 'https://bank.gov.ua/qr/QkNECjAwMgoxClVDVAoK0JvRlCDQotGF0ZYg0JrRhdCw0L3RjCDQm9GWClVBNDczMjIwMDEwMDAwMDI2MjAwMzQ0NTAzNjYwCgozMzAwMzIxNzYyCgoK0J_QvtC_0L7QstC90LXQvdC90Y8g0YDQsNGF0YPQvdC60YMKCg==';
+      const PAYMENT_CARD_NUMBER = '4441111013640036';
+      const PAYMENT_IBAN = 'UA473220010000026200344503660';
+      const LIQPAY_CHECKOUT_API = window.DRAGON_STATIC?.liqpayCheckoutApi || '';
+      const PAY_ICON_ROTATE_MS = 2200;
+      const PAY_ICON_SWAP_MS = 150;
+      const PAY_ICON_VARIANTS = [
+        { src: 'images/icon/pay.png', alt: 'LiqPay payment' },
+        { src: 'images/icon/applepay.png', alt: 'Apple Pay' },
+        { src: 'images/icon/gpay.png', alt: 'Google Pay' },
+        { src: 'images/icon/mono.png', alt: 'Mono payment' },
+        { src: 'images/icon/monobank.png', alt: 'Monobank payment' },
+        { src: 'images/icon/privat24.png', alt: 'Privat24 payment' },
+      ];
+      const LIQPAY_CURRENCY = 'UAH';
+      const DELIVERY_PRICE = 50;
+      const FREE_DELIVERY_MIN = 1000;
+
+      /* ==== LANG & I18N ==== */
+      const LANG_KEY = 'CD_LANG';
+      const SUPPORTED_LANGS = ['ru', 'ua', 'vn', 'zh', 'pl', 'de'];
+      const EXTRA_LANG_FALLBACKS = {
+        zh: ['vn', 'ru', 'ua'],
+        pl: ['ua', 'ru', 'vn'],
+        de: ['ua', 'ru', 'vn']
+      };
+
+      function normalizeLang(value) {
+        return SUPPORTED_LANGS.includes(value) ? value : 'ru';
+      }
+
+      function localeChain(locale) {
+        const chain = [locale];
+        (EXTRA_LANG_FALLBACKS[locale] || []).forEach(code => chain.push(code));
+        ['ru', 'ua', 'vn'].forEach(code => chain.push(code));
+        return [...new Set(chain)];
+      }
+
+      function localeValue(value, locale) {
+        if (!value || typeof value !== 'object') return '';
+        for (const code of localeChain(locale)) {
+          if (value[code]) return value[code];
+        }
+        return '';
+      }
+
+      function cloneLocaleData(value) {
+        return value ? JSON.parse(JSON.stringify(value)) : value;
+      }
+
+      function mergeLocaleData(target, source) {
+        if (!source || typeof source !== 'object') return target;
+        Object.entries(source).forEach(([key, value]) => {
+          if (value && typeof value === 'object' && !Array.isArray(value)) {
+            if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) target[key] = {};
+            mergeLocaleData(target[key], value);
+            return;
+          }
+          target[key] = value;
+        });
+        return target;
+      }
+
+      let LANG = normalizeLang(localStorage.getItem(LANG_KEY) || 'ru');
+      document.documentElement.lang = LANG;
+
+      const LANG_FLAGS = { ru:'🇺🇦', ua:'🇺🇦', vn:'🇻🇳', zh:'🇨🇳', pl:'🇵🇱', de:'🇩🇪' };
+      const API_BASE = "https://script.google.com/macros/s/AKfycbywwekrmdJvCnKuXKXY-D1_fkJDNm6ES9xAsptqRpoCOS6u9QidiSnGizIK0wybcGTl/exec";
+      const LOCAL_API_BASE = window.DRAGON_STATIC?.localOrdersApi || '';
+      const LOCAL_EVENTS_URL = window.DRAGON_STATIC?.localEventsUrl || '';
+
+      const I18N = {
+        ru:{
+          navHome:'Главная',navMenu:'Меню',navKaraoke:'Караоке',navContact:'Контакты',
+          contactTitle:'Контакты',
+          bankSheetTitle:'Выберите способ оплаты',
+          bankActions:{
+            liqpay:'Оплатить через LiqPay',
+            iban:'Скопировать IBAN',
+            card:'Скопировать карту'
+          },
+          liqpayHint:'Apple Pay • Google Pay • Банковская карта',
+          payNeedsCart:'Добавьте блюда в корзину, чтобы оплатить через LiqPay.',
+          liqpayFailed:'Не удалось открыть LiqPay. Попробуйте позже.',
+          payLabel:'Оплатить',
+          checkoutPay:'Оплатить LiqPay',
+          copyIbanDone:'IBAN скопирован',
+          copyCardDone:'Номер карты скопирован',
+          copyFailed:'Не удалось скопировать. Скопируйте вручную:',
+          statusBtn:'Статус',
+          searchPlaceholder:'Поиск блюда / Search…',
+          statusPlaceholder:'Код заказа (например, a123)',
+          ui:{add:'Добавить',more:'Подробнее',itemsShort:'шт.',viewList:'Вид списком',viewGrid:'Вид сеткой'},
+          sheet:{
+            title:'Ваш заказ',empty:'Корзина пуста.',orderType:'Тип заказа',
+            onSite:'На месте',takeaway:'На вынос',delivery:'Доставка',
+            table:'Стол',pickupIn:'Через сколько забрать (мин)',address:'Адрес доставки',phone:'Телефон',
+            phTable:'Например, 5',phPickup:'15',phAddress:'Город, улица, дом, подъезд...',phPhone:'+380 63 000 00 00',
+            total:'Итого',checkout:'Оформить',clear:'Очистить корзину',
+            errTable:'Укажите номер стола.',errPickup:'Укажите через сколько минут забрать.',
+            errPhone:'Укажите телефон.',errAddress:'Укажите адрес доставки.',
+            deliveryPrice:'Стоимость доставки',
+            freeDelivery:'Бесплатная доставка от 1000 грн'
+          },
+          common:{required:'(обязательно)',optional:'(необязательно)',ingredients:'Состав'},
+          tabbar:{menu:'Меню',lang:'Язык',cart:'Корзина',profile:'Профиль'},
+          receiptBtn:'Получить чек в Telegram',
+          receiptReady:'Чек можно получить в Telegram.',
+          deliveryOff:'Доставка временно недоступна'
+        },
+        ua:{
+          navHome:'Головна',navMenu:'Меню',navKaraoke:'Караоке',navContact:'Контакти',
+          contactTitle:'Контакти',
+          bankSheetTitle:'Оберіть спосіб оплати',
+          bankActions:{
+            liqpay:'Оплатити через LiqPay',
+            iban:'Скопіювати IBAN',
+            card:'Скопіювати номер картки'
+          },
+          liqpayHint:'Apple Pay • Google Pay • Банківська картка',
+          payNeedsCart:'Додайте страви в кошик, щоб оплатити через LiqPay.',
+          liqpayFailed:'Не вдалося відкрити LiqPay. Спробуйте пізніше.',
+          payLabel:'Оплатити',
+          checkoutPay:'Оплатити LiqPay',
+          copyIbanDone:'IBAN скопійовано',
+          copyCardDone:'Номер картки скопійовано',
+          copyFailed:'Не вдалося скопіювати. Скопіюйте вручну:',
+          statusBtn:'Статус',
+          searchPlaceholder:'Пошук страви / Search…',
+          statusPlaceholder:'Код замовлення (наприклад, a123)',
+          ui:{add:'Додати',more:'Докладніше',itemsShort:'шт.',viewList:'Вигляд списком',viewGrid:'Вигляд сіткою'},
+          sheet:{
+            title:'Ваше замовлення',empty:'Кошик порожній.',orderType:'Тип замовлення',
+            onSite:'У закладі',takeaway:'На виніс',delivery:'Доставка',
+            table:'Стіл',pickupIn:'Через скільки забрати (хв)',address:'Адреса доставки',phone:'Телефон',
+            phTable:'Наприклад, 5',phPickup:'15',phAddress:'Місто, вулиця, будинок…',phPhone:'+380 63 000 00 00',
+            total:'Разом',checkout:'Оформити',clear:'Очистити кошик',
+            errTable:'Вкажіть номер столу.',errPickup:'Вкажіть час отримання (хв).',
+            errPhone:'Вкажіть телефон.',errAddress:'Вкажіть адресу доставки.',
+            deliveryPrice:'Вартість доставки',
+            freeDelivery:'Безкоштовна доставка від 1000 грн'
+          },
+          common:{required:'(обов’язково)',optional:'(необов’язково)',ingredients:'Склад'},
+          tabbar:{menu:'Меню',lang:'Мова',cart:'Кошик',profile:'Профiль'},
+          receiptBtn:'Отримати чек у Telegram',
+          receiptReady:'Чек можна отримати у Telegram.',
+          deliveryOff:'Доставка тимчасово недоступна'
+        },
+        vn:{
+          navHome:'Trang chủ',navMenu:'Thực đơn',navKaraoke:'Karaoke',navContact:'Liên hệ',
+          contactTitle:'Liên hệ',
+          bankSheetTitle:'Chọn phương thức thanh toán',
+          bankActions:{
+            liqpay:'Thanh toán qua LiqPay',
+            iban:'Sao chép IBAN',
+            card:'Sao chép số thẻ'
+          },
+          liqpayHint:'Apple Pay • Google Pay • Thẻ ngân hàng',
+          payNeedsCart:'Hãy thêm món vào giỏ để thanh toán qua LiqPay.',
+          liqpayFailed:'Không thể mở LiqPay. Vui lòng thử lại sau.',
+          payLabel:'Thanh toán',
+          checkoutPay:'Thanh toán LiqPay',
+          copyIbanDone:'Đã sao chép IBAN',
+          copyCardDone:'Đã sao chép số thẻ',
+          copyFailed:'Không thể sao chép. Hãy sao chép thủ công:',
+          statusBtn:'Trạng thái',
+          searchPlaceholder:'Tìm món / Search…',
+          statusPlaceholder:'Mã đơn hàng (ví dụ: a123)',
+          ui:{add:'Thêm',more:'Chi tiết',itemsShort:'món',viewList:'Dạng danh sách',viewGrid:'Dạng lưới'},
+          sheet:{
+            title:'Đơn hàng của bạn',empty:'Giỏ hàng trống.',orderType:'Hình thức đặt',
+            onSite:'Ăn tại chỗ',takeaway:'Mang đi',delivery:'Giao hàng',
+            table:'Bàn',pickupIn:'Nhận sau (phút)',address:'Địa chỉ giao hàng',phone:'Điện thoại',
+            phTable:'Ví dụ: 5',phPickup:'15',phAddress:'Thành phố, đường, số nhà…',phPhone:'+380 63 000 00 00',
+            total:'Tổng cộng',checkout:'Đặt hàng',clear:'Xóa giỏ hàng',
+            errTable:'Vui lòng nhập số bàn.',errPickup:'Vui lòng nhập thời gian nhận (phút).',
+            errPhone:'Vui lòng nhập số điện thoại.',errAddress:'Vui lòng nhập địa chỉ giao hàng.',
+            deliveryPrice:'Phí giao hàng',
+            freeDelivery:'Miễn phí giao hàng cho đơn từ 1000 грн'
+          },
+          common:{required:'(bắt buộc)',optional:'(không bắt buộc)',ingredients:'Thành phần'},
+          tabbar:{menu:'Thực đơn',lang:'Ngôn ngữ',cart:'Giỏ',profile:'Ho so'},
+          receiptBtn:'Nhận hóa đơn qua Telegram',
+          receiptReady:'Có thể nhận hóa đơn trên Telegram.',
+          deliveryOff:'Tạm thời chưa có giao hàng'
+        }
+      };
+      if (!I18N.zh) I18N.zh = cloneLocaleData(I18N.vn);
+      if (!I18N.pl) I18N.pl = cloneLocaleData(I18N.ua || I18N.ru);
+      if (!I18N.de) I18N.de = cloneLocaleData(I18N.ua || I18N.ru);
+      const MENU_I18N_OVERRIDES = {
+        zh: {
+          navHome:'首页',
+          navMenu:'菜单',
+          navKaraoke:'卡拉OK',
+          navContact:'联系',
+          contactTitle:'联系方式',
+          bankSheetTitle:'选择支付方式',
+          bankActions:{
+            liqpay:'通过 LiqPay 支付',
+            iban:'复制 IBAN',
+            card:'复制卡号'
+          },
+          liqpayHint:'Apple Pay • Google Pay • 银行卡',
+          payNeedsCart:'请先将菜品加入购物车，再通过 LiqPay 支付。',
+          liqpayFailed:'无法打开 LiqPay，请稍后再试。',
+          payLabel:'支付',
+          checkoutPay:'使用 LiqPay 支付',
+          copyIbanDone:'IBAN 已复制',
+          copyCardDone:'卡号已复制',
+          copyFailed:'无法复制，请手动复制：',
+          statusBtn:'状态',
+          searchPlaceholder:'搜索菜品 / Search…',
+          statusPlaceholder:'订单号（例如 a123）',
+          searchEmpty:'没有找到匹配的菜品。',
+          statusNotFound:'此设备上未找到订单 {code}。',
+          statusCodeLabel:'订单号',
+          ui:{add:'添加',more:'详情',itemsShort:'份',viewList:'列表视图',viewGrid:'网格视图'},
+          sheet:{
+            title:'您的订单',empty:'购物车为空。',orderType:'订单类型',
+            onSite:'堂食',takeaway:'自取',delivery:'配送',
+            table:'桌号',pickupIn:'多少分钟后取餐',address:'配送地址',phone:'电话',
+            phTable:'例如 5',phPickup:'15',phAddress:'城市、街道、门牌号…',phPhone:'+380 63 000 00 00',
+            total:'合计',checkout:'提交订单',clear:'清空购物车',
+            errTable:'请填写桌号。',errPickup:'请填写取餐时间。',
+            errPhone:'请填写电话号码。',errAddress:'请填写配送地址。',
+            deliveryPrice:'配送费',
+            freeDelivery:'满 1000 грн 免配送费'
+          },
+          common:{required:'(必填)',optional:'(选填)',ingredients:'配料'},
+          tabbar:{menu:'菜单',lang:'语言',cart:'购物车',profile:'个人资料'},
+          receiptBtn:'在 Telegram 获取小票',
+          receiptReady:'可在 Telegram 中查看小票。',
+          deliveryOff:'暂时无法配送'
+        },
+        pl: {
+          navHome:'Strona główna',
+          navMenu:'Menu',
+          navKaraoke:'Karaoke',
+          navContact:'Kontakt',
+          contactTitle:'Kontakt',
+          bankSheetTitle:'Wybierz metodę płatności',
+          bankActions:{
+            liqpay:'Zapłać przez LiqPay',
+            iban:'Skopiuj IBAN',
+            card:'Skopiuj numer karty'
+          },
+          liqpayHint:'Apple Pay • Google Pay • karta bankowa',
+          payNeedsCart:'Dodaj dania do koszyka, aby zapłacić przez LiqPay.',
+          liqpayFailed:'Nie udało się otworzyć LiqPay. Spróbuj ponownie później.',
+          payLabel:'Zapłać',
+          checkoutPay:'Zapłać przez LiqPay',
+          copyIbanDone:'Skopiowano IBAN',
+          copyCardDone:'Skopiowano numer karty',
+          copyFailed:'Nie udało się skopiować. Skopiuj ręcznie:',
+          statusBtn:'Status',
+          searchPlaceholder:'Szukaj dania / Search…',
+          statusPlaceholder:'Kod zamówienia (np. a123)',
+          searchEmpty:'Nie znaleziono pasujących dań.',
+          statusNotFound:'Nie znaleziono zamówienia {code} na tym urządzeniu.',
+          statusCodeLabel:'Kod',
+          ui:{add:'Dodaj',more:'Szczegóły',itemsShort:'szt.',viewList:'Widok listy',viewGrid:'Widok siatki'},
+          sheet:{
+            title:'Twoje zamówienie',empty:'Koszyk jest pusty.',orderType:'Typ zamówienia',
+            onSite:'Na miejscu',takeaway:'Na wynos',delivery:'Dostawa',
+            table:'Stół',pickupIn:'Za ile minut odebrać',address:'Adres dostawy',phone:'Telefon',
+            phTable:'Na przykład 5',phPickup:'15',phAddress:'Miasto, ulica, numer domu…',phPhone:'+380 63 000 00 00',
+            total:'Razem',checkout:'Złóż zamówienie',clear:'Wyczyść koszyk',
+            errTable:'Podaj numer stołu.',errPickup:'Podaj czas odbioru.',
+            errPhone:'Podaj numer telefonu.',errAddress:'Podaj adres dostawy.',
+            deliveryPrice:'Koszt dostawy',
+            freeDelivery:'Darmowa dostawa od 1000 грн'
+          },
+          common:{required:'(wymagane)',optional:'(opcjonalne)',ingredients:'Składniki'},
+          tabbar:{menu:'Menu',lang:'Język',cart:'Koszyk',profile:'Profil'},
+          receiptBtn:'Odbierz paragon w Telegramie',
+          receiptReady:'Paragon będzie dostępny w Telegramie.',
+          deliveryOff:'Dostawa jest chwilowo niedostępna'
+        },
+        de: {
+          navHome:'Startseite',
+          navMenu:'Menü',
+          navKaraoke:'Karaoke',
+          navContact:'Kontakt',
+          contactTitle:'Kontakt',
+          bankSheetTitle:'Zahlungsart wählen',
+          bankActions:{
+            liqpay:'Mit LiqPay bezahlen',
+            iban:'IBAN kopieren',
+            card:'Kartennummer kopieren'
+          },
+          liqpayHint:'Apple Pay • Google Pay • Bankkarte',
+          payNeedsCart:'Füge zuerst Gerichte zum Warenkorb hinzu, um mit LiqPay zu bezahlen.',
+          liqpayFailed:'LiqPay konnte nicht geöffnet werden. Bitte später erneut versuchen.',
+          payLabel:'Bezahlen',
+          checkoutPay:'Mit LiqPay bezahlen',
+          copyIbanDone:'IBAN kopiert',
+          copyCardDone:'Kartennummer kopiert',
+          copyFailed:'Kopieren nicht möglich. Bitte manuell kopieren:',
+          statusBtn:'Status',
+          searchPlaceholder:'Gericht suchen / Search…',
+          statusPlaceholder:'Bestellcode (z. B. a123)',
+          searchEmpty:'Keine passenden Gerichte gefunden.',
+          statusNotFound:'Bestellung {code} wurde auf diesem Gerät nicht gefunden.',
+          statusCodeLabel:'Code',
+          ui:{add:'Hinzufügen',more:'Mehr',itemsShort:'Stk.',viewList:'Listenansicht',viewGrid:'Rasteransicht'},
+          sheet:{
+            title:'Ihre Bestellung',empty:'Der Warenkorb ist leer.',orderType:'Bestellart',
+            onSite:'Vor Ort',takeaway:'Zum Mitnehmen',delivery:'Lieferung',
+            table:'Tischnummer',pickupIn:'Abholung in wie vielen Minuten',address:'Lieferadresse',phone:'Telefon',
+            phTable:'Zum Beispiel 5',phPickup:'15',phAddress:'Stadt, Straße, Hausnummer…',phPhone:'+380 63 000 00 00',
+            total:'Gesamt',checkout:'Bestellung absenden',clear:'Warenkorb leeren',
+            errTable:'Bitte Tischnummer eingeben.',errPickup:'Bitte Abholzeit angeben.',
+            errPhone:'Bitte Telefonnummer angeben.',errAddress:'Bitte Lieferadresse angeben.',
+            deliveryPrice:'Lieferkosten',
+            freeDelivery:'Kostenlose Lieferung ab 1000 грн'
+          },
+          common:{required:'(erforderlich)',optional:'(optional)',ingredients:'Zutaten'},
+          tabbar:{menu:'Menü',lang:'Sprache',cart:'Warenkorb',profile:'Profil'},
+          receiptBtn:'Beleg in Telegram erhalten',
+          receiptReady:'Der Beleg ist in Telegram verfügbar.',
+          deliveryOff:'Lieferung ist vorübergehend nicht verfügbar'
+        }
+      };
+      Object.entries(MENU_I18N_OVERRIDES).forEach(([locale, overrides]) => {
+        mergeLocaleData(I18N[locale], overrides);
+      });
+      mergeLocaleData(I18N.ru, {
+        searchEmpty:'Ничего не найдено.',
+        statusNotFound:'Заказ {code} не найден на этом устройстве.',
+        statusCodeLabel:'Код'
+      });
+      mergeLocaleData(I18N.ua, {
+        searchEmpty:'Нічого не знайдено.',
+        statusNotFound:'Замовлення {code} не знайдено на цьому пристрої.',
+        statusCodeLabel:'Код'
+      });
+      mergeLocaleData(I18N.vn, {
+        searchEmpty:'Khong tim thay mon phu hop.',
+        statusNotFound:'Khong tim thay don {code} tren thiet bi nay.',
+        statusCodeLabel:'Ma'
+      });
+      const L = () => I18N[LANG] || I18N.ru;
+
+      let DESCS = null;
+      let DESCS_PROMISE = null;
+      async function loadDescriptions() {
+        if (DESCS) return DESCS;
+        if (!DESCS_PROMISE) {
+          DESCS_PROMISE = (async () => {
+            try {
+              const resp = await fetch('descriptions.json', { cache: 'no-store' });
+              if (resp.ok) {
+                DESCS = await resp.json();
+                return DESCS;
+              }
+            } catch(e) {
+              console.error('Failed to load descriptions.json', e);
+            }
+            DESCS = {};
+            return DESCS;
+          })();
+        }
+        return DESCS_PROMISE;
+      }
+
+      function textByLang(val){
+        if (!val) return '';
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') return localeValue(val, LANG);
+        return String(val || '');
+      }
+
+      function textByLocale(val, locale){
+        if (!val) return '';
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') return localeValue(val, normalizeLang(locale));
+        return String(val || '');
+      }
+
+      function exactLocaleText(val, locale){
+        if (!val) return '';
+        if (typeof val === 'string') return val;
+        if (typeof val === 'object') return val?.[locale] || '';
+        return String(val || '');
+      }
+
+      function getDescEntry(it){
+        if (!it?.key) return null;
+        return (DESCS && DESCS[it.key]) ? DESCS[it.key] : null;
+      }
+
+      function getDishDescription(it){
+        const entry = getDescEntry(it);
+        return exactLocaleText(entry?.description, LANG) || textByLang(it?.short) || exactLocaleText(it?.desc, LANG) || textByLang(entry?.description) || textByLang(it?.desc) || '';
+      }
+
+      function getDishIngredients(it){
+        const entry = getDescEntry(it);
+        return exactLocaleText(entry?.ingredients, LANG) || '';
+      }
+
+      function isBuilderItem(it){
+        if (!it) return false;
+        const key = String(it.key || '').toLowerCase();
+        const tags = Array.isArray(it.tags) ? it.tags.map(x => String(x).toLowerCase()) : [];
+        const nameRu = String(it?.translations?.ru || '').toLowerCase();
+        const nameUa = String(it?.translations?.ua || '').toLowerCase();
+        const nameVn = String(it?.translations?.vn || '').toLowerCase();
+        return (
+          key === 'pho_custom' ||
+          key.startsWith('custom_') ||
+          key.startsWith('build_') ||
+          !!it.is_custom_builder ||
+          tags.includes('custom') ||
+          nameRu.includes('собери сам') ||
+          nameUa.includes('збери сам') ||
+          nameVn.includes('tự chọn')
+        );
+      }
+
+      function sanitizeMenuData(){
+        if (!menuData || typeof menuData !== 'object') return;
+        for (const [cat, arr] of Object.entries(menuData)){
+          if (!Array.isArray(arr)) continue;
+          menuData[cat] = arr.filter(it => !isBuilderItem(it));
+        }
+      }
+
+      const CAT_LABELS = {
+        top:{ru:'TOP',ua:'TOP',vn:'TOP'},
+        pho_soups:{ru:'Фо (супы)',ua:'Фо (супи)',vn:'Súp Phở'},
+        bun_soups:{ru:'Бун (супы)',ua:'Бун (супи)',vn:'Súp Bún'},
+        salat_bun:{ru:'Бун (салат)',ua:'Бун (салат)',vn:'Bún nam bộ'},
+        mien_soups:{ru:'Миен (супы)',ua:'Мієн (супи)',vn:'Súp Miến'},
+        mi_soups:{ru:'Ми (супы)',ua:'Мі (супи)',vn:'Súp Mì'},
+        wok_fried_pho:{ru:'ВОК: жареный Фо',ua:'ВОК: смажений Фо',vn:'Wok Phở xào'},
+        wok_fried_mien:{ru:'ВОК: жареный Миен',ua:'ВОК: смажений Мієн',vn:'Wok Miến xào'},
+        wok_fried_mi:{ru:'ВОК: жареная лапша',ua:'ВОК: смажена локшина',vn:'Wok Mì xào'},
+        rice_braised:{ru:'Рис: тушёные',ua:'Рис: тушковане',vn:'Cơm kho'},
+        fried_rice:{ru:'Рис: жареный',ua:'Смажений рис',vn:'Cơm chiên'},
+        appetizers:{ru:'Закуски',ua:'Закуски',vn:'Món khai vị'},
+        drinks:{ru:'Напитки',ua:'Напої',vn:'Đồ uống'}
+      };
+      mergeLocaleData(CAT_LABELS.top, { zh:'TOP', pl:'TOP', de:'TOP' });
+      mergeLocaleData(CAT_LABELS.pho_soups, { zh:'汤河粉', pl:'Zupa pho', de:'Pho-Suppe' });
+      mergeLocaleData(CAT_LABELS.bun_soups, { zh:'汤米线', pl:'Zupa bun', de:'Bun-Suppe' });
+      mergeLocaleData(CAT_LABELS.salat_bun, { zh:'凉拌米线', pl:'Sałatka bun', de:'Bun-Salat' });
+      mergeLocaleData(CAT_LABELS.mien_soups, { zh:'汤粉丝', pl:'Zupa mien', de:'Mien-Suppe' });
+      mergeLocaleData(CAT_LABELS.mi_soups, { zh:'汤蛋面', pl:'Zupa mi', de:'Mi-Suppe' });
+      mergeLocaleData(CAT_LABELS.wok_fried_pho, { zh:'炒河粉', pl:'Smażone pho', de:'Gebratene Pho-Nudeln' });
+      mergeLocaleData(CAT_LABELS.wok_fried_mien, { zh:'炒粉丝', pl:'Smażony mien', de:'Gebratene Mien' });
+      mergeLocaleData(CAT_LABELS.wok_fried_mi, { zh:'炒蛋面', pl:'Smażony makaron', de:'Gebratene Nudeln' });
+      mergeLocaleData(CAT_LABELS.rice_braised, { zh:'白米饭', pl:'Biały ryż', de:'Weisser Reis' });
+      mergeLocaleData(CAT_LABELS.fried_rice, { zh:'炒饭', pl:'Smażony ryż', de:'Gebratener Reis' });
+      mergeLocaleData(CAT_LABELS.appetizers, { zh:'小吃', pl:'Przystawki', de:'Snacks' });
+      mergeLocaleData(CAT_LABELS.drinks, { zh:'饮品', pl:'Napoje', de:'Getränke' });
+      const catLabel = k => textByLocale(CAT_LABELS[k], LANG) || k;
+
+      const $ = s => document.querySelector(s);
+      const $$ = s => document.querySelectorAll(s);
+      const CURRENCY = 'грн';
+      const IMG_DIR = 'images/';
+      const IMG_EXTS = ['webp','jpg','jpeg','png'];
+      const MENU_LAZY_ROOT_MARGIN = '900px 0px';
+      const fmt = n => Number(n).toFixed(2) + ' ' + CURRENCY;
+      const escapeHtml = (s='') => String(s)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+      const lazyImageLoaders = new WeakMap();
+      // Native loading="lazy" doesn't let us widen the preload distance for menu cards.
+      const lazyMenuImageObserver = 'IntersectionObserver' in window
+        ? new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting && entry.intersectionRatio <= 0) return;
+              const imgEl = entry.target;
+              lazyMenuImageObserver.unobserve(imgEl);
+              const load = lazyImageLoaders.get(imgEl);
+              lazyImageLoaders.delete(imgEl);
+              load?.();
+            });
+          }, { rootMargin: MENU_LAZY_ROOT_MARGIN, threshold: 0.01 })
+        : null;
+
+      function summarizeSelections(it, selections){
+        const opts = normalizeOptions(it);
+        const sel = selections || {};
+        const parts = [];
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = sel[gid];
+          if (!picked) continue;
+          const pickArr = Array.isArray(picked) ? picked : [picked];
+          const names = pickArr.map(oid=>{
+            const item = (g.items||[]).find(x => (x.id||x.key)===oid);
+            const nm = item?.label?.[LANG] || item?.label?.ru || item?.label || item?.name || oid;
+            const d = Number(item?.price_delta||0);
+            return d ? `${nm} (+${d})` : `${nm}`;
+          });
+          const gTitle = g.title?.[LANG] || g.title?.ru || g.title || '';
+          parts.push(gTitle ? `${gTitle}: ${names.join(', ')}` : names.join(', '));
+        }
+        return parts.join(' · ');
+      }
+
+      function summarizeSelectionsLines(it, selections){
+        const opts = normalizeOptions(it);
+        const sel = selections || {};
+        const lines = [];
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = sel[gid];
+          if (!picked) continue;
+          const pickArr = Array.isArray(picked) ? picked : [picked];
+          const names = pickArr.map(oid=>{
+            const item = (g.items||[]).find(x => (x.id||x.key)===oid);
+            return item?.label?.[LANG] || item?.label?.ru || item?.label || item?.name || oid;
+          });
+          const gTitle = groupTitle(g) || gid;
+          lines.push(`${gTitle}: ${names.join(', ')}`);
+        }
+        return lines;
+      }
+
+      function removeItemImage(imgEl){
+        imgEl.closest('.thumb, .dish-thumb')?.classList.add('noimg');
+        imgEl.remove();
+      }
+
+      function buildThumb(imgEl, key){
+        let i = 0;
+        const trySet = () => imgEl.src = IMG_DIR + key + '.' + IMG_EXTS[i];
+        imgEl.onerror = () => {
+          i++;
+          if (i < IMG_EXTS.length){
+            trySet();
+          } else {
+            removeItemImage(imgEl);
+          }
+        };
+        trySet();
+      }
+
+      function loadItemImage(imgEl, it){
+        if (!imgEl || !it || imgEl.dataset.loaded === '1') return;
+        imgEl.dataset.loaded = '1';
+        imgEl.removeAttribute('loading');
+
+        if (it.image) {
+          imgEl.onerror = () => removeItemImage(imgEl);
+          imgEl.src = it.image;
+          return;
+        }
+
+        if (it.key) {
+          buildThumb(imgEl, it.key);
+          return;
+        }
+
+        removeItemImage(imgEl);
+      }
+
+      function queueItemImage(imgEl, it){
+        if (!imgEl || !it) return;
+        if (!lazyMenuImageObserver) {
+          loadItemImage(imgEl, it);
+          return;
+        }
+        lazyImageLoaders.set(imgEl, () => loadItemImage(imgEl, it));
+        lazyMenuImageObserver.observe(imgEl);
+      }
+
+      const itemName = it =>
+        textByLang(it?.translations) ||
+        it?.key?.replaceAll('_',' ') ||
+        '';
+
+      const itemNameByLocale = (it, locale='ru') =>
+        textByLocale(it?.translations, locale) ||
+        it?.key?.replaceAll('_',' ') ||
+        '';
+
+      const CART_KEY = 'CD_CART_V2';
+      const ORDERS_KEY = 'CD_ORDERS_V1';
+      const SEARCH_KEY = 'CD_SEARCH_Q';
+
+      const cart = new Map();
+
+      function loadCart(){
+        try{
+          const raw = localStorage.getItem(CART_KEY);
+          if (!raw) return;
+          const obj = JSON.parse(raw);
+          for (const [id, entry] of Object.entries(obj || {})){
+            if (!entry || typeof entry.qty !== 'number') continue;
+            cart.set(id, {
+              qty: Math.max(0, entry.qty|0),
+              selections: entry.selections || {},
+              note: entry.note || ''
+            });
+          }
+        }catch(e){ console.warn('Cart load failed', e); }
+      }
+
+      function saveCart(){
+        try{
+          const obj = {};
+          for (const [id, entry] of cart) obj[id] = entry;
+          localStorage.setItem(CART_KEY, JSON.stringify(obj));
+        }catch(e){ console.warn('Cart save failed', e); }
+      }
+
+      function cartQty(id){ return cart.get(id)?.qty || 0; }
+
+      function cartInc(id, delta=1){
+        const cur = cart.get(id) || {qty:0, selections:{}, note:''};
+        cur.qty = Math.max(0, (cur.qty|0) + delta);
+        if (cur.qty<=0) cart.delete(id); else cart.set(id, cur);
+        saveCart();
+      }
+
+      function cartSetEntry(id, entry){
+        cart.set(id, entry);
+        saveCart();
+      }
+
+      function availabilityApi(){
+        return window.DRAGON_MENU_AVAILABILITY || null;
+      }
+
+      function isMenuItemAvailable(it){
+        const api = availabilityApi();
+        return !api || api.isAvailable(it);
+      }
+
+      function menuItemById(id){
+        const [cat, idx] = String(id || '').split(':');
+        const it = menuData?.[cat]?.[+idx];
+        return it ? {cat, idx:+idx, it} : null;
+      }
+
+      function pruneUnavailableCart(showNotice=false){
+        let changed = false;
+        for (const [id] of cart){
+          const found = menuItemById(id);
+          if (!found?.it || !isMenuItemAvailable(found.it)){
+            cart.delete(id);
+            changed = true;
+          }
+        }
+        if (changed){
+          saveCart();
+          if (showNotice) alert('Некоторые позиции сегодня недоступны и удалены из корзины.');
+        }
+        return changed;
+      }
+
+      function loadOrders(){
+        try{ return JSON.parse(localStorage.getItem(ORDERS_KEY) || '{}') || {}; }
+        catch(e){ return {}; }
+      }
+
+      function saveOrders(obj){
+        try{ localStorage.setItem(ORDERS_KEY, JSON.stringify(obj||{})); }catch(e){}
+      }
+
+      function nowIso(){
+        return new Date().toISOString();
+      }
+
+      function normalizeStatus(value){
+        const raw = String(value || '').trim().toUpperCase();
+        if (!raw || raw === 'SENT' || raw === 'FAILED') return 'NEW';
+        if (raw === 'CONFIRMED') return 'COOKING';
+        if (raw === 'COMPLETED' || raw === 'DONE') return 'HANDED';
+        return raw;
+      }
+
+      function syncStamp(sync){
+        if (!sync || typeof sync !== 'object') return 0;
+        const raw = sync.updated_at || sync.attempted_at || sync.requested_at || sync.created_at;
+        const stamp = raw ? new Date(raw).getTime() : 0;
+        return Number.isFinite(stamp) ? stamp : 0;
+      }
+
+      function syncScore(channel, sync){
+        if (!sync || typeof sync !== 'object') return 0;
+        if (channel === 'sheet'){
+          if (sync.ok || sync.id) return 4;
+          if (sync.pending || sync.retrying) return 3;
+          return 2;
+        }
+        if (channel === 'local'){
+          return sync.ok ? 3 : 1;
+        }
+        return sync.ok ? 2 : 1;
+      }
+
+      function pickBetterSync(channel, left, right){
+        const leftScore = syncScore(channel, left);
+        const rightScore = syncScore(channel, right);
+        if (leftScore !== rightScore) return leftScore > rightScore ? left : right;
+        return syncStamp(left) >= syncStamp(right) ? left : right;
+      }
+
+      function safeExternalUrl(value){
+        const helper = window.DRAGON_STATIC?.normalizeExternalUrl;
+        if (typeof helper === 'function') return helper(value);
+        try{
+          const url = new URL(String(value || '').trim(), window.location.href);
+          return url.protocol === 'http:' || url.protocol === 'https:' ? url.toString() : '';
+        }catch(_){
+          return '';
+        }
+      }
+
+      function normalizeOrderRecord(raw){
+        const code = String(raw?.code || raw?.order_code || raw?.id || '').trim().toLowerCase();
+        const createdAt = raw?.created_at || raw?.createdAt || nowIso();
+        const updatedAt = raw?.updated_at || raw?.updatedAt || createdAt;
+        const sync = raw?.sync && typeof raw.sync === 'object' ? raw.sync : {};
+        return {
+          ...raw,
+          id: String(raw?.id || raw?.order_id || code).trim(),
+          code,
+          status: normalizeStatus(raw?.status),
+          created_at: createdAt,
+          updated_at: updatedAt,
+          currency: raw?.currency || CURRENCY,
+          receipt_link: safeExternalUrl(raw?.receipt_link || raw?.receiptLink || ''),
+          items: Array.isArray(raw?.items) ? raw.items : [],
+          sync: {
+            ...sync,
+            local: sync.local || raw?.local_sync || null,
+            telegram: sync.telegram || raw?.tg || null,
+            telegram_vn: sync.telegram_vn || raw?.vn_tg || null,
+            sheet: sync.sheet || raw?.sheet || null
+          }
+        };
+      }
+
+      function mergeOrderRecord(current, incoming){
+        const base = current ? normalizeOrderRecord(current) : null;
+        const draft = normalizeOrderRecord(incoming);
+        if (!base) return draft;
+
+        const useDraft = new Date(draft.updated_at || draft.created_at).getTime() >= new Date(base.updated_at || base.created_at).getTime();
+        const primary = useDraft ? draft : base;
+        const fallback = useDraft ? base : draft;
+
+        return normalizeOrderRecord({
+          ...fallback,
+          ...primary,
+          sync: {
+            ...(fallback.sync || {}),
+            ...(primary.sync || {}),
+            local: pickBetterSync('local', fallback.sync?.local, primary.sync?.local),
+            telegram: pickBetterSync('telegram', fallback.sync?.telegram, primary.sync?.telegram),
+            telegram_vn: pickBetterSync('telegram', fallback.sync?.telegram_vn, primary.sync?.telegram_vn),
+            sheet: pickBetterSync('sheet', fallback.sync?.sheet, primary.sync?.sheet)
+          }
+        });
+      }
+
+      function persistOrderRecord(order){
+        const orders = loadOrders();
+        const normalized = normalizeOrderRecord(order);
+        orders[normalized.code] = mergeOrderRecord(orders[normalized.code], normalized);
+        saveOrders(orders);
+        return orders[normalized.code];
+      }
+
+      async function fetchOrdersRemoteStatus(){
+        const response = await fetch(`${API_BASE}?action=get_orders`, { cache: 'no-store' });
+        return response.json();
+      }
+
+      async function fetchOrdersLocalBridge(){
+        if (!LOCAL_API_BASE) return { ok:false, orders:[] };
+        const response = await fetch(LOCAL_API_BASE, { cache: 'no-store' });
+        return response.json();
+      }
+
+      async function fetchOrderFromLocalBridge(code){
+        if (!LOCAL_API_BASE) return null;
+        const response = await fetch(`${LOCAL_API_BASE}?code=${encodeURIComponent(code)}`, { cache: 'no-store' });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data?.order || null;
+      }
+
+      async function pushOrderToLocalBridge(order){
+        if (!LOCAL_API_BASE) return { ok:false, error:'Local bridge unavailable' };
+        try{
+          const response = await fetch(LOCAL_API_BASE, {
+            method:'POST',
+            headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify(order)
+          });
+          return await response.json();
+        }catch(e){
+          return { ok:false, error:String(e) };
+        }
+      }
+
+      function renderPills(){
+        const keys = Object.keys(menuData || {}).filter(k => Array.isArray(menuData[k]) && menuData[k].some(it => !isBuilderItem(it) && isMenuItemAvailable(it)));
+        const el = $('#catPills');
+        if (!el) return;
+        el.innerHTML = keys.map((k,i) =>
+          `<a class="pill ${i===0?'active':''}" href="#sec-${k}">${catLabel(k)}</a>`
+        ).join('');
+      }
+
+      const VIEW_KEY = 'CD_VIEW_MENU';
+      let viewMode = localStorage.getItem(VIEW_KEY) || 'grid';
+
+      function applyView(){
+        $$('.list').forEach(wrap => {
+          wrap.classList.toggle('as-list', viewMode === 'list');
+        });
+      }
+
+      function buildMeta(it){
+        if (!it) return '';
+        const parts = [];
+        if (it.weight) parts.push(it.weight + ' g');
+        if (it.kcal) parts.push(it.kcal + ' kcal');
+        if (it.spicy){
+          const level = Math.max(1, Math.min(3, Number(it.spicy)));
+          parts.push('🌶'.repeat(level));
+        }
+        if (Array.isArray(it.tags) && it.tags.length){
+          const mapped = it.tags.map(t=>{
+            switch(t){
+              case 'vegan': return '🌱 vegan';
+              case 'veg': return '🥦 veg';
+              case 'no_gluten': return '🚫 gluten';
+              case 'chef': return '⭐ chef';
+              case 'popular': return '🔥 top';
+              case 'featured': return '✨ featured';
+              case 'custom': return '🛠 custom';
+              default: return t;
+            }
+          });
+          parts.push(mapped.join(' · '));
+        }
+        if (!parts.length) return '';
+        return `<div class="meta">${parts.join(' • ')}</div>`;
+      }
+
+      function normalizeOptions(it){
+        return Array.isArray(it?.options) ? it.options : [];
+      }
+
+      function calcItemUnitPrice(it, selections){
+        let base = Number(it?.price || 0);
+        const opts = normalizeOptions(it);
+        const sel = selections || {};
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = sel[gid];
+          if (!picked) continue;
+          const pickArr = Array.isArray(picked) ? picked : [picked];
+          for (const oid of pickArr){
+            const found = (g.items || []).find(x => (x.id||x.key) === oid);
+            if (found) base += Number(found.price_delta || 0);
+          }
+        }
+        return base;
+      }
+
+      const TOP_KEYS = ['pho_bo_xao','banh_bao','com_rang_tom','mien_xao_tom','salat_bun_nem','nem_ran','ga_chien_xu'];
+
+      function findByKey(key){
+        for (const [cat, arr] of Object.entries(menuData||{})){
+          const idx = (arr||[]).findIndex(x => x && x.key === key);
+          if (idx >= 0 && isMenuItemAvailable(arr[idx])) return {cat, idx, it: arr[idx]};
+        }
+        return null;
+      }
+
+      function cardHtml(it, id, featured=false){
+        const t = L();
+        const name = itemName(it);
+        const unit = fmt(calcItemUnitPrice(it, cart.get(id)?.selections));
+        const qty = cartQty(id);
+        const hasOpts = Array.isArray(it.options) && it.options.length;
+        const btn = qty
+          ? `<div class="qty" data-qty="${id}">
+               <button data-dec="${id}">−</button>
+               <span>${qty}</span>
+               <button data-inc="${id}">+</button>
+             </div>`
+          : `<button class="add" data-add="${id}">${t.ui.add}</button>`;
+        const shortDesc = getDishDescription(it);
+        const metaHtml = buildMeta(it);
+        const codeHtml = it.code ? `<span class="code">${it.code}</span>` : '';
+        return `
+          <div class="card ${featured?'featured':''} ${hasOpts?'has-opts':''}" data-id="${id}">
+            <div class="thumb-wrap">
+              <div class="thumb">
+                <img alt="${escapeHtml(name)}" decoding="async">
+              </div>
+              <button class="info"
+                      data-toggle="${id}"
+                      title="ℹ"
+                      aria-label="Info"
+                      aria-expanded="false">ℹ</button>
+            </div>
+            <div class="name">${escapeHtml(name)} ${codeHtml}</div>
+            ${metaHtml}
+            <p class="desc">${escapeHtml(shortDesc)}</p>
+            <div class="foot">
+              <div class="price">${unit}</div>
+              ${btn}
+            </div>
+          </div>`;
+      }
+
+      function renderSection(content, title, items){
+        const sec = document.createElement('section');
+        sec.className = 'menu-section';
+
+        const h2 = document.createElement('h2');
+        h2.textContent = title;
+        sec.appendChild(h2);
+
+        const list = document.createElement('div');
+        list.className = 'list';
+        list.innerHTML = items.join('');
+        sec.appendChild(list);
+
+        content.appendChild(sec);
+
+        list.querySelectorAll('.card').forEach(row => {
+          const id = row.getAttribute('data-id');
+          const [cat, idx] = id.split(':');
+          const it = menuData?.[cat]?.[+idx];
+          const img = row.querySelector('.thumb img');
+          if (!img || !it) return;
+          queueItemImage(img, it);
+        });
+      }
+
+      let menuRenderToken = 0;
+
+      async function renderMenu(){
+        const content = $('#content');
+        if (!content) return;
+        const renderToken = ++menuRenderToken;
+        pruneUnavailableCart();
+
+        await loadDescriptions();
+        if (renderToken !== menuRenderToken) return;
+
+        lazyMenuImageObserver?.disconnect();
+        content.innerHTML = '';
+
+        const q = (document.getElementById('searchIn')?.value || '').trim().toLowerCase();
+        localStorage.setItem(SEARCH_KEY, q);
+
+        if (q){
+          const res = [];
+          for (const [cat, arr] of Object.entries(menuData || {})){
+            (arr||[]).forEach((it, idx)=>{
+              if (isBuilderItem(it)) return;
+              if (!isMenuItemAvailable(it)) return;
+              const name = itemName(it).toLowerCase();
+              const desc = getDishDescription(it).toLowerCase();
+              const ingredients = getDishIngredients(it).toLowerCase();
+              if (name.includes(q) || desc.includes(q) || ingredients.includes(q)){
+                const id = `${cat}:${idx}`;
+                res.push(cardHtml(it, id, false));
+              }
+            });
+          }
+          renderSection(content, `🔎 ${q}`, res.length ? res : [`<div class="muted" style="padding:12px">${escapeHtml(L().searchEmpty || 'Nothing found.')}</div>`]);
+          const only = content.lastElementChild;
+          if (only) only.id = 'sec-search';
+          applyView();
+          return;
+        }
+
+        const topCards = [];
+        TOP_KEYS.forEach((k, i)=>{
+          const f = findByKey(k);
+          if (!f) return;
+          const id = `${f.cat}:${f.idx}`;
+          topCards.push(cardHtml(f.it, id, i===0));
+        });
+        if (topCards.length){
+          renderSection(content, '🔥 TOP', topCards);
+          const firstSec = content.lastElementChild;
+          if (firstSec) firstSec.id = 'sec-top';
+        }
+
+        const keys = Object.keys(menuData || {});
+        keys.forEach(k => {
+          const safeItems = (menuData[k] || []).filter(it => !isBuilderItem(it) && isMenuItemAvailable(it));
+          if (!safeItems.length) return;
+          const items = safeItems.map((it, idx) => {
+            const originalIdx = (menuData[k] || []).indexOf(it);
+            const id = `${k}:${originalIdx}`;
+            return cardHtml(it, id, idx===0);
+          });
+          renderSection(content, catLabel(k), items);
+          const last = content.lastElementChild;
+          if (last) last.id = `sec-${k}`;
+        });
+
+        applyView();
+      }
+
+      function cartSummary(orderType = 'on_site') {
+        let itemsCount = 0, sum = 0;
+        const lines = [];
+        const items = [];
+        for (const [id, entry] of cart){
+          const qty = entry?.qty || 0;
+          if (qty<=0) continue;
+          const [cat, idx] = id.split(':');
+          const it = menuData[cat]?.[+idx];
+          if (!it || !isMenuItemAvailable(it)) continue;
+          const name = itemName(it);
+          const unit = calcItemUnitPrice(it, entry.selections);
+          const key = it.key || it.id || it.code || '';
+          const code = it.code || '';
+          const optText = summarizeSelections(it, entry.selections);
+          const noteText = (entry.note || '').trim();
+          itemsCount += qty;
+          sum += unit * qty;
+          const extra = [optText ? `(${optText})` : '', noteText ? `[${noteText}]` : ''].filter(Boolean).join(' ');
+          const isCustom = (Array.isArray(it.tags) && it.tags.includes('custom')) || String(it.key||'').startsWith('custom_') || !!it.is_custom_builder;
+          const codeDisplay = code ? `(${code})` : '';
+          if (isCustom){
+            const optLines = summarizeSelectionsLines(it, entry.selections);
+            lines.push(`• ${name} ${codeDisplay} — ${unit.toFixed(2)} ${CURRENCY} × ${qty}`);
+            for (const l of optLines){ lines.push(` └ ${l}`); }
+            if (noteText) lines.push(` └ Note: ${noteText}`);
+          } else {
+            lines.push(`• ${name} ${codeDisplay} ${extra} — ${unit.toFixed(2)} ${CURRENCY} × ${qty}`);
+          }
+          items.push({ name, price: unit, qty, key, code, selections: entry.selections || {}, note: noteText });
+        }
+        
+        let deliveryFee = 0;
+        let deliveryText = '';
+        if (orderType === 'delivery') {
+          if (sum >= FREE_DELIVERY_MIN) {
+            deliveryFee = 0;
+            deliveryText = L().sheet.freeDelivery;
+          } else {
+            deliveryFee = DELIVERY_PRICE;
+            deliveryText = `${DELIVERY_PRICE} ${CURRENCY}`;
+          }
+        }
+        
+        const totalWithDelivery = sum + deliveryFee;
+        return {itemsCount, sum, lines, items, deliveryFee, deliveryText, totalWithDelivery};
+      }
+
+      function renderCartSheet(){
+        const t = L().sheet;
+        const lines = $('#cartLines');
+        if (!lines) return;
+        
+        const orderType = document.querySelector('#orderType .chip.active')?.dataset.ot || 'on_site';
+        
+        if (cart.size === 0){
+          lines.innerHTML = `<div class="muted">${t.empty}</div>`;
+          $('#cartMeta').innerHTML = `${t.total}: ${fmt(0)}`;
+          return;
+        }
+        
+        let sum = 0;
+        lines.innerHTML = '';
+        for (const [id, entry] of cart){
+          const qty = entry?.qty || 0;
+          if (qty<=0) continue;
+          const [cat, idx] = id.split(':');
+          const it = menuData[cat]?.[+idx];
+          if (!it || !isMenuItemAvailable(it)) continue;
+          const name = itemName(it);
+          const unit = calcItemUnitPrice(it, entry.selections);
+          sum += unit * qty;
+          const optText = summarizeSelections(it, entry.selections);
+          const noteText = (entry.note || '').trim();
+          const codeHtml = it.code ? ` (${it.code})` : '';
+          const el = document.createElement('div');
+          el.className = 'line';
+          el.innerHTML = `
+            <div>
+              <strong>${escapeHtml(name)}${codeHtml}</strong>
+              ${optText ? `<div class="muted">${optText}</div>` : ``}
+              ${noteText ? `<div class="muted">✎ ${escapeHtml(noteText)}</div>` : ``}
+              <div class="muted">${fmt(unit)} × ${qty}</div>
+            </div>
+            <div class="qty" data-qty="${id}">
+              <button data-dec="${id}">−</button>
+              <span>${qty}</span>
+              <button data-inc="${id}">+</button>
+            </div>`;
+          lines.appendChild(el);
+        }
+        
+        let deliveryFee = 0;
+        let deliveryText = '';
+        if (orderType === 'delivery') {
+          if (sum >= FREE_DELIVERY_MIN) {
+            deliveryFee = 0;
+            deliveryText = `0 ${CURRENCY} (${t.freeDelivery})`;
+          } else {
+            deliveryFee = DELIVERY_PRICE;
+            deliveryText = `${DELIVERY_PRICE} ${CURRENCY}`;
+          }
+        }
+        
+        const totalWithDelivery = sum + deliveryFee;
+        
+        let metaText = `${t.total}: ${fmt(sum)}`;
+        if (orderType === 'delivery') {
+          metaText += `<br>${t.deliveryPrice}: ${deliveryText}`;
+          metaText += `<br><strong>${t.total} с доставкой: ${fmt(totalWithDelivery)}</strong>`;
+        }
+        
+        $('#cartMeta').innerHTML = metaText;
+      }
+
+      function renderFab(){
+        let items = 0, sum = 0;
+        for (const [id, entry] of cart){
+          const qty = entry?.qty || 0;
+          const [cat, idx] = id.split(':');
+          const it = menuData[cat]?.[+idx];
+          if (!it || !isMenuItemAvailable(it) || qty<=0) continue;
+          items += qty;
+          sum += calcItemUnitPrice(it, entry.selections) * qty;
+        }
+        const badge = $('#cartBadge');
+        document.body.classList.toggle('cart-has-items', items > 0);
+        if (badge){
+          badge.textContent = items;
+          badge.style.display = items > 0 ? 'flex' : 'none';
+        }
+      }
+
+      function openSheet(){
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('sheet-open');
+        $('#overlay').classList.add('show');
+        $('#sheet').classList.add('open');
+        renderCartSheet();
+      }
+
+      function closeSheet(){
+        document.body.style.overflow = '';
+        document.body.classList.remove('sheet-open');
+        const overlay = document.getElementById('overlay');
+        const sheet = document.getElementById('sheet');
+        if (overlay){
+          overlay.classList.remove('show');
+          overlay.style.opacity = '';
+          overlay.style.transition = '';
+        }
+        if (sheet){
+          sheet.classList.remove('open');
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+        }
+      }
+
+      function openCatSheet(){
+        document.body.classList.add('sheet-open');
+        $('#catOverlay').classList.add('show');
+        $('#catSheet').classList.add('open');
+      }
+
+      function closeCatSheet(){
+        document.body.classList.remove('sheet-open');
+        const overlay = document.getElementById('catOverlay');
+        const sheet = document.getElementById('catSheet');
+        if (overlay){
+          overlay.classList.remove('show');
+          overlay.style.opacity = '';
+          overlay.style.transition = '';
+        }
+        if (sheet){
+          sheet.classList.remove('open');
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+        }
+      }
+
+      function openMoreSheet(){
+        document.body.classList.add('sheet-open');
+        $('#moreOverlay')?.classList.add('show');
+        $('#moreSheet')?.classList.add('open');
+
+        const list = $('#moreSheetList');
+        if (list){
+          list.innerHTML = `
+            <a class="more-row" href="tel:+380632637999">
+              <span class="more-left"><span class="more-ico">📞</span>+380 632 637 999</span>
+              <span class="more-arrow">›</span>
+            </a>
+            <a class="more-row" href="https://maps.google.com/?q=Героїв%20Крут%2022%2C%20Одеса" target="_blank" rel="noopener noreferrer">
+              <span class="more-left"><span class="more-ico">📍</span>Героїв Крут, 22</span>
+              <span class="more-arrow">›</span>
+            </a>
+            <a class="more-row" href="${UNIVERSAL_PAY_LINK}" target="_blank" rel="noopener noreferrer">
+              <span class="more-left"><span class="more-ico">💳</span>Оплатить / Pay QR</span>
+              <span class="more-arrow">›</span>
+            </a>
+            <a class="more-row" href="https://www.instagram.com/cyber_dragon_dlv/" target="_blank" rel="noopener noreferrer">
+              <span class="more-left"><span class="more-ico">📷</span>Instagram</span>
+              <span class="more-arrow">›</span>
+            </a>
+          `;
+        }
+      }
+
+      function closeMoreSheet(){
+        document.body.classList.remove('sheet-open');
+        const overlay = document.getElementById('moreOverlay');
+        const sheet = document.getElementById('moreSheet');
+        if (overlay){
+          overlay.classList.remove('show');
+          overlay.style.opacity = '';
+          overlay.style.transition = '';
+        }
+        if (sheet){
+          sheet.classList.remove('open');
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+        }
+      }
+
+      const dishOverlay = $('#dishOverlay');
+      const dishSheet = $('#dishSheet');
+      const dishClose = $('#dishClose');
+      const dishTitle = $('#dishTitle');
+      const dishSub = $('#dishSub');
+      const dishPriceEl = $('#dishPrice');
+      const dishMedia = $('#dishMedia');
+      const dishDesc = $('#dishDesc');
+      const dishOptions = $('#dishOptions');
+      const dishNote = $('#dishNote');
+      const dishMinus = $('#dishMinus');
+      const dishPlus = $('#dishPlus');
+      const dishQtyEl = $('#dishQty');
+      const dishAddBtn = $('#dishAddBtn');
+      let dishCtx = null;
+
+      function openDishSheet(){
+        document.body.classList.add('sheet-open');
+        dishOverlay?.classList.add('show');
+        dishSheet?.classList.add('open');
+      }
+
+      function closeDishSheet(){
+        document.body.classList.remove('sheet-open');
+        dishOverlay?.classList.remove('show');
+        dishSheet?.classList.remove('open');
+        dishCtx = null;
+      }
+
+      function groupTitle(g){
+        return g.title?.[LANG] || g.title?.ru || g.title || '';
+      }
+
+      function optionLabel(o){
+        return o.label?.[LANG] || o.label?.ru || o.label || o.name || o.id || '';
+      }
+
+      function validateSelections(it, selections){
+        const opts = normalizeOptions(it);
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = selections?.[gid];
+          if (g.max && Array.isArray(picked) && picked.length > Number(g.max)){
+            return {ok:false, groupId: gid, title: groupTitle(g) || gid};
+          }
+        }
+        return {ok:true};
+      }
+
+      function renderDishOptions(it, selections){
+        const opts = normalizeOptions(it);
+        if (!dishOptions) return;
+        if (!opts.length){
+          dishOptions.innerHTML = '';
+          return;
+        }
+
+        dishOptions.innerHTML = opts.map(g=>{
+          const gid = g.id || g.key || g.name || '';
+          const multi = !!g.multi || (Number(g.max || 0) > 1);
+          const max = Number(g.max || (multi ? 99 : 1));
+          const required = !!g.required;
+          const picked = selections?.[gid] || (multi ? [] : '');
+          const pickedArr = Array.isArray(picked) ? picked : [picked].filter(Boolean);
+
+          const itemsHtml = (g.items||[]).map(opt=>{
+            const oid = opt.id || opt.key;
+            const checked = pickedArr.includes(oid);
+            const delta = Number(opt.price_delta || 0);
+            const deltaHtml = delta ? `<span class="delta">${delta>0?`+${delta}`:delta} ${CURRENCY}</span>` : '';
+            return `
+              <label class="opt">
+                <input type="${multi?'checkbox':'radio'}"
+                       name="opt-${gid}"
+                       value="${escapeHtml(oid)}"
+                       ${checked?'checked':''}
+                       data-gid="${escapeHtml(gid)}"
+                       data-multi="${multi?'1':'0'}"
+                       data-max="${max}">
+                <span class="opt-name">${escapeHtml(optionLabel(opt))}</span>
+                ${deltaHtml}
+              </label>
+            `;
+          }).join('');
+
+          return `
+            <div class="opt-group" data-group="${escapeHtml(gid)}">
+              <div class="opt-head">
+                <div class="opt-title">${escapeHtml(groupTitle(g) || '')}</div>
+                <div class="muted opt-hint">${required ? L().common.required : L().common.optional}${max && max<99 ? ` · max ${max}`:''}</div>
+              </div>
+              <div class="opt-list">${itemsHtml}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      async function renderDishSheet(ctx){
+        const {id, it} = ctx;
+        dishTitle.textContent = itemName(it);
+        dishSub.textContent = buildMeta(it).replace(/<[^>]*>/g,'') || '';
+        dishQtyEl.textContent = String(cartQty(id));
+
+        dishMedia.innerHTML = '';
+        if (it.image || it.key){
+          const wrap = document.createElement('div');
+          wrap.className = 'dish-thumb';
+          wrap.innerHTML = `<img alt="${escapeHtml(itemName(it))}" decoding="async">`;
+          const img = wrap.querySelector('img');
+          dishMedia.appendChild(wrap);
+          if (img) loadItemImage(img, it);
+        }
+
+        try{
+          await loadDescriptions();
+          const text = getDishDescription(it);
+          const ingredients = getDishIngredients(it);
+          let fullDesc = text;
+          if (ingredients) {
+            fullDesc += `
+
+📋 ${L().common.ingredients}: ${ingredients}`;
+          }
+          dishDesc.textContent = fullDesc || '—';
+        }catch(e){
+          dishDesc.textContent = textByLang(it.short) || textByLang(it.desc) || '—';
+        }
+
+        renderDishOptions(it, ctx.tempSel);
+        dishNote.value = ctx.tempNote || '';
+        updateDishPrice();
+      }
+
+      function updateDishPrice(){
+        if (!dishCtx) return;
+        const it = dishCtx.it;
+        const unit = calcItemUnitPrice(it, dishCtx.tempSel);
+        dishPriceEl.textContent = fmt(unit);
+      }
+
+      function openDishById(cardId){
+        const [cat, idxStr] = (cardId||'').split(':');
+        const idx = Number(idxStr);
+        const it = menuData?.[cat]?.[idx];
+        if (!it) return;
+        if (!isMenuItemAvailable(it)){
+          alert('Эта позиция сегодня недоступна.');
+          pruneUnavailableCart();
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+        const entry = cart.get(cardId) || {qty:0, selections:{}, note:''};
+        dishCtx = {
+          id: cardId,
+          cat, idx,
+          it,
+          tempSel: JSON.parse(JSON.stringify(entry.selections||{})),
+          tempNote: entry.note || ''
+        };
+        openDishSheet();
+        renderDishSheet(dishCtx);
+      }
+
+      dishOverlay?.addEventListener('click', closeDishSheet);
+      dishClose?.addEventListener('click', (e)=>{ e.stopPropagation(); closeDishSheet(); });
+
+      dishOptions?.addEventListener('change', (e)=>{
+        if (!dishCtx) return;
+        const inp = e.target.closest('input[data-gid]');
+        if (!inp) return;
+        const gid = inp.dataset.gid;
+        const multi = inp.dataset.multi === '1';
+        const max = Number(inp.dataset.max || 99);
+        if (multi){
+          const arr = Array.isArray(dishCtx.tempSel[gid]) ? dishCtx.tempSel[gid] : [];
+          if (inp.checked){
+            if (arr.length >= max){
+              inp.checked = false;
+              return;
+            }
+            arr.push(inp.value);
+          } else {
+            const i = arr.indexOf(inp.value);
+            if (i>=0) arr.splice(i,1);
+          }
+          dishCtx.tempSel[gid] = arr;
+        } else {
+          dishCtx.tempSel[gid] = inp.value;
+        }
+        updateDishPrice();
+      });
+
+      dishNote?.addEventListener('input', ()=>{
+        if (!dishCtx) return;
+        dishCtx.tempNote = dishNote.value;
+      });
+
+      dishMinus?.addEventListener('click', ()=>{
+        if (!dishCtx) return;
+        cartInc(dishCtx.id, -1);
+        dishQtyEl.textContent = String(cartQty(dishCtx.id));
+        renderMenu(); renderCartSheet(); renderFab();
+      });
+
+      dishPlus?.addEventListener('click', ()=>{
+        if (!dishCtx) return;
+        if (!isMenuItemAvailable(dishCtx.it)){
+          alert('Эта позиция сегодня недоступна.');
+          closeDishSheet();
+          pruneUnavailableCart();
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+        const current = cart.get(dishCtx.id);
+        if (!current || current.qty<=0){
+          cartSetEntry(dishCtx.id, {qty:1, selections:dishCtx.tempSel||{}, note:(dishCtx.tempNote||'')});
+        } else {
+          cartInc(dishCtx.id, +1);
+        }
+        dishQtyEl.textContent = String(cartQty(dishCtx.id));
+        renderMenu(); renderCartSheet(); renderFab();
+      });
+
+      dishAddBtn?.addEventListener('click', ()=>{
+        if (!dishCtx) return;
+        if (!isMenuItemAvailable(dishCtx.it)){
+          alert('Эта позиция сегодня недоступна.');
+          closeDishSheet();
+          pruneUnavailableCart();
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+        const v = validateSelections(dishCtx.it, dishCtx.tempSel);
+        if (!v.ok){
+          alert(`Выберите: ${v.title}`);
+          const gEl = dishOptions?.querySelector(`.opt-group[data-group="${CSS.escape(v.groupId)}"]`);
+          gEl?.scrollIntoView({behavior:'smooth', block:'center'});
+          return;
+        }
+        const q = cartQty(dishCtx.id);
+        if (q<=0){
+          cartSetEntry(dishCtx.id, {qty:1, selections:dishCtx.tempSel||{}, note:(dishCtx.tempNote||'')});
+        } else {
+          const entry = cart.get(dishCtx.id) || {qty:q, selections:{}, note:''};
+          entry.selections = dishCtx.tempSel||{};
+          entry.note = dishCtx.tempNote||'';
+          cartSetEntry(dishCtx.id, entry);
+        }
+        dishQtyEl.textContent = String(cartQty(dishCtx.id));
+        renderMenu(); renderCartSheet(); renderFab();
+        closeDishSheet();
+        openSheet();
+      });
+
+      document.addEventListener('click', async e=>{
+        const add = e.target.closest('[data-add]');
+        if (add){
+          const id = add.dataset.add;
+          const [cat, idx] = id.split(':');
+          const it = menuData?.[cat]?.[+idx];
+          if (!it || !isMenuItemAvailable(it)){
+            alert('Эта позиция сегодня недоступна.');
+            pruneUnavailableCart();
+            renderMenu(); renderCartSheet(); renderFab();
+            return;
+          }
+          if (it && (Array.isArray(it.options) && it.options.length)){
+            openDishById(id);
+            return;
+          }
+          cartInc(id, +1);
+          renderMenu(); renderFab();
+          return;
+        }
+
+        const inc = e.target.closest('[data-inc]');
+        if (inc){
+          const id = inc.dataset.inc;
+          const found = menuItemById(id);
+          if (!found?.it || !isMenuItemAvailable(found.it)){
+            alert('Эта позиция сегодня недоступна.');
+            pruneUnavailableCart();
+            renderMenu(); renderCartSheet(); renderFab();
+            return;
+          }
+          cartInc(id, +1);
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+
+        const dec = e.target.closest('[data-dec]');
+        if (dec){
+          const id = dec.dataset.dec;
+          cartInc(id, -1);
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+
+        const info = e.target.closest('[data-toggle]');
+        if (info){
+          e.preventDefault();
+          const cardId = info.dataset.toggle;
+          openDishById(cardId);
+          return;
+        }
+
+        const cardTap = e.target.closest('.card[data-id]');
+        if (cardTap && !e.target.closest('.add') && !e.target.closest('.qty') && !e.target.closest('.info')){
+          const cid = cardTap.getAttribute('data-id');
+          openDishById(cid);
+          return;
+        }
+
+        if (e.target.id === 'overlay'){ closeSheet(); return; }
+        if (e.target.id === 'clearBtn'){
+          cart.clear(); saveCart();
+          renderMenu(); renderCartSheet(); renderFab();
+          return;
+        }
+      });
+
+      const burgerBtn = $('#burgerBtn');
+      const navPop = $('#navPop');
+
+      burgerBtn?.addEventListener('click', ()=>{
+        const open = navPop.classList.toggle('open');
+        burgerBtn.setAttribute('aria-expanded', String(open));
+      });
+
+      document.addEventListener('click', e=>{
+        const navPop = document.getElementById('navPop');
+        const burgerBtn= document.getElementById('burgerBtn');
+        const dockProfil = document.getElementById('dockProfil');
+        if (!navPop) return;
+        if (!navPop.contains(e.target) && e.target !== burgerBtn && e.target !== dockProfil) {
+          navPop.classList.remove('open');
+          burgerBtn?.setAttribute('aria-expanded','false');
+        }
+      });
+
+      $('#navContact')?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        navPop?.classList.remove('open');
+        burgerBtn?.setAttribute('aria-expanded','false');
+        document.getElementById('contactSection')?.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+
+      const otWrap = $('#orderType');
+      const tableField = $('#tableField');
+      const takeawayField = $('#takeawayField');
+      const addrField = $('#addrField');
+      const tableNo = $('#tableNo');
+      const pickupIn = $('#pickupIn');
+      const address = $('#address');
+      const phone = $('#phone');
+      const phoneHint = $('#phoneHint');
+      const tableHint = $('#tableHint');
+      const pickupHint = $('#pickupHint');
+      const addrHint = $('#addrHint');
+
+      function show(el,on){ if(el) el.style.display = on?'grid':'none'; }
+
+      function setOrderType(v){
+        const c = L();
+        show(tableField, v === 'on_site');
+        show(takeawayField, v === 'takeaway');
+        show(addrField, v === 'delivery');
+        if (tableNo) tableNo.required = (v === 'on_site');
+        if (pickupIn) pickupIn.required = (v === 'takeaway');
+        if (address) address.required = (v === 'delivery');
+        
+        if (v === 'delivery') {
+          phoneHint.textContent = c.common.required;
+          phone.required = true;
+        } else if (v === 'takeaway') {
+          phoneHint.textContent = c.common.required;
+          phone.required = true;
+        } else {
+          phoneHint.textContent = c.common.optional;
+          phone.required = false;
+        }
+        
+        tableHint.textContent = c.common.required;
+        pickupHint.textContent = c.common.required;
+        addrHint.textContent = c.common.required;
+        
+        renderCartSheet();
+      }
+
+      otWrap?.addEventListener('click', e=>{
+        const b = e.target.closest('[data-ot]');
+        if (!b) return;
+        $$('#orderType .chip').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        setOrderType(b.dataset.ot);
+      });
+
+      function applyDockLabels(){
+        const t = L();
+        const tb = t.tabbar || {};
+        const dm = $('#dockCat');
+        const dl = $('#dockLang');
+        const dc = $('#dockCart');
+        const dv = $('#dockView');
+        const dp = $('#dockProfil');
+        if (dm) dm.dataset.label = tb.menu || t.navMenu || 'Menu';
+        if (dl) dl.dataset.label = tb.lang || 'Lang';
+        if (dc) dc.dataset.label = tb.cart || 'Cart';
+        if (dv) dv.dataset.label = (viewMode === 'grid' ? t.ui.viewGrid : t.ui.viewList);
+        if (dp) dp.dataset.label = tb.profile || 'Profil';
+      }
+
+      const selA = $('#langSel');
+      const selB = $('#langSelMenu');
+
+      function setUITexts(){
+        const t = L();
+        const s = t.sheet;
+
+        $('#navHome').textContent = '🏠 ' + t.navHome;
+        $('#navMenu').textContent = '🍜 ' + t.navMenu;
+        $('#navKaraoke').textContent = '🎤 ' + t.navKaraoke;
+        $('#navProfil').textContent = '👤 ' + (t.tabbar?.profile || 'Profile');
+        $('#navContact').textContent = '📞 ' + t.navContact;
+
+        $('#sheetTitle').textContent = s.title;
+        $('#orderTypeTitle').textContent = s.orderType;
+        $('#otOnSite').textContent = s.onSite;
+        $('#otTakeaway').textContent = s.takeaway;
+        $('#otDelivery').textContent = s.delivery;
+
+        $('#tableLbl').childNodes[0].nodeValue = s.table + ' ';
+        $('#pickupLbl').childNodes[0].nodeValue = s.pickupIn + ' ';
+        $('#addrLbl').childNodes[0].nodeValue = s.address + ' ';
+        $('#phoneLbl').childNodes[0].nodeValue = s.phone + ' ';
+
+        tableNo.placeholder = s.phTable;
+        pickupIn.placeholder = s.phPickup;
+        address.placeholder = s.phAddress;
+        phone.placeholder = s.phPhone;
+        $('#checkoutBtn').textContent = LIQPAY_CHECKOUT_API ? (t.checkoutPay || s.checkout) : s.checkout;
+        $('#clearBtn').textContent = s.clear;
+
+        const csTitle = $('#catSheetTitle');
+        if (csTitle) csTitle.textContent = t.navMenu || 'Категории';
+        
+        const bankTitle = $('#bankSheetTitle');
+        if (bankTitle) bankTitle.textContent = t.bankSheetTitle || 'Выберите способ оплаты';
+        const contactTitle = $('#contactTitle');
+        if (contactTitle) contactTitle.textContent = '📞 ' + (t.contactTitle || t.navContact || 'CONTACT');
+        if (payText) {
+          payText.textContent = t.payLabel || t.checkoutPay || 'Оплатить';
+        }
+
+        const searchInputEl = $('#searchIn');
+        const statusInputEl = $('#statusCode');
+        const statusButtonEl = $('#statusBtn');
+        if (statusButtonEl) statusButtonEl.textContent = t.statusBtn || 'Статус';
+        if (searchInputEl) searchInputEl.placeholder = t.searchPlaceholder || 'Поиск блюда / Search…';
+        if (statusInputEl) statusInputEl.placeholder = t.statusPlaceholder || 'Код заказа (например, a123)';
+
+        renderPills();
+        renderMenu();
+        renderFab();
+        renderCartSheet();
+        const active = document.querySelector('#orderType .chip.active')?.dataset.ot || 'on_site';
+        setOrderType(active);
+        applyDockLabels();
+      }
+
+      const searchInEl = $('#searchIn');
+      const searchClearEl = $('#searchClear');
+      const statusCodeEl = $('#statusCode');
+      const statusBtnEl = $('#statusBtn');
+      const statusResultEl = $('#statusResult');
+
+      const debouncedRenderMenu = (()=>{ let t; return ()=>{ clearTimeout(t); t=setTimeout(()=>{ renderMenu(); renderFab(); }, 120); }; })();
+
+      function renderStatus(code){
+        const orders = loadOrders();
+        const rec = orders[(code||'').trim().toLowerCase()];
+        if (!statusResultEl) return;
+        if (!code){
+          statusResultEl.innerHTML = '';
+          return;
+        }
+        if (!rec){
+          statusResultEl.innerHTML = `<div class="muted">${escapeHtml((L().statusNotFound || 'Order {code} was not found.').replace('{code}', String(code).trim().toUpperCase()))}</div>`;
+          return;
+        }
+        const when = new Date(rec.created_at).toLocaleString();
+        const total = Number(rec.total || rec.subtotal + (rec.delivery_fee||0)).toFixed(2);
+        
+        let deliveryInfo = '';
+        if (rec.delivery_fee !== undefined) {
+          deliveryInfo = `<div class="muted">${escapeHtml(L().sheet?.deliveryPrice || 'Delivery fee')}: ${(rec.delivery_fee||0).toFixed(2)} ${CURRENCY}</div>`;
+        }
+        
+        statusResultEl.innerHTML = `
+          <div class="status-card">
+            <div><b>${escapeHtml(L().statusCodeLabel || 'Code')}:</b> ${escapeHtml(rec.code)} <span class="pill-mini">${escapeHtml(rec.status||'—')}</span></div>
+            <div class="muted">ID: ${escapeHtml(rec.id)} · ${escapeHtml(when)}</div>
+            ${deliveryInfo}
+            <div class="muted">${escapeHtml(L().sheet?.total || 'Total')}: ${total} ${escapeHtml(rec.currency||CURRENCY)}</div>
+            ${rec.receipt_link ? `
+            <div style="margin-top:10px">
+              <a class="btn primary" href="${rec.receipt_link}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;justify-content:center;align-items:center;text-decoration:none;">
+                📩 ${escapeHtml(L().receiptBtn)}
+              </a>
+            </div>` : ``}
+          </div>
+        `;
+      }
+
+      async function refreshStatus(code){
+        const normalizedCode = String(code || '').trim().toLowerCase();
+        renderStatus(normalizedCode);
+        if (!normalizedCode) return;
+
+        let latest = null;
+        const storedOrders = loadOrders();
+        if (storedOrders[normalizedCode]) latest = storedOrders[normalizedCode];
+
+        const [bridgeResult, remoteResult] = await Promise.allSettled([
+          fetchOrderFromLocalBridge(normalizedCode),
+          fetchOrdersRemoteStatus()
+        ]);
+
+        if (bridgeResult.status === 'fulfilled' && bridgeResult.value) {
+          latest = mergeOrderRecord(latest, bridgeResult.value);
+        }
+
+        if (remoteResult.status === 'fulfilled' && Array.isArray(remoteResult.value?.orders)) {
+          const remoteMatch = remoteResult.value.orders.find(order => String(order?.code || order?.id || '').trim().toLowerCase() === normalizedCode);
+          if (remoteMatch) latest = mergeOrderRecord(latest, remoteMatch);
+        }
+
+        if (latest) {
+          persistOrderRecord(latest);
+          renderStatus(normalizedCode);
+        }
+      }
+
+      searchInEl?.addEventListener('input', debouncedRenderMenu);
+
+      searchClearEl?.addEventListener('click', ()=>{
+        if (!searchInEl) return;
+        searchInEl.value = '';
+        debouncedRenderMenu();
+        searchInEl.focus();
+      });
+
+      statusBtnEl?.addEventListener('click', ()=>{
+        const code = statusCodeEl?.value || '';
+        refreshStatus(code);
+      });
+
+      statusCodeEl?.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter'){
+          e.preventDefault();
+          refreshStatus(statusCodeEl.value);
+        }
+      });
+
+      function connectLocalEvents(){
+        if (!window.EventSource || !LOCAL_EVENTS_URL) return;
+        const source = new EventSource(LOCAL_EVENTS_URL);
+        source.addEventListener('orders_updated', () => {
+          const code = statusCodeEl?.value || '';
+          if (code.trim()) refreshStatus(code);
+        });
+        source.addEventListener('menu_availability_updated', async () => {
+          await availabilityApi()?.refresh?.();
+          pruneUnavailableCart();
+          renderPills();
+          renderMenu();
+          renderCartSheet();
+          renderFab();
+        });
+        window.addEventListener('beforeunload', () => source.close(), { once: true });
+      }
+
+      window.addEventListener('storage', (event) => {
+        if (event.key === ORDERS_KEY){
+          const code = statusCodeEl?.value || '';
+          if (code.trim()) renderStatus(code);
+          return;
+        }
+        if (event.key === availabilityApi()?.STORAGE_KEY){
+          pruneUnavailableCart();
+          renderPills();
+          renderMenu();
+          renderCartSheet();
+          renderFab();
+        }
+      });
+
+      window.addEventListener('dragon-menu-availability-changed', () => {
+        pruneUnavailableCart();
+        renderPills();
+        renderMenu();
+        renderCartSheet();
+        renderFab();
+      });
+
+      connectLocalEvents();
+
+      function setLang(v){
+        v = normalizeLang(v);
+        LANG = v;
+        localStorage.setItem(LANG_KEY, v);
+        document.documentElement.lang = v;
+        if (selA) selA.value = v;
+        if (selB) selB.value = v;
+        const flag = LANG_FLAGS[v] || '🌐';
+        const langFlagEl = $('#dockLangFlag');
+        if (langFlagEl) langFlagEl.textContent = flag;
+        const savedQ = localStorage.getItem(SEARCH_KEY) || '';
+        const searchIn = document.getElementById('searchIn');
+        if (searchIn) searchIn.value = savedQ;
+        setUITexts();
+        renderBankList();
+        document.dispatchEvent(new CustomEvent('CD_LANG_CHANGED'));
+      }
+
+      selA?.addEventListener('change', e => setLang(e.target.value));
+      selB?.addEventListener('change', e => setLang(e.target.value));
+
+      /* TELEGRAM */
+      const TG = {
+        MAIN_CHANNEL: "main",
+        VN_CHANNEL: "vn",
+        BOT_USERNAME: "@cyber_dracon_bot",
+        PROXY_URL: window.DRAGON_STATIC?.telegramMessageApi || ""
+      };
+
+      function TG_ENDPOINT() {
+        return String(TG.PROXY_URL || '').trim();
+      }
+
+      async function sendTelegramMessage(channel, text) {
+        const url = TG_ENDPOINT();
+        if (!url) return { ok:false, reason:"Telegram proxy is not configured" };
+        const payload = {
+          channel: channel === TG.VN_CHANNEL ? TG.VN_CHANNEL : TG.MAIN_CHANNEL,
+          text,
+          parse_mode: "HTML",
+          disable_web_page_preview: true
+        };
+        const r = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        let data = null;
+        try { data = await r.json(); } catch (_) {}
+        if (!r.ok) {
+          const msg = (data && (data.description || data.error)) || `HTTP ${r.status}`;
+          return { ok: false, reason: msg };
+        }
+        if (data && data.ok === false) {
+          return { ok: false, reason: data.description || "Telegram error" };
+        }
+        return { ok: true, data };
+      }
+
+      function uaType(ot){
+        if (ot === "on_site") return "У закладі";
+        if (ot === "takeaway") return "На виніс";
+        if (ot === "delivery") return "Доставка";
+        return ot || "—";
+      }
+
+      function summarizeSelectionsLocalized(it, selections, locale){
+        const opts = normalizeOptions(it);
+        const sel = selections || {};
+        const parts = [];
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = sel[gid];
+          if (!picked) continue;
+          const pickArr = Array.isArray(picked) ? picked : [picked];
+          const gTitle = textByLocale(g.title, locale) || gid;
+          const names = pickArr.map(oid=>{
+            const item = (g.items||[]).find(x => (x.id||x.key)===oid);
+            return textByLocale(item?.label, locale) || item?.name || oid;
+          });
+          parts.push(`${gTitle}: ${names.join(", ")}`);
+        }
+        return parts.join(" · ");
+      }
+
+      function buildUkrainianOrderText(orderPayload){
+        const total = Number(orderPayload.total || 0).toFixed(2);
+        const subtotal = Number(orderPayload.subtotal || orderPayload.total || 0).toFixed(2);
+        const deliveryFee = Number(orderPayload.delivery_fee || 0).toFixed(2);
+        const paymentType = String(orderPayload.payment_type || 'card').toLowerCase() === 'cash' ? 'Готівка' : 'Картка';
+
+        const meta = [];
+        if (orderPayload.type === "on_site" && orderPayload.table) meta.push(`Стіл: <b>${escapeHtml(orderPayload.table)}</b>`);
+        if (orderPayload.type === "takeaway" && orderPayload.pickup_in) meta.push(`Забрати через: <b>${escapeHtml(orderPayload.pickup_in)} хв</b>`);
+        if (orderPayload.type === "delivery" && orderPayload.address) meta.push(`Адреса: <b>${escapeHtml(orderPayload.address)}</b>`);
+        if (orderPayload.phone) meta.push(`Телефон: <b>${escapeHtml(orderPayload.phone)}</b>`);
+        meta.push(`Оплата: <b>${paymentType}</b>`);
+        if (orderPayload.type === "delivery" && deliveryFee > 0) {
+          meta.push(`Вартість доставки: <b>${deliveryFee} ${CURRENCY}</b>`);
+        }
+
+        const lines = (orderPayload.items || []).map(itm=>{
+          const found = itm.key ? findByKey(itm.key) : null;
+          const localizedName = found?.it ? itemNameByLocale(found.it, 'ua') : (itm.name || '—');
+          const optText = found?.it ? summarizeSelectionsLocalized(found.it, itm.selections, 'ua') : '';
+          const note = (itm.note || "").trim();
+          const extra = [optText ? `(${escapeHtml(optText)})` : '', note ? `📝 ${escapeHtml(note)}` : ''].filter(Boolean).join(' ');
+          const code = itm.code ? `(${escapeHtml(itm.code)})` : '';
+          return `• ${escapeHtml(localizedName)} ${code} ${extra} — ${Number(itm.price || 0).toFixed(2)} ${CURRENCY} × ${Number(itm.qty || 0)}`;
+        }).join("\n") || "—";
+
+        return `<b>CYBER DRAGON — Нове замовлення</b>
+ID: <code>${escapeHtml(orderPayload.id)}</code>
+Code: <b>${escapeHtml(orderPayload.code)}</b>
+Сума страв: <b>${subtotal} ${CURRENCY}</b>
+${deliveryFee > 0 ? `Вартість доставки: <b>${deliveryFee} ${CURRENCY}</b>` : ''}
+Разом до оплати: <b>${total} ${CURRENCY}</b>
+Тип: <b>${uaType(orderPayload.type)}</b>
+      ${meta.join("\n")}
+<b>Позиції:</b>
+${lines}`;
+      }
+
+      async function sendOrderToTelegram(orderPayload) {
+        const text = buildUkrainianOrderText(orderPayload);
+        return sendTelegramMessage(TG.MAIN_CHANNEL, text);
+      }
+
+      function viType(ot){
+        if (ot === "on_site") return "Ăn tại chỗ";
+        if (ot === "takeaway") return "Mang đi";
+        if (ot === "delivery") return "Giao hàng";
+        return ot || "—";
+      }
+
+      function summarizeSelectionsVI(it, selections){
+        const opts = normalizeOptions(it);
+        const sel = selections || {};
+        const parts = [];
+        for (const g of opts){
+          const gid = g.id || g.key || g.name || '';
+          const picked = sel[gid];
+          if (!picked) continue;
+          const pickArr = Array.isArray(picked) ? picked : [picked];
+
+          const gTitle = g.title?.vn || g.title?.ru || g.title || gid;
+          const names = pickArr.map(oid=>{
+            const item = (g.items||[]).find(x => (x.id||x.key)===oid);
+            const nm = item?.label?.vn || item?.label?.ru || item?.label || item?.name || oid;
+            return nm;
+          });
+
+          parts.push(`${gTitle}: ${names.join(", ")}`);
+        }
+        return parts.join(" · ");
+      }
+
+      function buildVietnameseOrderText(orderPayload){
+        const total = Number(orderPayload.total || 0).toFixed(2);
+        const subtotal = Number(orderPayload.subtotal || orderPayload.total || 0).toFixed(2);
+        const deliveryFee = Number(orderPayload.delivery_fee || 0).toFixed(2);
+        const paymentType = String(orderPayload.payment_type || 'card').toLowerCase() === 'cash' ? 'Tiền mặt' : 'Thẻ';
+
+        const meta = [];
+        if (orderPayload.type === "on_site" && orderPayload.table) meta.push(`Bàn: <b>${escapeHtml(orderPayload.table)}</b>`);
+        if (orderPayload.type === "takeaway" && orderPayload.pickup_in) meta.push(`Nhận sau: <b>${escapeHtml(orderPayload.pickup_in)} phút</b>`);
+        if (orderPayload.type === "delivery" && orderPayload.address) meta.push(`Địa chỉ: <b>${escapeHtml(orderPayload.address)}</b>`);
+        if (orderPayload.phone) meta.push(`SĐT: <b>${escapeHtml(orderPayload.phone)}</b>`);
+        meta.push(`Thanh toán: <b>${paymentType}</b>`);
+        if (orderPayload.type === "delivery" && deliveryFee > 0) {
+          meta.push(`Phí giao hàng: <b>${deliveryFee} ${CURRENCY}</b>`);
+        }
+
+        const lines = (orderPayload.items || []).map(itm=>{
+          const found = itm.key ? findByKey(itm.key) : null;
+          const optText = found?.it ? summarizeSelectionsVI(found.it, itm.selections) : '';
+          const note = (itm.note || "").trim();
+          const extra = [optText ? `(${escapeHtml(optText)})` : '', note ? `📝 ${escapeHtml(note)}` : ''].filter(Boolean).join(' ');
+          const code = itm.code ? `(${escapeHtml(itm.code)})` : '';
+          return `• ${escapeHtml(itm.name)} ${code} ${extra} — ${Number(itm.price || 0).toFixed(2)} ${CURRENCY} × ${Number(itm.qty || 0)}`;
+        }).join("\n") || "—";
+
+        return `<b>CYBER DRAGON — Đơn mới</b>
+ID: <code>${escapeHtml(orderPayload.id)}</code>
+Code: <b>${escapeHtml(orderPayload.code)}</b>
+Tạm tính: <b>${subtotal} ${CURRENCY}</b>
+${deliveryFee > 0 ? `Phí giao hàng: <b>${deliveryFee} ${CURRENCY}</b>` : ''}
+Tổng cộng: <b>${total} ${CURRENCY}</b>
+Hình thức: <b>${viType(orderPayload.type)}</b>
+${meta.join("\n")}
+<b>Món:</b>
+${lines}`;
+      }
+
+      async function sendOrderToTelegramVN(orderPayload){
+        const text = buildVietnameseOrderText(orderPayload);
+        return sendTelegramMessage(TG.VN_CHANNEL, text);
+      }
+
+      async function createOrderOnSheet(orderPayload){
+        const body = { action:'create', ...orderPayload };
+        try{
+          const res = await fetch(API_BASE,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+          const data = await res.json();
+          return data;
+        }catch(e){
+          console.error('Sheets error', e);
+          return {ok:false, error:String(e)};
+        }
+      }
+
+      function generateShortCode(){
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
+        const letter = letters[Math.floor(Math.random() * letters.length)];
+        const num = Math.floor(Math.random() * 999) + 1;
+        return letter + String(num).padStart(3,'0');
+      }
+
+      function receiptLink(orderCode){
+        const u = (TG.BOT_USERNAME || '').replace('@','').trim();
+        if (!u) return '';
+        return `https://t.me/${u}?start=receipt_${encodeURIComponent(orderCode)}`;
+      }
+
+      function validateCheckoutFields(orderType){
+        const s = L().sheet;
+        pruneUnavailableCart(true);
+
+        if (orderType === 'on_site' && !tableNo.value.trim()){ throw new Error(s.errTable); }
+        if (orderType === 'takeaway'){
+          if (!pickupIn.value.trim()){ throw new Error(s.errPickup); }
+          if (!phone.value.trim()){ throw new Error(s.errPhone); }
+        }
+        if (orderType === 'delivery'){
+          if (!address.value.trim()){ throw new Error(s.errAddress); }
+          if (!phone.value.trim()){ throw new Error(s.errPhone); }
+        }
+      }
+
+      function composeOrderDraft(orderType, overrides = {}){
+        const s = L().sheet;
+        const {sum, lines, items, deliveryFee, totalWithDelivery} = cartSummary(orderType);
+        if (!items.length){
+          throw new Error(s.empty || 'Корзина пустая');
+        }
+
+        const meta = [];
+        if (orderType === 'on_site') meta.push(`${s.table}: ${tableNo.value.trim()}`);
+        if (orderType === 'takeaway') meta.push(`${s.pickupIn}: ${pickupIn.value.trim()} мин`);
+        if (orderType === 'delivery') meta.push(`${s.address}: ${address.value.trim()}`);
+        if (phone.value.trim()) meta.push(`${s.phone}: ${phone.value.trim()}`);
+        if (orderType === 'delivery') {
+          if (deliveryFee > 0) {
+            meta.push(`${s.deliveryPrice}: ${deliveryFee} ${CURRENCY}`);
+          } else {
+            meta.push(`${s.freeDelivery}`);
+          }
+        }
+
+        const createdAt = nowIso();
+        const ordId = 'CD-'+createdAt.replace(/[-:TZ.]/g,'').slice(0,14);
+        const orderCode = generateShortCode();
+        const receipt_link = receiptLink(orderCode);
+
+        const orderPayload = {
+          id: ordId,
+          code: orderCode,
+          status: 'NEW',
+          type: orderType,
+          payment_type: 'card',
+          payment_cash: 0,
+          payment_card: totalWithDelivery,
+          table: orderType==='on_site' ? tableNo.value.trim() : '',
+          pickup_in: orderType==='takeaway' ? pickupIn.value.trim() : '',
+          address: orderType==='delivery' ? address.value.trim() : '',
+          phone: phone.value.trim(),
+          items,
+          subtotal: sum,
+          delivery_fee: deliveryFee,
+          total: totalWithDelivery,
+          currency: CURRENCY,
+          meta,
+          receipt_link,
+          source: 'site',
+          created_at: createdAt,
+          updated_at: createdAt,
+          ...overrides,
+        };
+
+        return { orderPayload, createdAt, lines, items, deliveryFee, totalWithDelivery };
+      }
+
+      $('#checkoutBtn')?.addEventListener('click', async ()=>{
+        const ot = document.querySelector('#orderType .chip.active')?.dataset.ot || 'on_site';
+        try {
+          validateCheckoutFields(ot);
+        } catch (err) {
+          alert(err?.message || String(err));
+          return;
+        }
+
+        if (LIQPAY_CHECKOUT_API) {
+          try {
+            const { orderPayload, createdAt, lines, items, deliveryFee, totalWithDelivery } = composeOrderDraft(ot, {
+              status: 'PENDING_PAYMENT',
+              payment_type: 'liqpay',
+            });
+            const checkout = await requestLiqPayCheckout({
+              amount: Number(orderPayload.total || 0).toFixed(2),
+              currency: LIQPAY_CURRENCY,
+              order_id: orderPayload.id,
+              language: liqpayLanguage(),
+              description: `CYBER DRAGON • ${orderPayload.code} • ${Number(totalWithDelivery || 0).toFixed(2)} ${CURRENCY}`,
+              result_url: currentPageUrl(),
+              phone: orderPayload.phone || '',
+              info: [
+                `source=cart_checkout`,
+                `code=${orderPayload.code}`,
+                `type=${orderPayload.type}`,
+                `items=${items.length}`,
+                `delivery_fee=${Number(deliveryFee || 0).toFixed(2)}`,
+                lines.length ? `lines=${lines.length}` : '',
+              ].filter(Boolean).join(' | '),
+            });
+
+            const localDraft = persistOrderRecord({
+              ...orderPayload,
+              sync: {
+                local: { ok: false, requested_at: createdAt, via: 'local_bridge' },
+                liqpay: { pending: true, requested_at: createdAt, via: 'cart_checkout' },
+                sheet: { pending: true, requested_at: createdAt, via: 'awaiting_payment' },
+                telegram: { pending: true, requested_at: createdAt, via: 'awaiting_payment' },
+                telegram_vn: { pending: true, requested_at: createdAt, via: 'awaiting_payment' }
+              }
+            });
+
+            const bridgeInitial = await pushOrderToLocalBridge(localDraft);
+            persistOrderRecord({
+              ...localDraft,
+              sync: {
+                ...(localDraft.sync || {}),
+                local: bridgeInitial?.ok ? {
+                  ok: true,
+                  updated_at: bridgeInitial?.updated_at || createdAt,
+                  via: 'local_bridge'
+                } : {
+                  ok: false,
+                  updated_at: createdAt,
+                  error: bridgeInitial?.error || ''
+                }
+              }
+            });
+
+            if (statusResultEl) {
+              renderStatus(orderPayload.code);
+            }
+            cart.clear(); saveCart();
+            renderMenu();
+            renderCartSheet();
+            renderFab();
+            closeSheet();
+            submitLiqPayCheckout(checkout);
+            return;
+          } catch (err) {
+            alert(err?.message || L().liqpayFailed || 'Не удалось открыть LiqPay. Попробуйте позже.');
+            return;
+          }
+        }
+
+        const { orderPayload, createdAt, totalWithDelivery } = composeOrderDraft(ot);
+
+        const localDraft = persistOrderRecord({
+          ...orderPayload,
+          sync: {
+            local: { ok: false, requested_at: createdAt, via: 'local_bridge' },
+            sheet: { pending: true, requested_at: createdAt, via: 'site_checkout' },
+            telegram: { requested_at: createdAt },
+            telegram_vn: { requested_at: createdAt }
+          }
+        });
+
+        const bridgeInitial = await pushOrderToLocalBridge(localDraft);
+        const bridgeDraft = persistOrderRecord({
+          ...localDraft,
+          sync: {
+            ...(localDraft.sync || {}),
+            local: bridgeInitial?.ok ? {
+              ok: true,
+              updated_at: bridgeInitial?.updated_at || createdAt,
+              via: 'local_bridge'
+            } : {
+              ok: false,
+              updated_at: createdAt,
+              error: bridgeInitial?.error || ''
+            }
+          }
+        });
+
+        const [tgRes, tgResVN, sheetRes] = await Promise.all([
+          sendOrderToTelegram(orderPayload),
+          sendOrderToTelegramVN(orderPayload),
+          createOrderOnSheet(orderPayload)
+        ]);
+
+        const syncedOrder = persistOrderRecord({
+          ...bridgeDraft,
+          tg: tgRes,
+          vn_tg: tgResVN,
+          sheet: sheetRes,
+          status: 'NEW',
+          updated_at: nowIso(),
+          sync: {
+            ...(bridgeDraft.sync || {}),
+            telegram: {
+              ok: !!tgRes?.ok,
+              updated_at: nowIso(),
+              error: tgRes?.reason || ''
+            },
+            telegram_vn: {
+              ok: !!tgResVN?.ok,
+              updated_at: nowIso(),
+              error: tgResVN?.reason || ''
+            },
+            sheet: (sheetRes?.ok || sheetRes?.id) ? {
+              ok: true,
+              id: sheetRes?.id || sheetRes?.order_id || '',
+              updated_at: nowIso(),
+              via: 'apps_script'
+            } : {
+              pending: true,
+              retrying: true,
+              updated_at: nowIso(),
+              error: sheetRes?.error || String(sheetRes?.reason || '')
+            }
+          }
+        });
+        await pushOrderToLocalBridge(syncedOrder);
+
+        let icon;
+        if ((tgRes?.ok || tgResVN?.ok) && (sheetRes?.ok || sheetRes?.id)) icon = '✔✔';
+        else if (tgRes?.ok || tgResVN?.ok || sheetRes?.ok || sheetRes?.id) icon = '✔…';
+        else icon = '…';
+
+        alert(`${icon} ID: ${orderPayload.id} • Итого: ${totalWithDelivery.toFixed(2)} ${CURRENCY}`);
+
+        if (statusResultEl){
+          renderStatus(orderPayload.code);
+        }
+
+        cart.clear(); saveCart();
+        renderMenu();
+        renderCartSheet();
+        renderFab();
+        closeSheet();
+      });
+
+      let activeCat = '';
+      const debounce = (fn,delay) => { let timer; return () => { clearTimeout(timer); timer = setTimeout(fn,delay); }; };
+
+      function updateActive(){
+        const header = $('.header');
+        const catNav = $('.cat-nav');
+        if (!header || !catNav) return;
+        const stickyH = header.offsetHeight + catNav.offsetHeight;
+        let maxTop = -Infinity;
+        let closest = null;
+        $$('section').forEach(sec => {
+          if (!sec.id || !sec.id.startsWith('sec-')) return;
+          const top = sec.getBoundingClientRect().top;
+          if (top <= stickyH && top > maxTop){
+            maxTop = top;
+            closest = sec;
+          }
+        });
+        if (closest){
+          const cat = closest.id.replace('sec-','');
+          if (cat !== activeCat){
+            activeCat = cat;
+            $$('.pill').forEach(p => p.classList.remove('active'));
+            const pill = $(`.pill[href="#${closest.id}"]`);
+            if (pill){
+              pill.classList.add('active');
+              pill.scrollIntoView({behavior:'smooth',inline:'center'});
+            }
+          }
+        }
+      }
+
+      window.addEventListener('scroll', debounce(updateActive,50));
+
+      /* Dynamic Island + перенос пилюль в bar, как в speedForce */
+      const catPillsEl = $('#catPills');
+      const catPillsParent = catPillsEl?.parentNode || null;
+      const catPillsSibling = catPillsEl?.nextSibling || null;
+
+      function isDesktopLayout(){
+        return window.matchMedia('(min-width: 1280px)').matches;
+      }
+
+      function islandThreshold(){
+        return isDesktopLayout() ? Number.POSITIVE_INFINITY : 80;
+      }
+      let islandActive = false;
+
+      const onScrollIsland = (() => {
+        let ticking = false;
+        return () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const needIsland = window.scrollY > islandThreshold();
+            if (needIsland !== islandActive){
+              islandActive = needIsland;
+              document.body.classList.toggle('island', islandActive);
+              const bar = $('.bar');
+              const catPills = $('#catPills');
+              if (islandActive){
+                if (bar && catPills) bar.appendChild(catPills);
+              } else if (catPillsParent && catPills) {
+                if (catPillsSibling) catPillsParent.insertBefore(catPills, catPillsSibling);
+                else catPillsParent.appendChild(catPills);
+              }
+            }
+            ticking = false;
+          });
+        };
+      })();
+      window.addEventListener('scroll', onScrollIsland, {passive:true});
+      window.addEventListener('resize', onScrollIsland);
+      onScrollIsland();
+
+      const dockCat = $('#dockCat');
+      const dockView = $('#dockView');
+      const dockProfil = $('#dockProfil');
+      const dockLang = $('#dockLang');
+      const dockCart = $('#dockCart');
+      const langPopup = $('#langPopup');
+      const catOverlayEl = $('#catOverlay');
+      const catSheetEl = $('#catSheet');
+      const catSheetList = $('#catSheetList');
+
+      function buildCatSheet(){
+        if (!catSheetList) return;
+        const keys = Object.keys(menuData || {}).filter(k => Array.isArray(menuData[k]) && menuData[k].some(it => !isBuilderItem(it) && isMenuItemAvailable(it)));
+        catSheetList.innerHTML = keys.map(k =>
+          `<button class="chip" data-goto="#sec-${k}">${catLabel(k)}</button>`
+        ).join('');
+      }
+
+      catOverlayEl?.addEventListener('click', closeCatSheet);
+      $('#moreOverlay')?.addEventListener('click', closeMoreSheet);
+
+      catSheetEl?.addEventListener('click', e=>{
+        const b = e.target.closest('[data-goto]');
+        if (!b) return;
+        const target = b.getAttribute('data-goto');
+        closeCatSheet();
+        document.querySelector(target)?.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+
+      function setActiveDock(btn){
+        $$('.dock-btn').forEach(b=>{
+          if (b === btn) b.classList.add('active');
+          else b.classList.remove('active');
+        });
+      }
+
+      dockCat?.addEventListener('click', ()=>{
+        setActiveDock(dockCat);
+        buildCatSheet();
+        openCatSheet();
+      });
+
+      dockView?.addEventListener('click', ()=>{
+        setActiveDock(dockView);
+        viewMode = (viewMode === 'grid') ? 'list' : 'grid';
+        localStorage.setItem(VIEW_KEY, viewMode);
+        applyView();
+        applyDockLabels();
+      });
+
+      dockLang?.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        setActiveDock(dockLang);
+        if (!langPopup) return;
+        langPopup.classList.toggle('show');
+      });
+
+      langPopup?.addEventListener('click', e=>{
+        const b = e.target.closest('[data-lang]');
+        if (!b) return;
+        const code = b.dataset.lang;
+        setLang(code);
+        langPopup.classList.remove('show');
+      });
+
+      document.addEventListener('click', e=>{
+        if (!langPopup) return;
+        if (!langPopup.contains(e.target) && !dockLang.contains(e.target)){
+          langPopup.classList.remove('show');
+        }
+      });
+
+      dockProfil?.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        setActiveDock(dockProfil);
+        window.location.href = 'profil.html';
+      });
+
+      dockCart?.addEventListener('click', ()=>{
+        setActiveDock(dockCart);
+        openSheet();
+      });
+
+      const brandEl = $('#brandTap');
+      brandEl?.addEventListener('click', (e)=>{
+        e.preventDefault();
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+
+      $('#sheetClose')?.addEventListener('click', (e)=>{ e.stopPropagation(); closeSheet(); });
+      $('#catSheetClose')?.addEventListener('click', (e)=>{ e.stopPropagation(); closeCatSheet(); });
+      $('#moreSheetClose')?.addEventListener('click', (e)=>{ e.stopPropagation(); closeMoreSheet(); });
+
+      document.addEventListener('keydown', e=>{
+        if (e.key === 'Escape'){
+          if ($('#sheet')?.classList.contains('open')) closeSheet();
+          if ($('#catSheet')?.classList.contains('open')) closeCatSheet();
+          if ($('#moreSheet')?.classList.contains('open')) closeMoreSheet();
+          if ($('#dishSheet')?.classList.contains('open')) closeDishSheet();
+          if (langPopup?.classList.contains('show')) langPopup.classList.remove('show');
+          if ($('#bankSheet')?.classList.contains('open')) closeBankSheet();
+        }
+      });
+
+      /* BANK SELECTION MODAL */
+      const bankOverlay = $('#bankOverlay');
+      const bankSheet = $('#bankSheet');
+      const bankSheetClose = $('#bankSheetClose');
+      const bankList = $('#bankList');
+      const paySwitcher = $('#paySwitcher');
+
+      function currentOrderType() {
+        return document.querySelector('#orderType .chip.active')?.dataset.ot || 'on_site';
+      }
+
+      function liqpayLanguage() {
+        if (LANG === 'ua') return 'uk';
+        if (LANG === 'ru') return 'ru';
+        return 'en';
+      }
+
+      function currentPageUrl() {
+        try {
+          return new URL(window.location.href).toString();
+        } catch (_) {
+          return '';
+        }
+      }
+
+      function liqpayHintText() {
+        const t = L();
+        const { itemsCount, totalWithDelivery } = cartSummary(currentOrderType());
+        if (!itemsCount) return t.liqpayHint || 'Apple Pay • Google Pay • Банковская карта';
+        return `${itemsCount} ${t.ui?.itemsShort || 'шт.'} • ${fmt(totalWithDelivery)}`;
+      }
+
+      function buildLiqPayCheckoutRequest() {
+        pruneUnavailableCart();
+        const t = L();
+        const orderType = currentOrderType();
+        const { itemsCount, items, lines, deliveryFee, totalWithDelivery } = cartSummary(orderType);
+        if (!items.length) {
+          throw new Error(t.payNeedsCart || 'Добавьте блюда в корзину, чтобы оплатить через LiqPay.');
+        }
+
+        const stamp = nowIso().replace(/[-:TZ.]/g, '').slice(0, 14);
+        const orderId = `CDPAY-${stamp}`;
+        const preview = items
+          .slice(0, 3)
+          .map(item => item.name)
+          .filter(Boolean)
+          .join(', ');
+        const info = [
+          `source=site_pay`,
+          `type=${orderType}`,
+          `items=${itemsCount}`,
+          `delivery_fee=${Number(deliveryFee || 0).toFixed(2)}`,
+          preview ? `preview=${preview}` : '',
+          lines.length ? `lines=${lines.length}` : '',
+        ].filter(Boolean).join(' | ');
+
+        return {
+          amount: Number(totalWithDelivery || 0).toFixed(2),
+          currency: LIQPAY_CURRENCY,
+          order_id: orderId,
+          language: liqpayLanguage(),
+          description: `CYBER DRAGON • ${itemsCount} • ${Number(totalWithDelivery || 0).toFixed(2)} ${CURRENCY}`,
+          result_url: currentPageUrl(),
+          phone: phone?.value?.trim() || '',
+          info,
+        };
+      }
+
+      async function requestLiqPayCheckout(payload) {
+        if (!LIQPAY_CHECKOUT_API) {
+          throw new Error('LiqPay checkout API is unavailable.');
+        }
+        const response = await fetch(LIQPAY_CHECKOUT_API, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (_) {
+          data = {};
+        }
+        if (!response.ok || !data?.ok) {
+          throw new Error(data?.error || `LiqPay HTTP ${response.status}`);
+        }
+        return data;
+      }
+
+      function submitLiqPayCheckout(checkout) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = checkout.checkout_url || 'https://www.liqpay.ua/api/3/checkout';
+        form.acceptCharset = 'utf-8';
+        form.style.display = 'none';
+        form.innerHTML = `
+          <input type="hidden" name="data" value="${escapeHtml(checkout.data || '')}">
+          <input type="hidden" name="signature" value="${escapeHtml(checkout.signature || '')}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+        form.remove();
+      }
+
+      function getPayItems() {
+        const t = L();
+        const items = [];
+        if (LIQPAY_CHECKOUT_API) {
+          items.push({
+            type: 'liqpay',
+            name: t.bankActions?.liqpay || 'Оплатить через LiqPay',
+            hint: liqpayHintText(),
+            icon: 'images/icon/pay.png',
+          });
+        }
+        items.push(
+          {
+            type: 'copy',
+            name: t.bankActions?.iban || 'Скопировать IBAN',
+            hint: PAYMENT_IBAN,
+            icon: 'images/icon/pay.png',
+            value: PAYMENT_IBAN,
+            copied: t.copyIbanDone || 'IBAN скопирован'
+          },
+          {
+            type: 'copy',
+            name: t.bankActions?.card || 'Скопировать карту',
+            hint: PAYMENT_CARD_NUMBER,
+            icon: 'images/icon/pay.png',
+            value: PAYMENT_CARD_NUMBER,
+            copied: t.copyCardDone || 'Номер карты скопирован'
+          }
+        );
+        return items;
+      }
+
+      function renderBankList() {
+        if (!bankList) return;
+        bankList.innerHTML = '';
+        getPayItems().forEach(item => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'chip bank-option';
+          btn.dataset.action = item.type;
+          if (item.link) btn.dataset.link = item.link;
+          if (item.value) btn.dataset.value = item.value;
+          if (item.copied) btn.dataset.copied = item.copied;
+          btn.innerHTML = `
+            <img src="${item.icon}" alt="" class="bank-option-icon">
+            <span class="bank-option-meta">
+              <strong>${item.name}</strong>
+              <small>${item.hint || ''}</small>
+            </span>
+          `;
+          bankList.appendChild(btn);
+        });
+      }
+
+      async function copyTextValue(text) {
+        try {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          ta.remove();
+          return ok;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function openBankSheet() {
+        renderBankList();
+        document.body.classList.add('sheet-open');
+        bankOverlay?.classList.add('show');
+        bankSheet?.classList.add('open');
+      }
+
+      function closeBankSheet() {
+        document.body.classList.remove('sheet-open');
+        bankOverlay?.classList.remove('show');
+        bankSheet?.classList.remove('open');
+      }
+
+      if (paySwitcher) {
+        paySwitcher.addEventListener('click', (e) => {
+          e.preventDefault();
+          openBankSheet();
+        });
+      }
+
+      bankOverlay?.addEventListener('click', closeBankSheet);
+      bankSheetClose?.addEventListener('click', closeBankSheet);
+
+      bankList?.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.bank-option');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        if (action === 'liqpay') {
+          try {
+            const checkout = await requestLiqPayCheckout(buildLiqPayCheckoutRequest());
+            closeBankSheet();
+            submitLiqPayCheckout(checkout);
+            return;
+          } catch (err) {
+            const t = L();
+            alert(err?.message || t.liqpayFailed || 'Не удалось открыть LiqPay. Попробуйте позже.');
+          }
+        } else if (action === 'copy' && btn.dataset.value) {
+          const ok = await copyTextValue(btn.dataset.value);
+          const t = L();
+          alert(ok ? (btn.dataset.copied || btn.dataset.value) : `${t.copyFailed || 'Не удалось скопировать. Скопируйте вручную:'} ${btn.dataset.value}`);
+        }
+        closeBankSheet();
+      });
+
+      const payIcon = $('#payIcon');
+      const payText = $('#payText');
+
+      function getPayIconVariants() {
+        const baseAlt = LIQPAY_CHECKOUT_API ? 'LiqPay payment' : 'Card payment';
+        return PAY_ICON_VARIANTS
+          .map(item => (
+            item.src === 'images/icon/pay.png'
+              ? { ...item, alt: baseAlt }
+              : item
+          ))
+          .filter(item => (
+            LIQPAY_CHECKOUT_API ||
+            (item.src !== 'images/icon/applepay.png' &&
+             item.src !== 'images/icon/gpay.png')
+          ));
+      }
+
+      let payIconIndex = 0;
+      let payIconTimer = 0;
+
+      function setPayIconFrame(frame) {
+        if (!payIcon || !frame) return;
+        payIcon.src = frame.src;
+        payIcon.alt = frame.alt;
+        payIcon.classList.remove('is-swapping');
+      }
+
+      function clearPayIconRotation() {
+        if (!payIconTimer) return;
+        window.clearInterval(payIconTimer);
+        payIconTimer = 0;
+      }
+
+      function rotatePayIcon() {
+        if (!payIcon) return;
+        const icons = getPayIconVariants();
+        if (icons.length <= 1) {
+          setPayIconFrame(icons[0]);
+          return;
+        }
+        payIconIndex = (payIconIndex + 1) % icons.length;
+        payIcon.classList.add('is-swapping');
+        window.setTimeout(() => {
+          setPayIconFrame(icons[payIconIndex]);
+        }, PAY_ICON_SWAP_MS);
+      }
+
+      function initPayIconRotation() {
+        if (!payIcon) return;
+        const icons = getPayIconVariants();
+        if (!icons.length) return;
+        payIconIndex %= icons.length;
+        setPayIconFrame(icons[payIconIndex]);
+        clearPayIconRotation();
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || icons.length <= 1) {
+          return;
+        }
+        payIconTimer = window.setInterval(rotatePayIcon, PAY_ICON_ROTATE_MS);
+      }
+
+      if (payIcon) {
+        initPayIconRotation();
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            clearPayIconRotation();
+            return;
+          }
+          initPayIconRotation();
+        });
+      }
+
+      if (payText) {
+        payText.textContent = L().payLabel || L().checkoutPay || 'Оплатить';
+      }
+
+      (function registerPwa(){
+        if (!('serviceWorker' in navigator)) return;
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').catch(error => {
+            console.warn('Service worker registration failed', error);
+          });
+        });
+      })();
+
+      /* HERO VIDEO + GIF FALLBACK */
+      (function initHeroMedia() {
+        const video = document.getElementById('heroVideo');
+        const media = document.getElementById('heroMedia');
+        const fallback = document.getElementById('heroFallback');
+        if (!video || !media || !fallback) return;
+
+        let fallbackShown = false;
+        let interactionBound = false;
+
+        const fallbackTimer = window.setTimeout(() => {
+          if (video.readyState < 2) showFallback();
+        }, 3200);
+
+        function clearFallbackTimer() {
+          window.clearTimeout(fallbackTimer);
+        }
+
+        function bindInteractionPlay() {
+          if (interactionBound || fallbackShown) return;
+          interactionBound = true;
+          const once = () => {
+            video.play().catch(() => {});
+            window.removeEventListener('touchstart', once);
+            window.removeEventListener('click', once);
+          };
+          window.addEventListener('touchstart', once, { once: true });
+          window.addEventListener('click', once, { once: true });
+        }
+
+        function showFallback() {
+          if (fallbackShown) return;
+          fallbackShown = true;
+          clearFallbackTimer();
+          if (fallback.dataset.gifSrc && fallback.src !== fallback.dataset.gifSrc) {
+            fallback.src = fallback.dataset.gifSrc;
+          }
+          media.classList.add('is-fallback');
+          video.pause();
+        }
+
+        const startVideo = () => {
+          if (fallbackShown) return;
+          clearFallbackTimer();
+          video.play().catch(() => {
+            console.log('Autoplay blocked, will play on user interaction');
+            bindInteractionPlay();
+          });
+        };
+
+        video.addEventListener('loadeddata', clearFallbackTimer, { once: true });
+        video.addEventListener('error', showFallback);
+        const source = video.querySelector('source');
+        if (source) source.addEventListener('error', showFallback);
+
+        if (video.readyState >= 2) {
+          startVideo();
+        } else {
+          video.addEventListener('canplay', startVideo, { once: true });
+        }
+      })();
+
+      /* SWIPE ДЛЯ ВСЕХ SHEET */
+      (function(){
+        const cartSheet = $('#sheet');
+        const cartOverlay = $('#overlay');
+        const catSheet = $('#catSheet');
+        const catOverlay = $('#catOverlay');
+        const moreSheet = $('#moreSheet');
+        const moreOverlay = $('#moreOverlay');
+        const bankSheetEl = $('#bankSheet');
+        const bankOverlayEl = $('#bankOverlay');
+        const DRAG_START_ZONE = 40;
+        const DISMISS_Y = 120;
+        const MAX_DRAG = 280;
+
+        function attachSwipe(sheetEl, overlayEl, closeFn){
+          if (!sheetEl) return;
+          let startY = 0;
+          let currentY = 0;
+          let dragging = false;
+
+          function onStart(e){
+            const touch = e.touches && e.touches[0];
+            if (!touch) return;
+            const rect = sheetEl.getBoundingClientRect();
+            const offsetY = touch.clientY - rect.top;
+            if (offsetY > DRAG_START_ZONE) return;
+            dragging = true;
+            startY = touch.clientY;
+            currentY = 0;
+            sheetEl.style.transition = 'transform .0s';
+            if (overlayEl) overlayEl.style.transition = 'opacity .0s';
+          }
+
+          function onMove(e){
+            if (!dragging) return;
+            const touch = e.touches && e.touches[0];
+            if (!touch) return;
+            const dy = touch.clientY - startY;
+            if (dy <= 0){
+              currentY = 0;
+              sheetEl.style.transform = 'translateY(0)';
+              if (overlayEl) overlayEl.style.opacity = '1';
+              return;
+            }
+            currentY = Math.min(dy, MAX_DRAG);
+            const progress = currentY / MAX_DRAG;
+            sheetEl.style.transform = `translateY(${currentY}px)`;
+            if (overlayEl) overlayEl.style.opacity = String(1 - progress * 0.7);
+          }
+
+          function onEnd(){
+            if (!dragging) return;
+            dragging = false;
+            sheetEl.style.transition = 'transform .22s ease';
+            if (overlayEl) overlayEl.style.transition = 'opacity .22s ease';
+            if (currentY > DISMISS_Y){
+              sheetEl.style.transform = `translateY(${MAX_DRAG}px)`;
+              if (overlayEl) overlayEl.style.opacity = '0';
+              setTimeout(()=>{
+                sheetEl.style.transform = '';
+                if (overlayEl) overlayEl.style.opacity = '';
+                closeFn();
+              },200);
+            } else {
+              sheetEl.style.transform = 'translateY(0)';
+              if (overlayEl) overlayEl.style.opacity = '1';
+            }
+          }
+
+          sheetEl.addEventListener('touchstart', onStart, {passive:true});
+          sheetEl.addEventListener('touchmove', onMove, {passive:true});
+          sheetEl.addEventListener('touchend', onEnd);
+          sheetEl.addEventListener('touchcancel',onEnd);
+        }
+
+        attachSwipe(cartSheet, cartOverlay, closeSheet);
+        attachSwipe(catSheet, catOverlay, closeCatSheet);
+        attachSwipe(moreSheet, moreOverlay, closeMoreSheet);
+        attachSwipe(bankSheetEl, bankOverlayEl, closeBankSheet);
+      })();
+
+      (function init(){
+        loadCart();
+
+        sanitizeMenuData();
+
+        if (selA) selA.value = LANG;
+        if (selB) selB.value = LANG;
+
+        const flag = LANG_FLAGS[LANG] || '🌐';
+        const langFlagEl = $('#dockLangFlag');
+        if (langFlagEl) langFlagEl.textContent = flag;
+
+        setUITexts();
+        renderBankList();
+        availabilityApi()?.refresh?.().then(() => {
+          pruneUnavailableCart();
+          renderPills();
+          renderMenu();
+          renderCartSheet();
+          renderFab();
+        });
+
+        const header = $('.header');
+        const catNav = $('.cat-nav');
+        if (header && catNav){
+          catNav.style.top = `${header.offsetHeight}px`;
+        }
+
+        updateActive();
+        applyView();
+      })();
+    </script>
+  </div>
+</body>
+</html>
