@@ -101,10 +101,10 @@
   <div class="app">
     <header class="header">
       <div class="bar">
-        <h1 class="brand"><a href="HOME.html" class="profile-brand-link"><img class="mark" src="logo.png" alt="Logo"><span class="brand-label">DRAGON GO</span></a></h1>
+        <h1 class="brand"><a href="https://jktigr.github.io/DRAGON-GO/HOME.html" class="profile-brand-link"><img class="mark" src="logo.png" alt="Logo"><span class="brand-label">DRAGON GO</span></a></h1>
         <div class="lang">
           <select id="langSel" aria-label="Language">
-            <option value="ru">🇷🇺 RU</option>
+            <option value="ru">🇺🇦 RU</option>
             <option value="ua">🇺🇦 UA</option>
             <option value="vn">🇻🇳 VN</option>
             <option value="zh">🇨🇳 ZH</option>
@@ -113,15 +113,27 @@
           </select>
         </div>
         <button class="burger" id="burgerBtn" aria-haspopup="true" aria-expanded="false" aria-controls="navPop">☰</button>
-        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu">
-          <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
-          <a href="profil.html" id="navAccount" role="menuitem">👤 PROFILE</a>
-          <a href="#ordersSection" id="navOrders" role="menuitem">📦 ORDERS</a>
-          <a href="#contactSection" id="navContact" role="menuitem">📞 CONTACT</a>
-          <hr>
+
+      <nav class="nav-pop bolt-drawer" id="navPop" role="menu" aria-label="Main menu">
+          <div class="nav-main">
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html" id="navHome" role="menuitem">Головна</a>
+            <a href="market.html" id="navMarket" role="menuitem">Магазини</a>
+            <a href="menu.html#searchIn" id="navSearch" role="menuitem">Пошук</a>
+            <a href="#ordersSection" id="navOrders" role="menuitem">Замовлення</a>
+            <a href="profil.html" id="navProfil" role="menuitem">Профіль</a>
+          </div>
+
+          <div class="nav-delivery">
+            <p id="navDeliveryTitle">Замовити доставку їжі</p>
+            <a class="app-store-badge" href="https://jktigr.github.io/DRAGON-GO/HOME.html" aria-label="Download on the App Store">
+              <img src="images/icon/apple.png" alt="">
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
+          </div>
+
           <div class="lang-inline" role="none">🌐
-            <select id="langSelMenu" aria-label="Language (menu)">
-              <option value="ru">🇷🇺 RU</option>
+            <select id="langSelMenu" aria-label="Вибір мови в меню" data-i18n-aria-label="langMenuLabel">
+              <option value="ru">🇺🇦 RU</option>
               <option value="ua">🇺🇦 UA</option>
               <option value="vn">🇻🇳 VN</option>
               <option value="zh">🇨🇳 ZH</option>
@@ -129,7 +141,23 @@
               <option value="de">🇩🇪 DE</option>
             </select>
           </div>
-        </nav>
+
+          <div class="nav-legal">
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#privacy" id="navPrivacy" role="menuitem">Конфіденційність</a>
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#cookies" id="navCookies" role="menuitem">Файли Cookies</a>
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#security" id="navSecurity" role="menuitem">Безпека</a>
+          </div>
+
+          <div class="nav-socials" aria-label="Social links">
+            <a href="#" aria-label="Facebook"><img src="images/icon/fb.png" alt=""></a>
+            <a class="nav-social-letter" href="#" aria-label="Twitter">x</a>
+            <a href="#" aria-label="Instagram"><img src="images/icon/ig.png" alt=""></a>
+            <a class="nav-social-letter nav-social-in" href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="TikTok"><img src="images/icon/tt.png" alt=""></a>
+          </div>
+
+          <div class="nav-copy">© 2026 Bolt Technology OÜ</div>
+      </nav>
       </div>
     </header>
 
@@ -138,6 +166,10 @@
         <h2 class="profile-title" id="profileTitle">👤 Профиль</h2>
         <p class="profile-intro" id="profileIntro">Сохрани телефон и адрес на этом устройстве, чтобы быстрее оформлять доставку и открывать статус заказа.</p>
         <div class="profile-grid">
+          <label class="profile-card">
+            <span id="profileNameLabel">Имя</span>
+            <input id="profileNameInput" type="text" placeholder="Например, Алексей">
+          </label>
           <label class="profile-card">
             <span id="profilePhoneLabel">Телефон</span>
             <input id="profilePhoneInput" type="tel" placeholder="+380 63 000 00 00">
@@ -206,9 +238,21 @@
       const CURRENCY = 'грн';
       const STORE_PHONE = '+380632637999';
       const SUPPORTED_LANGS = ['ru', 'ua', 'vn', 'zh', 'pl', 'de'];
+      const SUPPORTED_VENUES = ['dragon', 'dlv', 'asian', 'shaurma'];
+      const VENUE_LABELS = {
+        dragon: 'DRAGON',
+        dlv: 'PHO VIET',
+        asian: 'HA NOI',
+        shaurma: 'Shaurma & Brothers'
+      };
 
       function normalizeLang(value) {
         return SUPPORTED_LANGS.includes(value) ? value : 'ru';
+      }
+
+      function normalizeVenueValue(value) {
+        const normalized = String(value || '').trim().toLowerCase();
+        return SUPPORTED_VENUES.includes(normalized) ? normalized : '';
       }
 
       function cloneLocaleData(value) {
@@ -709,6 +753,95 @@
       Object.entries(PROFILE_I18N_OVERRIDES).forEach(([locale, overrides]) => {
         mergeLocaleData(I18N[locale], overrides);
       });
+      const PROFILE_TRACKING_EXTRAS = {
+        ru: {
+          profile: {
+            name: 'Имя',
+            namePlaceholder: 'Например, Алексей'
+          },
+          tracking: {
+            labels: {
+              venue: 'Точка',
+              customer: 'Клиент',
+              table: 'Стол',
+              pickup: 'Самовывоз'
+            }
+          }
+        },
+        ua: {
+          profile: {
+            name: "Ім'я",
+            namePlaceholder: 'Наприклад, Олексій'
+          },
+          tracking: {
+            labels: {
+              venue: 'Точка',
+              customer: 'Клієнт',
+              table: 'Стіл',
+              pickup: 'Самовивіз'
+            }
+          }
+        },
+        vn: {
+          profile: {
+            name: 'Ten',
+            namePlaceholder: 'Vi du: Alex'
+          },
+          tracking: {
+            labels: {
+              venue: 'Diem ban',
+              customer: 'Khach hang',
+              table: 'Ban',
+              pickup: 'Mang di'
+            }
+          }
+        },
+        zh: {
+          profile: {
+            name: '姓名',
+            namePlaceholder: '例如：Alex'
+          },
+          tracking: {
+            labels: {
+              venue: '门店',
+              customer: '客户',
+              table: '桌号',
+              pickup: '自取'
+            }
+          }
+        },
+        pl: {
+          profile: {
+            name: 'Imie',
+            namePlaceholder: 'Na przyklad Alex'
+          },
+          tracking: {
+            labels: {
+              venue: 'Punkt',
+              customer: 'Klient',
+              table: 'Stol',
+              pickup: 'Odbior'
+            }
+          }
+        },
+        de: {
+          profile: {
+            name: 'Name',
+            namePlaceholder: 'Zum Beispiel Alex'
+          },
+          tracking: {
+            labels: {
+              venue: 'Standort',
+              customer: 'Kunde',
+              table: 'Tisch',
+              pickup: 'Abholung'
+            }
+          }
+        }
+      };
+      Object.entries(PROFILE_TRACKING_EXTRAS).forEach(([locale, overrides]) => {
+        mergeLocaleData(I18N[locale], overrides);
+      });
 
       const $ = selector => document.querySelector(selector);
       const $$ = selector => document.querySelectorAll(selector);
@@ -727,13 +860,20 @@
         langSel: $('#langSel'),
         langSelMenu: $('#langSelMenu'),
         navHome: $('#navHome'),
-        navAccount: $('#navAccount'),
+        navMarket: $('#navMarket'),
+        navSearch: $('#navSearch'),
         navOrders: $('#navOrders'),
-        navContact: $('#navContact'),
+        navProfil: $('#navProfil'),
+        navDeliveryTitle: $('#navDeliveryTitle'),
+        navPrivacy: $('#navPrivacy'),
+        navCookies: $('#navCookies'),
+        navSecurity: $('#navSecurity'),
         profileTitle: $('#profileTitle'),
         profileIntro: $('#profileIntro'),
+        profileNameLabel: $('#profileNameLabel'),
         profilePhoneLabel: $('#profilePhoneLabel'),
         profileAddressLabel: $('#profileAddressLabel'),
+        profileNameInput: $('#profileNameInput'),
         profilePhoneInput: $('#profilePhoneInput'),
         profileAddressInput: $('#profileAddressInput'),
         profileSaveBtn: $('#profileSaveBtn'),
@@ -754,17 +894,19 @@
         try {
           const raw = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}') || {};
           return {
+            name: String(raw.name || '').trim(),
             phone: String(raw.phone || '').trim(),
             address: String(raw.address || '').trim()
           };
         } catch (error) {
-          return { phone: '', address: '' };
+          return { name: '', phone: '', address: '' };
         }
       }
 
       function saveProfileData(profile) {
         try {
           localStorage.setItem(PROFILE_KEY, JSON.stringify({
+            name: String(profile?.name || '').trim(),
             phone: String(profile?.phone || '').trim(),
             address: String(profile?.address || '').trim()
           }));
@@ -838,6 +980,11 @@
         const createdAt = raw?.created_at || raw?.createdAt || nowIso();
         const updatedAt = raw?.updated_at || raw?.updatedAt || createdAt;
         const sync = raw?.sync && typeof raw.sync === 'object' ? raw.sync : {};
+        const venue = normalizeVenueValue(raw?.venue || raw?.point || '');
+        const customerName = String(raw?.customer_name || raw?.customer?.name || '').trim();
+        const customerPhone = String(raw?.customer_phone || raw?.customer?.phone || raw?.phone || '').trim();
+        const customerAddress = String(raw?.customer_address || raw?.customer?.address || raw?.address || '').trim();
+        const customerId = String(raw?.customer_id || raw?.client_id || raw?.customer?.id || '').trim();
         return {
           ...raw,
           id: String(raw?.id || raw?.order_id || code).trim(),
@@ -845,6 +992,15 @@
           status: normalizeStatus(raw?.status),
           created_at: createdAt,
           updated_at: updatedAt,
+          venue,
+          point: venue || String(raw?.point || '').trim().toLowerCase(),
+          venue_label: String(raw?.venue_label || raw?.venueLabel || (venue ? VENUE_LABELS[venue] : '')).trim(),
+          customer_id: customerId,
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_address: customerAddress,
+          phone: customerPhone,
+          address: customerAddress,
           currency: raw?.currency || CURRENCY,
           receipt_link: safeExternalUrl(raw?.receipt_link || raw?.receiptLink || ''),
           items: Array.isArray(raw?.items) ? raw.items : [],
@@ -893,6 +1049,22 @@
         return Object.values(loadOrders())
           .map(normalizeOrderRecord)
           .sort((left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime());
+      }
+
+      function orderVenueLabel(order) {
+        return String(order?.venue_label || order?.venueLabel || (order?.venue ? VENUE_LABELS[order.venue] : '') || '').trim();
+      }
+
+      function orderCustomerName(order) {
+        return String(order?.customer_name || order?.customer?.name || '').trim();
+      }
+
+      function orderCustomerPhone(order) {
+        return String(order?.customer_phone || order?.customer?.phone || order?.phone || '').trim();
+      }
+
+      function orderCustomerAddress(order) {
+        return String(order?.customer_address || order?.customer?.address || order?.address || '').trim();
       }
 
       function trackingCopy() {
@@ -1147,7 +1319,12 @@
               </div>
               <strong>${escapeHtml(fmt(order.total || order.subtotal || 0))}</strong>
             </div>
-            <div class="order-list-meta">${escapeHtml(trackingOrderTypeLabel(order.type))}${order.address ? ` · ${escapeHtml(order.address)}` : ''}</div>
+            <div class="order-list-meta">${escapeHtml([
+              trackingOrderTypeLabel(order.type),
+              orderVenueLabel(order),
+              orderCustomerName(order) || orderCustomerPhone(order),
+              orderCustomerAddress(order)
+            ].filter(Boolean).join(' · '))}</div>
             <div class="order-list-actions">
               <button class="btn primary" type="button" data-open-order="${escapeHtml(order.code)}">${escapeHtml(L().orderOpen)}</button>
             </div>
@@ -1170,6 +1347,10 @@
 
         const order = normalizeOrderRecord(rec);
         const status = normalizeStatus(order.status);
+        const venue = orderVenueLabel(order);
+        const customerName = orderCustomerName(order);
+        const customerPhone = orderCustomerPhone(order);
+        const customerAddress = orderCustomerAddress(order);
         const statusClass = {
           NEW: 'tracking-status-new',
           COOKING: 'tracking-status-cooking',
@@ -1188,10 +1369,15 @@
           { label: copy.labels.delivery, value: fmt(order.delivery_fee || 0) },
           { label: copy.labels.total, value: fmt(total) }
         ];
-        if (order.address) stats.push({ label: copy.labels.address, value: order.address });
+        if (venue) stats.push({ label: copy.labels.venue || 'Venue', value: venue });
+        if (customerName) stats.push({ label: copy.labels.customer || 'Customer', value: customerName });
+        if (customerPhone) stats.push({ label: copy.labels.phone, value: customerPhone });
+        if (order.table) stats.push({ label: copy.labels.table || 'Table', value: String(order.table) });
+        if (order.pickup_in) stats.push({ label: copy.labels.pickup || 'Pickup', value: String(order.pickup_in) });
+        if (customerAddress) stats.push({ label: copy.labels.address, value: customerAddress });
         if (itemCount) stats.push({ label: copy.labels.items, value: String(itemCount) });
 
-        const addressMapUrl = order.address ? `https://maps.google.com/?q=${encodeURIComponent(order.address)}` : '';
+        const addressMapUrl = customerAddress ? `https://maps.google.com/?q=${encodeURIComponent(customerAddress)}` : '';
         const quickActions = [
           order.receipt_link
             ? `<a class="btn primary" href="${order.receipt_link}" target="_blank" rel="noopener noreferrer">📩 ${escapeHtml(copy.receipt)}</a>`
@@ -1290,12 +1476,14 @@
 
       function applyProfile() {
         const profile = loadProfile();
+        dom.profileNameInput.value = profile.name || '';
         dom.profilePhoneInput.value = profile.phone || '';
         dom.profileAddressInput.value = profile.address || '';
       }
 
       function saveProfile() {
         saveProfileData({
+          name: dom.profileNameInput.value,
           phone: dom.profilePhoneInput.value,
           address: dom.profileAddressInput.value
         });
@@ -1322,17 +1510,32 @@
         dom.langSelMenu.value = value;
         const t = L();
         const p = t.profile || {};
-        dom.navHome.textContent = '🏠 ' + t.navHome;
-        dom.navAccount.textContent = '👤 ' + t.navAccount;
-        dom.navOrders.textContent = '📦 ' + t.navOrders;
-        dom.navContact.textContent = '📞 ' + t.navContact;
+        const navCopy = {
+          ru:{ shops:'Магазины', search:'Поиск', delivery:'Заказать доставку еды', privacy:'Конфиденциальность', cookies:'Файлы Cookies', security:'Безопасность' },
+          ua:{ shops:'Магазини', search:'Пошук', delivery:'Замовити доставку їжі', privacy:'Конфіденційність', cookies:'Файли Cookies', security:'Безпека' },
+          vn:{ shops:'Cửa hàng', search:'Tìm kiếm', delivery:'Đặt giao đồ ăn', privacy:'Quyền riêng tư', cookies:'Tệp Cookies', security:'Bảo mật' },
+          zh:{ shops:'商店', search:'搜索', delivery:'订购外送美食', privacy:'隐私', cookies:'Cookie 文件', security:'安全' },
+          pl:{ shops:'Sklepy', search:'Szukaj', delivery:'Zamów dostawę jedzenia', privacy:'Prywatność', cookies:'Pliki Cookies', security:'Bezpieczeństwo' },
+          de:{ shops:'Shops', search:'Suche', delivery:'Essen liefern lassen', privacy:'Datenschutz', cookies:'Cookie-Dateien', security:'Sicherheit' }
+        }[LANG] || {};
+        dom.navHome.textContent = t.navHome || 'Головна';
+        dom.navMarket.textContent = navCopy.shops || 'Магазини';
+        dom.navSearch.textContent = navCopy.search || 'Пошук';
+        dom.navOrders.textContent = t.navOrders || 'Замовлення';
+        dom.navProfil.textContent = t.navAccount || 'Профіль';
+        dom.navDeliveryTitle.textContent = navCopy.delivery || 'Замовити доставку їжі';
+        dom.navPrivacy.textContent = navCopy.privacy || 'Конфіденційність';
+        dom.navCookies.textContent = navCopy.cookies || 'Файли Cookies';
+        dom.navSecurity.textContent = navCopy.security || 'Безпека';
         dom.profileTitle.textContent = '👤 ' + (p.title || t.navAccount);
         dom.profileIntro.textContent = p.intro || '';
+        dom.profileNameLabel.textContent = p.name || 'Name';
         dom.profilePhoneLabel.textContent = p.phone || '';
         dom.profileAddressLabel.textContent = p.address || '';
         dom.profileSaveBtn.textContent = p.save || 'Save';
         dom.profileTrackBtn.textContent = p.track || 'Orders';
         dom.profileNote.textContent = p.note || '';
+        dom.profileNameInput.placeholder = p.namePlaceholder || '';
         dom.profilePhoneInput.placeholder = p.phonePlaceholder || '';
         dom.profileAddressInput.placeholder = p.addressPlaceholder || '';
         dom.ordersTitle.textContent = '📦 ' + t.ordersTitle;
@@ -1363,31 +1566,41 @@
       }
 
       function bindEvents() {
-        dom.burgerBtn?.addEventListener('click', () => {
+        const closeDrawer = () => {
+          dom.navPop?.classList.remove('open');
+          dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('drawer-open');
+        };
+
+        dom.burgerBtn?.addEventListener('click', event => {
+          event.stopPropagation();
           const open = dom.navPop.classList.toggle('open');
           dom.burgerBtn.setAttribute('aria-expanded', String(open));
+          document.body.classList.toggle('drawer-open', open);
         });
 
         document.addEventListener('click', event => {
           if (!dom.navPop) return;
           if (!dom.navPop.contains(event.target) && event.target !== dom.burgerBtn) {
-            dom.navPop.classList.remove('open');
-            dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+            closeDrawer();
           }
+        });
+
+        dom.navPop?.addEventListener('click', event => {
+          const link = event.target instanceof Element ? event.target.closest('a') : null;
+          if (link) closeDrawer();
         });
 
         dom.navOrders?.addEventListener('click', event => {
           event.preventDefault();
-          dom.navPop?.classList.remove('open');
-          dom.burgerBtn?.setAttribute('aria-expanded', 'false');
+          closeDrawer();
           document.getElementById('ordersSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
         });
 
-        dom.navContact?.addEventListener('click', event => {
+        dom.navSearch?.addEventListener('click', event => {
           event.preventDefault();
-          dom.navPop?.classList.remove('open');
-          dom.burgerBtn?.setAttribute('aria-expanded', 'false');
-          document.getElementById('contactSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
+          closeDrawer();
+          window.location.href = 'menu.html#searchIn';
         });
 
         dom.langSel?.addEventListener('change', event => setLang(event.target.value));

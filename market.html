@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#04110c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DRAGON Market" />
+  <title>DRAGON Market — Summer Top 12</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="app-icon-180.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="dragon-theme.css" />
+  <style>
+    :root {
+      --market-bg: #04110c;
+      --market-panel: rgba(8, 20, 16, 0.82);
+      --market-panel-strong: rgba(10, 27, 22, 0.96);
+      --market-line: rgba(121, 255, 184, 0.16);
+      --market-line-hot: rgba(92, 255, 176, 0.44);
+      --market-text: #effff7;
+      --market-muted: #83a898;
+      --market-green: #39ff88;
+      --market-green-2: #09c86f;
+      --market-red: #ff5b6e;
+      --market-amber: #ffcf5a;
+      --market-blue: #6ce4ff;
+      --market-radius: 26px;
+      --market-shadow: 0 28px 80px rgba(0, 0, 0, 0.45), 0 0 42px rgba(57, 255, 136, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body.market-page {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--market-text);
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 4%, rgba(57, 255, 136, 0.2), transparent 28%),
+        radial-gradient(circle at 90% 12%, rgba(108, 228, 255, 0.14), transparent 25%),
+        linear-gradient(180deg, #03110d 0%, #061611 42%, #020807 100%);
+      overflow-x: hidden;
+    }
+
+    body.market-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(121, 255, 184, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(121, 255, 184, 0.045) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), transparent 82%);
+    }
+
+    a { color: inherit; }
+
+    .market-shell {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: max(14px, env(safe-area-inset-top)) 0 92px;
+    }
+
+    .market-nav {
+      position: sticky;
+      top: max(10px, env(safe-area-inset-top));
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid var(--market-line);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(4,17,12,0.7));
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+    }
+
+    .market-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-decoration: none;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .market-brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 0 22px rgba(57, 255, 136, 0.2);
+    }
+
+    .market-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .market-links::-webkit-scrollbar { display: none; }
+
+    .market-link,
+    .market-btn {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--market-line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--market-text);
+      background: rgba(255, 255, 255, 0.045);
+      text-decoration: none;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .market-link:hover,
+    .market-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--market-line-hot);
+      background: rgba(57, 255, 136, 0.09);
+    }
+
+    .market-btn.primary {
+      border-color: rgba(57, 255, 136, 0.6);
+      color: #02100a;
+      background: linear-gradient(135deg, var(--market-green), #b7ffd6);
+      box-shadow: 0 12px 34px rgba(57, 255, 136, 0.2);
+    }
+
+    .market-btn.reserve {
+      border-color: rgba(108, 228, 255, 0.42);
+      background: rgba(108, 228, 255, 0.09);
+    }
+
+    .market-btn.warn {
+      border-color: rgba(255, 207, 90, 0.42);
+      background: rgba(255, 207, 90, 0.1);
+    }
+
+    .market-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .market-hero-card,
+    .market-panel,
+    .market-card,
+    .market-detail {
+      border: 1px solid var(--market-line);
+      border-radius: var(--market-radius);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(57,255,136,0.16), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(5,16,12,0.76));
+      box-shadow: var(--market-shadow);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+    }
+
+    .market-hero-card {
+      padding: clamp(22px, 4vw, 42px);
+      overflow: hidden;
+    }
+
+    .market-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(57, 255, 136, 0.24);
+      border-radius: 999px;
+      color: var(--market-green);
+      background: rgba(57, 255, 136, 0.08);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.74rem;
+    }
+
+    .market-title {
+      margin: 18px 0 14px;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: clamp(2.2rem, 8vw, 5.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+    }
+
+    .market-title span {
+      color: var(--market-green);
+      text-shadow: 0 0 36px rgba(57, 255, 136, 0.24);
+    }
+
+    .market-copy {
+      max-width: 720px;
+      margin: 0;
+      color: #c7e9dc;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      line-height: 1.55;
+    }
+
+    .market-rules {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .market-rule {
+      padding: 13px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      color: #dfffee;
+      background: rgba(255,255,255,0.045);
+      font-weight: 800;
+    }
+
+    .market-ticker-panel {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-content: stretch;
+    }
+
+    .market-stat {
+      min-height: 94px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .market-stat-label {
+      color: var(--market-muted);
+      font-size: 0.76rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .market-stat-value {
+      margin-top: 8px;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      font-weight: 900;
+    }
+
+    .market-section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 28px 0 14px;
+    }
+
+    .market-section-head h2 {
+      margin: 0;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      letter-spacing: -0.05em;
+    }
+
+    .market-section-head p {
+      margin: 6px 0 0;
+      color: var(--market-muted);
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .market-card {
+      position: relative;
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .market-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(57,255,136,0.12), transparent 44%, rgba(255,91,110,0.08));
+      opacity: 0.7;
+    }
+
+    .market-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .market-card-top {
+      display: flex;
+      gap: 12px;
+    }
+
+    .market-thumb {
+      flex: 0 0 84px;
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: radial-gradient(circle, rgba(57,255,136,0.14), rgba(0,0,0,0.24));
+    }
+
+    .market-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .market-thumb.no-image {
+      display: grid;
+      place-items: center;
+      color: var(--market-green);
+      font-weight: 900;
+    }
+
+    .market-symbol {
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-weight: 900;
+      font-size: 1.08rem;
+    }
+
+    .market-pair {
+      color: var(--market-muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .market-name {
+      margin: 8px 0 0;
+      min-height: 46px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .market-price-row,
+    .market-metrics {
+      display: grid;
+      gap: 8px;
+    }
+
+    .market-price-row {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .market-price {
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: 1.7rem;
+      font-weight: 900;
+    }
+
+    .change {
+      color: var(--market-green);
+      font-weight: 900;
+    }
+
+    .change.is-down { color: var(--market-red); }
+
+    .market-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 12px;
+    }
+
+    .metric {
+      padding: 10px;
+      border-radius: 15px;
+      color: #daf4e8;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--market-muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .market-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .market-detail {
+      margin-top: 18px;
+      padding: 16px;
+      scroll-margin-top: 96px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 16px;
+    }
+
+    .detail-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      background: rgba(0,0,0,0.22);
+    }
+
+    .detail-image {
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: radial-gradient(circle, rgba(57,255,136,0.16), rgba(0,0,0,0.24));
+    }
+
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .detail-title {
+      margin: 16px 0 4px;
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: clamp(1.7rem, 5vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .detail-sub {
+      color: var(--market-muted);
+      font-weight: 800;
+    }
+
+    .detail-price {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .detail-price strong {
+      font-family: "Space Grotesk", "Manrope", sans-serif;
+      font-size: clamp(2rem, 8vw, 4.4rem);
+      letter-spacing: -0.08em;
+    }
+
+    .detail-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chart-wrap {
+      min-height: 420px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--market-muted);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.76rem;
+    }
+
+    .chart {
+      width: 100%;
+      min-height: 360px;
+      border: 1px solid rgba(121, 255, 184, 0.12);
+      border-radius: 20px;
+      background: #04100d;
+      overflow: hidden;
+    }
+
+    .chart svg {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      display: block;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 80;
+      transform: translate(-50%, 120%);
+      width: min(520px, calc(100% - 24px));
+      padding: 14px 16px;
+      border: 1px solid rgba(57, 255, 136, 0.35);
+      border-radius: 18px;
+      color: var(--market-text);
+      background: rgba(4, 16, 12, 0.94);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.34), 0 0 28px rgba(57,255,136,0.12);
+      opacity: 0;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    @media (max-width: 920px) {
+      .market-hero,
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .market-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .market-shell {
+        width: min(100% - 14px, 520px);
+        padding-bottom: 84px;
+      }
+
+      .market-nav {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .market-links {
+        width: 100%;
+      }
+
+      .market-link,
+      .market-btn {
+        min-height: 38px;
+        padding: 9px 12px;
+        font-size: 0.9rem;
+      }
+
+      .market-hero-card {
+        padding: 22px 16px;
+      }
+
+      .market-rules,
+      .market-grid,
+      .market-metrics,
+      .detail-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .market-section-head {
+        display: block;
+      }
+
+      .market-card-top {
+        align-items: flex-start;
+      }
+
+      .market-thumb {
+        flex-basis: 74px;
+        width: 74px;
+        height: 74px;
+        border-radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body class="market-page">
+  <div class="market-shell">
+    <nav class="market-nav" aria-label="DRAGON Market navigation">
+      <a class="market-brand" href="https://jktigr.github.io/DRAGON-GO/HOME.html">
+        <img src="logo.png" alt="DRAGON">
+        <span>DRAGON Market</span>
+      </a>
+      <div class="market-links">
+        <a class="market-link" href="menu.html?point=dragon">Меню</a>
+        <a class="market-link" href="https://jktigr.github.io/DRAGON-GO/HOME.html">HOME</a>
+        <a class="market-link" href="profil.html">Профиль</a>
+        <a class="market-link" href="#summerTop">Summer Top 12</a>
+      </div>
+    </nav>
+
+    <header class="market-hero">
+      <section class="market-hero-card">
+        <span class="market-kicker">Биржа времени кухни</span>
+        <h1 class="market-title">DRAGON <span>Market</span></h1>
+        <p class="market-copy">
+          DRAGON Market — биржа времени кухни. Чем выше спрос — тем выше цена и ожидание.
+          Когда кухня свободна — можно поймать скидку. Цена фиксируется перед оплатой.
+          После заказа цена уже не меняется.
+        </p>
+        <div class="market-rules">
+          <div class="market-rule">DRAGON Market — это не остатки еды. Это биржа времени кухни.</div>
+          <div class="market-rule">Summer Top 12 — главные летние блюда DRAGON.</div>
+          <div class="market-rule">Volume = количество заказов блюда за период.</div>
+          <div class="market-rule">Ограничение — только во времени кухни.</div>
+        </div>
+      </section>
+
+      <aside class="market-ticker-panel market-panel" aria-label="Market summary">
+        <div class="market-stat">
+          <div class="market-stat-label">Market Mode</div>
+          <div class="market-stat-value">Live kitchen</div>
+        </div>
+        <div class="market-stat">
+          <div class="market-stat-label">Orders today</div>
+          <div class="market-stat-value" id="summaryOrders">0</div>
+        </div>
+        <div class="market-stat">
+          <div class="market-stat-label">Average kitchen load</div>
+          <div class="market-stat-value" id="summaryLoad">0%</div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="summerTop" aria-labelledby="summerTopTitle">
+      <div class="market-section-head">
+        <div>
+          <h2 id="summerTopTitle">Summer Top 12</h2>
+          <p>
+            Лёгкие салаты Бун, хрустящая курица, нэмы, бао и горячий wok без супа.
+            Когда жарко — суп не всегда хочется. Поэтому мы собрали летний топ блюд,
+            которые быстро готовятся, хорошо заходят и подходят для доставки.
+          </p>
+        </div>
+        <a class="market-btn reserve" href="#marketDetail">Открыть график</a>
+      </div>
+      <div class="market-grid" id="marketGrid"></div>
+    </section>
+
+    <section class="market-detail" id="marketDetail" aria-live="polite"></section>
+  </div>
+
+  <div class="toast" id="marketToast" role="status" aria-live="polite"></div>
+
+  <script src="menu.js"></script>
+  <script src="summerMarket.js"></script>
+  <script>
+    const market = window.DRAGON_MARKET;
+    const marketGrid = document.getElementById("marketGrid");
+    const marketDetail = document.getElementById("marketDetail");
+    const toast = document.getElementById("marketToast");
+    let toastTimer = 0;
+
+    const escapeHtml = value => String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function selectedSymbol() {
+      const params = new URLSearchParams(window.location.search);
+      const pathMatch = window.location.pathname.match(/\/market\/([^/]+)/);
+      return params.get("symbol") || (window.location.hash || "").replace("#", "") || pathMatch?.[1] || "";
+    }
+
+    function changeClass(value) {
+      return Number(value) < 0 ? "change is-down" : "change";
+    }
+
+    function signedPercent(value) {
+      const num = Number(value || 0);
+      return `${num >= 0 ? "+" : ""}${num.toFixed(1)}%`;
+    }
+
+    function setProgress(el, value) {
+      if (!el) return;
+      el.style.setProperty("--value", `${Math.max(0, Math.min(100, value))}%`);
+    }
+
+    function marketItems() {
+      return market.getSummerMarketItems(window.menuData);
+    }
+
+    function setupImage(img, item) {
+      const candidates = market.buildImageCandidates(item);
+      let index = 0;
+      const fail = () => {
+        index += 1;
+        if (index < candidates.length) {
+          img.src = candidates[index];
+          return;
+        }
+        img.closest(".market-thumb, .detail-image")?.classList.add("no-image");
+        img.remove();
+      };
+      if (!candidates.length) {
+        fail();
+        return;
+      }
+      img.onerror = fail;
+      img.src = candidates[0];
+    }
+
+    function renderSummary(items) {
+      const totalOrders = items.reduce((sum, item) => sum + Number(item.ordersToday || 0), 0);
+      const avgLoad = items.length
+        ? Math.round(items.reduce((sum, item) => sum + Number(item.kitchenLoad || 0), 0) / items.length)
+        : 0;
+      document.getElementById("summaryOrders").textContent = String(totalOrders);
+      document.getElementById("summaryLoad").textContent = `${avgLoad}%`;
+    }
+
+    function cardTemplate(item) {
+      return `
+        <article class="market-card" data-symbol="${escapeHtml(item.symbol)}">
+          <div class="market-card-top">
+            <div class="market-thumb"><img alt="${escapeHtml(item.name)}" data-market-img="${escapeHtml(item.symbol)}"></div>
+            <div>
+              <div class="market-symbol">${escapeHtml(item.symbol)} / UAH</div>
+              <div class="market-pair">${escapeHtml(item.categoryLabel)}</div>
+              <div class="market-name">${escapeHtml(item.name)}</div>
+            </div>
+          </div>
+          <div class="market-price-row">
+            <div>
+              <div class="market-pair">current price</div>
+              <div class="market-price">${market.formatMoney(item.currentPrice)}</div>
+            </div>
+            <div class="${changeClass(item.change24h)}">${signedPercent(item.change24h)}</div>
+          </div>
+          <div class="market-metrics">
+            <div class="metric"><span>cook time</span>${escapeHtml(item.cookTimeLabel)}</div>
+            <div class="metric"><span>kitchen load</span>${item.kitchenLoad}%</div>
+            <div class="metric"><span>queue</span>${item.queueOrders} заказов</div>
+            <div class="metric"><span>orders today</span>${item.ordersToday}</div>
+            <div class="metric"><span>demand</span>${escapeHtml(item.demandStatus)}</div>
+            <div class="metric"><span>volume</span>${item.volume}</div>
+          </div>
+          <div class="market-actions">
+            <button class="market-btn reserve" data-open="${escapeHtml(item.symbol)}">Открыть Market</button>
+            <button class="market-btn primary" data-buy="${escapeHtml(item.symbol)}">Купить</button>
+            <button class="market-btn warn" data-reserve="${escapeHtml(item.symbol)}">Забронировать время кухни</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderGrid() {
+      const items = marketItems();
+      renderSummary(items);
+      marketGrid.innerHTML = items.map(cardTemplate).join("");
+      marketGrid.querySelectorAll("[data-market-img]").forEach(img => {
+        const item = items.find(entry => entry.symbol === img.dataset.marketImg);
+        setupImage(img, item);
+      });
+      const current = market.getSummerMarketBySymbol(selectedSymbol()) || items[0];
+      if (current) renderDetail(current.symbol, false);
+    }
+
+    function renderCandles(item) {
+      const candles = item.candles || [];
+      if (!candles.length) return "";
+      const width = 720;
+      const height = 360;
+      const pad = 34;
+      const chartH = 250;
+      const volumeTop = 282;
+      const volumeH = 52;
+      const prices = candles.flatMap(candle => [candle.high, candle.low]);
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      const range = Math.max(1, max - min);
+      const maxVolume = Math.max(...candles.map(candle => Number(candle.volume || 0)), 1);
+      const step = (width - pad * 2) / candles.length;
+      const candleW = Math.max(8, Math.min(24, step * 0.54));
+      const y = price => pad + (max - price) / range * chartH;
+      const priceLines = [max, (max + min) / 2, min].map(price => {
+        const yy = y(price);
+        return `<line x1="${pad}" y1="${yy}" x2="${width - pad}" y2="${yy}" stroke="rgba(121,255,184,.09)"/><text x="${width - pad + 6}" y="${yy + 4}" fill="#83a898" font-size="11">${Math.round(price)}</text>`;
+      }).join("");
+      const nodes = candles.map((candle, index) => {
+        const x = pad + step * index + step / 2;
+        const up = candle.close >= candle.open;
+        const color = up ? "#39ff88" : "#ff5b6e";
+        const openY = y(candle.open);
+        const closeY = y(candle.close);
+        const highY = y(candle.high);
+        const lowY = y(candle.low);
+        const bodyY = Math.min(openY, closeY);
+        const bodyH = Math.max(3, Math.abs(closeY - openY));
+        const volumeHeight = Number(candle.volume || 0) / maxVolume * volumeH;
+        const label = index % 3 === 0 || index === candles.length - 1
+          ? `<text x="${x - 22}" y="350" fill="#608678" font-size="10">${escapeHtml(candle.time.slice(5))}</text>`
+          : "";
+        return `
+          <line x1="${x}" y1="${highY}" x2="${x}" y2="${lowY}" stroke="${color}" stroke-width="2"/>
+          <rect x="${x - candleW / 2}" y="${bodyY}" width="${candleW}" height="${bodyH}" rx="3" fill="${color}" opacity="${up ? "0.9" : "0.82"}"/>
+          <rect x="${x - candleW / 2}" y="${volumeTop + volumeH - volumeHeight}" width="${candleW}" height="${volumeHeight}" rx="3" fill="${color}" opacity=".28"/>
+          ${label}
+        `;
+      }).join("");
+      return `
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(item.pair)} candlestick chart">
+          <rect width="${width}" height="${height}" fill="#04100d"/>
+          ${priceLines}
+          <line x1="${pad}" y1="${volumeTop}" x2="${width - pad}" y2="${volumeTop}" stroke="rgba(121,255,184,.12)"/>
+          ${nodes}
+        </svg>
+      `;
+    }
+
+    function renderDetail(symbol, scroll = true) {
+      const item = market.getSummerMarketBySymbol(symbol) || marketItems()[0];
+      if (!item) return;
+      const url = new URL(window.location.href);
+      url.searchParams.set("symbol", item.symbol);
+      history.replaceState(null, "", url);
+      marketDetail.innerHTML = `
+        <div class="detail-grid">
+          <div class="detail-card">
+            <div class="detail-image"><img alt="${escapeHtml(item.name)}" data-detail-img="${escapeHtml(item.symbol)}"></div>
+            <h2 class="detail-title">${escapeHtml(item.symbol)} / UAH</h2>
+            <div class="detail-sub">${escapeHtml(item.name)}</div>
+            <div class="detail-price">
+              <strong>${market.formatMoney(item.currentPrice)}</strong>
+              <span class="${changeClass(item.change24h)}">${signedPercent(item.change24h)}</span>
+            </div>
+            <div class="detail-metrics">
+              <div class="metric"><span>cook time</span>${escapeHtml(item.cookTimeLabel)}</div>
+              <div class="metric"><span>kitchen load</span>${item.kitchenLoad}%</div>
+              <div class="metric"><span>queue</span>${item.queueOrders} заказов</div>
+              <div class="metric"><span>orders today</span>${item.ordersToday}</div>
+              <div class="metric"><span>demand</span>${escapeHtml(item.demandStatus)}</div>
+              <div class="metric"><span>volume</span>${item.volume}</div>
+            </div>
+            <div class="market-actions">
+              <button class="market-btn primary" data-buy="${escapeHtml(item.symbol)}">Купить по ${market.formatMoney(item.currentPrice)}</button>
+              <button class="market-btn warn" data-reserve="${escapeHtml(item.symbol)}">Забронировать время кухни</button>
+              <button class="market-btn reserve" data-watch="${escapeHtml(item.symbol)}">Следить за ценой</button>
+              <button class="market-btn reserve" data-discount="${escapeHtml(item.symbol)}">Поймать скидку</button>
+            </div>
+          </div>
+          <div class="detail-card chart-wrap">
+            <div class="chart-head">
+              <span>${escapeHtml(item.pair)} candlestick</span>
+              <span>volume = orders</span>
+            </div>
+            <div class="chart">${renderCandles(item)}</div>
+          </div>
+        </div>
+      `;
+      const img = marketDetail.querySelector("[data-detail-img]");
+      if (img) setupImage(img, item);
+      if (scroll) marketDetail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function rerenderAfterAction(symbol) {
+      const items = marketItems();
+      renderSummary(items);
+      marketGrid.innerHTML = items.map(cardTemplate).join("");
+      marketGrid.querySelectorAll("[data-market-img]").forEach(img => {
+        const item = items.find(entry => entry.symbol === img.dataset.marketImg);
+        setupImage(img, item);
+      });
+      renderDetail(symbol, false);
+    }
+
+    document.addEventListener("click", event => {
+      const open = event.target.closest("[data-open]");
+      if (open) {
+        renderDetail(open.dataset.open);
+        return;
+      }
+
+      const buy = event.target.closest("[data-buy]");
+      if (buy) {
+        const result = market.addMarketItemToCart(buy.dataset.buy);
+        if (result) {
+          showToast("Цена зафиксирована. Блюдо добавлено в заказ.");
+          rerenderAfterAction(result.item.symbol);
+        }
+        return;
+      }
+
+      const reserve = event.target.closest("[data-reserve]");
+      if (reserve) {
+        const result = market.reserveKitchenTime(reserve.dataset.reserve);
+        if (result) {
+          showToast("Время кухни забронировано на 10 минут.");
+          rerenderAfterAction(result.symbol);
+        }
+        return;
+      }
+
+      const watch = event.target.closest("[data-watch]");
+      if (watch) {
+        if (market.watchPrice(watch.dataset.watch)) showToast("Теперь следим за ценой.");
+        return;
+      }
+
+      const discount = event.target.closest("[data-discount]");
+      if (discount) {
+        if (market.catchDiscount(discount.dataset.discount)) showToast("Покажем скидку, когда кухня будет свободнее.");
+      }
+    });
+
+    renderGrid();
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRAGON GO</title>
+  <link rel="stylesheet" href="dragon-theme.css" />
+  <script>
+    (() => {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      const marketIndex = parts.findIndex(part => part.toLowerCase() === "market");
+      if (marketIndex >= 0 && parts[marketIndex + 1]) {
+        const base = "/" + parts.slice(0, marketIndex).join("/");
+        const prefix = base === "/" ? "" : base;
+        const symbol = decodeURIComponent(parts[marketIndex + 1]);
+        window.location.replace(`${window.location.origin}${prefix}/market.html?symbol=${encodeURIComponent(symbol)}`);
+      }
+    })();
+  </script>
+  <style>
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      margin: 0;
+      color: #effff7;
+      background: radial-gradient(circle at top, rgba(57,255,136,.18), transparent 34%), #04110c;
+      font-family: Manrope, system-ui, sans-serif;
+    }
+    a { color: #39ff88; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DRAGON GO</h1>
+    <p>Страница не найдена.</p>
+    <p><a href="https://jktigr.github.io/DRAGON-GO/HOME.html">Вернуться на главную</a></p>
+  </main>
+</body>
+</html>

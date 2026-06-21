@@ -1486,15 +1486,25 @@
           </svg>
         </button>
 
-        <nav class="nav-pop" id="navPop" role="menu" aria-label="Main menu" data-i18n-aria-label="mainMenuLabel">
-          <a href="HOME.html" id="navHome" role="menuitem">🏠 HOME</a>
-          <a href="menu.html?point=dragon" id="navMenu" role="menuitem">🍜 MENU</a>
-          <a href="#" id="navKaraoke" role="menuitem">🎤 KARAOKE</a>
-          <a href="profil.html" id="navProfil" role="menuitem">👤 PROFILE</a>
-          <a href="#" id="navContact" role="menuitem">📞 CONTACT</a>
-          <hr>
+      <nav class="nav-pop bolt-drawer" id="navPop" role="menu" aria-label="Main menu" data-i18n-aria-label="mainMenuLabel">
+          <div class="nav-main">
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html" id="navHome" role="menuitem">Головна</a>
+            <a href="market.html" id="navMarket" role="menuitem">Магазини</a>
+            <a href="#searchInput" id="navSearch" role="menuitem">Пошук</a>
+            <a href="#ordersSheet" id="navOrders" role="menuitem">Замовлення</a>
+            <a href="profil.html" id="navProfil" role="menuitem">Профіль</a>
+          </div>
+
+          <div class="nav-delivery">
+            <p id="navDeliveryTitle">Замовити доставку їжі</p>
+            <a class="app-store-badge" href="https://jktigr.github.io/DRAGON-GO/HOME.html" aria-label="Download on the App Store">
+              <img src="images/icon/apple.png" alt="">
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
+          </div>
+
           <div class="lang-inline" role="none">🌐
-            <select id="langSelMenu" aria-label="Language (menu)" data-i18n-aria-label="langMenuLabel">
+            <select id="langSelMenu" aria-label="Вибір мови в меню" data-i18n-aria-label="langMenuLabel">
               <option value="ru">🇺🇦 RU</option>
               <option value="ua">🇺🇦 UA</option>
               <option value="vn">🇻🇳 VN</option>
@@ -1503,7 +1513,23 @@
               <option value="de">🇩🇪 DE</option>
             </select>
           </div>
-        </nav>
+
+          <div class="nav-legal">
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#privacy" id="navPrivacy" role="menuitem">Конфіденційність</a>
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#cookies" id="navCookies" role="menuitem">Файли Cookies</a>
+            <a href="https://jktigr.github.io/DRAGON-GO/HOME.html#security" id="navSecurity" role="menuitem">Безпека</a>
+          </div>
+
+          <div class="nav-socials" aria-label="Social links">
+            <a href="#" aria-label="Facebook"><img src="images/icon/fb.png" alt=""></a>
+            <a class="nav-social-letter" href="#" aria-label="Twitter">x</a>
+            <a href="#" aria-label="Instagram"><img src="images/icon/ig.png" alt=""></a>
+            <a class="nav-social-letter nav-social-in" href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="TikTok"><img src="images/icon/tt.png" alt=""></a>
+          </div>
+
+          <div class="nav-copy">© 2026 Bolt Technology OÜ</div>
+      </nav>
       </div>
     </header>
 
@@ -1646,6 +1672,20 @@
           <div class="restaurant-meta">
             <span>🛵 29,90 ₴</span>
             <span data-duration="10–20">⏱ 10–20 мин</span>
+          </div>
+        </a>
+
+        <a class="restaurant-card" href="market.html" data-search-card data-search="dragon market summer top биржа кухни салат бун wok nem bao">
+          <div class="restaurant-cover is-yellow">
+            <img src="images/banh_bao.png" alt="DRAGON Market">
+            <span class="restaurant-discount">Summer Top 12</span>
+            <span class="restaurant-heart">♡</span>
+            <span class="restaurant-rating">↗ Market Mode</span>
+          </div>
+          <h2>DRAGON Market</h2>
+          <div class="restaurant-meta">
+            <span>📈 Биржа кухни</span>
+            <span>🔥 Summer Top 12</span>
           </div>
         </a>
       </div>
@@ -1862,13 +1902,13 @@
       </a>
 
       <a class="more-row"
-         href="https://bank.gov.ua/qr/QkNECjAwMgoxClVDVAoK0JvRlCDQotGF0ZYg0JrRhdCw0L3RjCDQm9GWClVBNDczMjIwMDEwMDAwMDI2MjAwMzQ0NTAzNjYwCgozMzAwMzIxNzYyCgoK0J_QvtC_0L7QstC90LXQvdC90Y8g0YDQsNGF0YPQvdC60YMKCg=="
+         href="https://www.privat24.ua/send/4a2kl"
          target="_blank" rel="noopener noreferrer">
         <span class="more-left">
           <span class="more-ico">💳</span>
           <span>
-            <div><b data-i18n="payLabel">Оплатить / Pay QR</b></div>
-            <div class="muted" data-i18n="payNote">Universal Bank QR</div>
+            <div><b data-i18n="payLabel">Privat24 / Pay</b></div>
+            <div class="muted" data-i18n="payNote">Privat24 · карта / IBAN</div>
           </span>
         </span>
         <span class="more-arrow">›</span>
@@ -2147,8 +2187,8 @@
             sushi: "Роллы и азиатские наборы"
           },
           contactArea: "Черёмушки · Одесса",
-          payLabel: "Оплатить / Pay QR",
-          payNote: "Universal Bank QR",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · карта / IBAN",
           bottomNavLabel: "Нижняя навигация",
           ordersCloseLabel: "Закрыть",
           searchNoResults: "Ничего не найдено: {value}",
@@ -2193,8 +2233,8 @@
             sushi: "Роли та азійські набори"
           },
           contactArea: "Черемушки · Одеса",
-          payLabel: "Оплатити / Pay QR",
-          payNote: "Universal Bank QR",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · картка / IBAN",
           bottomNavLabel: "Нижня навігація",
           ordersCloseLabel: "Закрити",
           searchNoResults: "Нічого не знайдено: {value}",
@@ -2239,8 +2279,8 @@
             sushi: "Sushi cuộn và set châu Á"
           },
           contactArea: "Cheremushki · Odessa",
-          payLabel: "Thanh toán / Pay QR",
-          payNote: "Mã QR Universal Bank",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · thẻ / IBAN",
           bottomNavLabel: "Điều hướng dưới",
           ordersCloseLabel: "Đóng",
           searchNoResults: "Không tìm thấy: {value}",
@@ -2285,8 +2325,8 @@
             sushi: "寿司卷和亚洲套餐"
           },
           contactArea: "Cheremushki · 敖德萨",
-          payLabel: "支付 / Pay QR",
-          payNote: "Universal Bank 二维码",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · 银行卡 / IBAN",
           bottomNavLabel: "底部导航",
           ordersCloseLabel: "关闭",
           searchNoResults: "未找到：{value}",
@@ -2331,8 +2371,8 @@
             sushi: "Rolki sushi i zestawy azjatyckie"
           },
           contactArea: "Czeriomuszki · Odessa",
-          payLabel: "Zapłać / Pay QR",
-          payNote: "Kod QR Universal Bank",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · karta / IBAN",
           bottomNavLabel: "Dolna nawigacja",
           ordersCloseLabel: "Zamknij",
           searchNoResults: "Nie znaleziono: {value}",
@@ -2377,8 +2417,8 @@
             sushi: "Sushi-Rollen und asiatische Sets"
           },
           contactArea: "Tscherjomuschki · Odessa",
-          payLabel: "Bezahlen / Pay QR",
-          payNote: "Universal Bank QR",
+          payLabel: "Privat24 / Pay",
+          payNote: "Privat24 · Karte / IBAN",
           bottomNavLabel: "Untere Navigation",
           ordersCloseLabel: "Schließen",
           searchNoResults: "Nichts gefunden: {value}",
@@ -2417,8 +2457,15 @@
       const navHome = document.getElementById("navHome");
       const navMenu = document.getElementById("navMenu");
       const navKaraoke = document.getElementById("navKaraoke");
+      const navMarket = document.getElementById("navMarket");
+      const navSearch = document.getElementById("navSearch");
+      const navOrders = document.getElementById("navOrders");
       const navProfil = document.getElementById("navProfil");
       const navContact = document.getElementById("navContact");
+      const navDeliveryTitle = document.getElementById("navDeliveryTitle");
+      const navPrivacy = document.getElementById("navPrivacy");
+      const navCookies = document.getElementById("navCookies");
+      const navSecurity = document.getElementById("navSecurity");
       const langSel = document.getElementById("langSel");
       const langSelMenu = document.getElementById("langSelMenu");
       const restaurantsTitle = document.getElementById("restaurantsTitle");
@@ -2593,6 +2640,7 @@
       function closeNavPop() {
         navPop?.classList.remove("open");
         burgerBtn?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("drawer-open");
       }
 
       function applyDockLabels() {
@@ -2606,11 +2654,27 @@
 
       function setUITexts() {
         const t = L();
-        if (navHome) navHome.textContent = "🏠 " + t.navHome;
+        const dock = t.dock || {};
+        const navLegalCopy = {
+          ru:{ delivery:"Заказать доставку еды", privacy:"Конфиденциальность", cookies:"Файлы Cookies", security:"Безопасность" },
+          ua:{ delivery:"Замовити доставку їжі", privacy:"Конфіденційність", cookies:"Файли Cookies", security:"Безпека" },
+          vn:{ delivery:"Đặt giao đồ ăn", privacy:"Quyền riêng tư", cookies:"Tệp Cookies", security:"Bảo mật" },
+          zh:{ delivery:"订购外送美食", privacy:"隐私", cookies:"Cookie 文件", security:"安全" },
+          pl:{ delivery:"Zamów dostawę jedzenia", privacy:"Prywatność", cookies:"Pliki Cookies", security:"Bezpieczeństwo" },
+          de:{ delivery:"Essen liefern lassen", privacy:"Datenschutz", cookies:"Cookie-Dateien", security:"Sicherheit" }
+        }[LANG] || {};
+        if (navHome) navHome.textContent = t.navHome;
         if (navMenu) navMenu.textContent = "🍜 " + t.navMenu;
         if (navKaraoke) navKaraoke.textContent = "🎤 " + t.navKaraoke;
-        if (navProfil) navProfil.textContent = "👤 " + t.profile;
+        if (navMarket) navMarket.textContent = dock.stores || "Магазини";
+        if (navSearch) navSearch.textContent = dock.search || "Пошук";
+        if (navOrders) navOrders.textContent = dock.orders || "Замовлення";
+        if (navProfil) navProfil.textContent = t.profile;
         if (navContact) navContact.textContent = "📞 " + t.navContact;
+        if (navDeliveryTitle) navDeliveryTitle.textContent = navLegalCopy.delivery || "Замовити доставку їжі";
+        if (navPrivacy) navPrivacy.textContent = navLegalCopy.privacy || "Конфіденційність";
+        if (navCookies) navCookies.textContent = navLegalCopy.cookies || "Файли Cookies";
+        if (navSecurity) navSecurity.textContent = navLegalCopy.security || "Безпека";
         if (restaurantsTitle) restaurantsTitle.textContent = t.homeTitle;
         if (contactTitle) contactTitle.textContent = "📞 " + (t.contactTitle || t.navContact);
         applyTranslatedNodes();
@@ -2715,9 +2779,11 @@
         });
       });
 
-      burgerBtn?.addEventListener("click", () => {
+      burgerBtn?.addEventListener("click", event => {
+        event.stopPropagation();
         const open = navPop?.classList.toggle("open");
         burgerBtn.setAttribute("aria-expanded", String(Boolean(open)));
+        document.body.classList.toggle("drawer-open", Boolean(open));
       });
 
       document.addEventListener("click", event => {
@@ -2727,17 +2793,15 @@
         }
       });
 
+      navPop?.addEventListener("click", event => {
+        const link = event.target instanceof Element ? event.target.closest("a") : null;
+        if (link) closeNavPop();
+      });
+
       langSel?.addEventListener("change", event => setLang(event.target.value));
       langSelMenu?.addEventListener("change", event => setLang(event.target.value));
 
       brandTap?.addEventListener("click", () => {
-        closeNavPop();
-        setActiveDock(dockHome);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-
-      navHome?.addEventListener("click", event => {
-        event.preventDefault();
         closeNavPop();
         setActiveDock(dockHome);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2751,6 +2815,20 @@
         event.preventDefault();
         closeNavPop();
         setStatus(L().karaokeSoon);
+      });
+
+      navSearch?.addEventListener("click", event => {
+        event.preventDefault();
+        closeNavPop();
+        setActiveDock(dockSearch);
+        searchInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.setTimeout(() => searchInput?.focus(), 180);
+      });
+
+      navOrders?.addEventListener("click", event => {
+        event.preventDefault();
+        setActiveDock(dockCart);
+        openOrdersSheet();
       });
 
       navContact?.addEventListener("click", event => {

@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080101" />
+  <title>DRAGON Monitor</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="dragon-theme.css" />
+</head>
+<body class="dragon-kitchen-page">
+  <main class="page kitchen-minimal-page">
+    <div class="sync-line">
+      <span class="sync-pill" id="bridgeSyncBadge">Bridge: запуск</span>
+      <span class="sync-pill" id="sheetSyncBadge">Sheets: запуск</span>
+      <span>Последнее обновление: <b id="lastSync">—</b></span>
+      <span>Время экрана: <b id="clock">—</b></span>
+    </div>
+
+    <section class="board note-board" id="ordersBoard" aria-label="Активные заказы"></section>
+  </main>
+
+  <script src="dragon_static_config.js"></script>
+  <script>
+    const API_BASE = "https://script.google.com/macros/s/AKfycbywwekrmdJvCnKuXKXY-D1_fkJDNm6ES9xAsptqRpoCOS6u9QidiSnGizIK0wybcGTl/exec";
+    const LOCAL_API_BASE = window.DRAGON_STATIC?.localOrdersApi || "";
+    const LOCAL_EVENTS_URL = window.DRAGON_STATIC?.localEventsUrl || "";
+    const ORDERS_KEY = "CD_ORDERS_V1";
+    const REFRESH_MS = 15000;
+
+    const STATUS_META = {
+      NEW: { label: "Новое", className: "new" },
+      COOKING: { label: "Готовится", className: "cooking" },
+      READY: { label: "Готово", className: "ready" },
+      HANDED: { label: "Выдано", className: "handed" },
+      CANCELLED: { label: "Отменено", className: "cancelled" }
+    };
+
+    const TYPE_META = {
+      on_site: "На месте",
+      takeaway: "На вынос",
+      delivery: "Доставка"
+    };
+
+    const state = {
+      orders: [],
+      timer: null,
+      clockTimer: null,
+      liveReloadTimer: null,
+      eventSource: null,
+      renderCache: {},
+      savingRows: new Set()
+    };
+
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function parseJSON(value, fallback) {
+      if (!value) return fallback;
+      if (typeof value !== "string") return value;
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function normalizeAmount(value) {
+      const num = Number(value || 0);
+      if (!Number.isFinite(num)) return 0;
+      return Math.max(0, Math.round(num * 100) / 100);
+    }
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function syncStamp(sync) {
+      if (!sync || typeof sync !== "object") return 0;
+      const raw = sync.updated_at || sync.attempted_at || sync.requested_at || sync.created_at;
+      const stamp = new Date(raw || 0).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function syncScore(channel, sync) {
+      if (!sync || typeof sync !== "object") return 0;
+      if (channel === "sheet") {
+        if (sync.ok || sync.id) return 4;
+        if (sync.pending || sync.retrying) return 3;
+        return 2;
+      }
+      if (channel === "local") {
+        return sync.ok ? 3 : 1;
+      }
+      return sync.ok ? 2 : 1;
+    }
+
+    function pickBetterSync(channel, left, right) {
+      const leftScore = syncScore(channel, left);
+      const rightScore = syncScore(channel, right);
+      if (leftScore !== rightScore) return leftScore > rightScore ? left : right;
+      return syncStamp(left) >= syncStamp(right) ? left : right;
+    }
+
+    function hasKitchenProgress(progress) {
+      if (!progress || typeof progress !== "object") return false;
+      const doneRows = Array.isArray(progress.done_row_ids)
+        ? progress.done_row_ids
+        : Array.isArray(progress.doneRowIds)
+          ? progress.doneRowIds
+          : [];
+      return Boolean(doneRows.length || progress.touched || progress.updated_at || progress.updatedAt);
+    }
+
+    function kitchenProgressStamp(progress) {
+      if (!progress || typeof progress !== "object") return 0;
+      const stamp = new Date(progress.updated_at || progress.updatedAt || 0).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function pickBetterKitchenProgress(primary, fallback) {
+      const primaryHas = hasKitchenProgress(primary);
+      const fallbackHas = hasKitchenProgress(fallback);
+      if (primaryHas && !fallbackHas) return primary;
+      if (fallbackHas && !primaryHas) return fallback;
+      if (primaryHas && fallbackHas) {
+        return kitchenProgressStamp(primary) >= kitchenProgressStamp(fallback) ? primary : fallback;
+      }
+      return primary || fallback || {};
+    }
+
+    function isSyncOk(sync) {
+      return Boolean(sync?.ok || sync?.id);
+    }
+
+    function normalizeStatus(value) {
+      const raw = String(value || "").trim().toUpperCase();
+      if (!raw || raw === "SENT" || raw === "FAILED") return "NEW";
+      if (raw === "CONFIRMED") return "COOKING";
+      if (raw === "COMPLETED" || raw === "DONE") return "HANDED";
+      if (raw === "READY") return "READY";
+      if (raw === "COOKING") return "COOKING";
+      if (raw === "CANCELLED") return "CANCELLED";
+      if (raw === "HANDED") return "HANDED";
+      return "NEW";
+    }
+
+    function normalizeType(value) {
+      const raw = String(value || "").trim().toLowerCase();
+      if (["on_site", "onsite", "dinein"].includes(raw)) return "on_site";
+      if (["takeaway", "take_away", "pickup"].includes(raw)) return "takeaway";
+      if (raw === "delivery") return "delivery";
+      if (raw.includes("мест")) return "on_site";
+      if (raw.includes("вынос")) return "takeaway";
+      if (raw.includes("достав")) return "delivery";
+      return "takeaway";
+    }
+
+    function normalizeItems(items) {
+      const parsed = parseJSON(items, []);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((item, index) => ({
+        id: item.id || `${item.key || item.code || "item"}-${index}`,
+        key: item.key || "",
+        code: item.code || "",
+        name: item.name || item.title || item.code || `Позиция ${index + 1}`,
+        qty: Math.max(1, Number(item.qty || 1)),
+        price: Number(item.price || item.unit_price || 0),
+        note: String(item.note || item.comment || "").trim()
+      }));
+    }
+
+    function normalizeKitchenProgress(raw, validRowIds = new Set()) {
+      const payload = raw && typeof raw === "object" ? raw : {};
+      const source = Array.isArray(payload.done_row_ids)
+        ? payload.done_row_ids
+        : Array.isArray(payload.doneRowIds)
+          ? payload.doneRowIds
+          : [];
+      const doneRowIds = [];
+      const seen = new Set();
+      for (const value of source) {
+        const rowId = String(value || "").trim();
+        if (!rowId || seen.has(rowId)) continue;
+        if (validRowIds.size && !validRowIds.has(rowId)) continue;
+        seen.add(rowId);
+        doneRowIds.push(rowId);
+      }
+      return {
+        done_row_ids: doneRowIds,
+        updated_at: String(payload.updated_at || payload.updatedAt || "").trim(),
+        touched: Boolean(payload.touched || doneRowIds.length || payload.updated_at || payload.updatedAt)
+      };
+    }
+
+    function kitchenRowComment(order, item) {
+      const parts = [];
+      if (item?.note) parts.push(String(item.note).trim());
+      if (order.comment) parts.push(String(order.comment).trim());
+      return parts.filter(Boolean).join(" / ") || "—";
+    }
+
+    function expandKitchenRows(order) {
+      const rows = [];
+      const sourceItems = order.items.length ? order.items : [{
+        id: "placeholder",
+        code: "—",
+        name: "Позиции не переданы",
+        qty: 1,
+        note: ""
+      }];
+
+      sourceItems.forEach((item, itemIndex) => {
+        const qty = Math.max(1, Number(item.qty || 1));
+        const itemId = String(item.id || item.key || item.code || `item-${itemIndex}`).trim() || `item-${itemIndex}`;
+        for (let unitIndex = 0; unitIndex < qty; unitIndex += 1) {
+          rows.push({
+            row_id: `${itemId}:${unitIndex}`,
+            code: item.code || item.key || "—",
+            name: item.name || item.title || item.code || "—",
+            comment: kitchenRowComment(order, item),
+            persistable: order.items.length > 0
+          });
+        }
+      });
+
+      return rows;
+    }
+
+    function fallbackTotal(items) {
+      return items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0), 0);
+    }
+
+    function normalizeOrder(raw) {
+      const items = normalizeItems(raw.items);
+      const comment = String(raw.comment || raw.order_comment || raw.note || "").trim();
+      const validRowIds = new Set(
+        expandKitchenRows({
+          items,
+          comment
+        })
+          .filter(row => row.persistable)
+          .map(row => row.row_id)
+      );
+      const subtotal = Number(raw.subtotal ?? raw.sum ?? fallbackTotal(items));
+      const deliveryFee = Number(raw.delivery_fee ?? raw.deliveryFee ?? 0);
+      const total = Number(raw.total ?? subtotal + deliveryFee);
+      const code = String(raw.code || raw.order_code || raw.id || "").trim() || "local";
+      const localSync = raw.sync?.local ?? raw.local_sync ?? null;
+      const sheetSync = raw.sync?.sheet ?? raw.sheet ?? null;
+
+      return {
+        id: String(raw.id || raw.order_id || code).trim(),
+        code,
+        status: normalizeStatus(raw.status),
+        type: normalizeType(raw.type),
+        table: String(raw.table || "").trim(),
+        pickup_in: String(raw.pickup_in || "").trim(),
+        comment,
+        items,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        source: raw.source === "cashier" ? "cashier" : "site",
+        created_at: raw.created_at || raw.createdAt || new Date().toISOString(),
+        updated_at: raw.updated_at || raw.updatedAt || raw.created_at || new Date().toISOString(),
+        kitchen_progress: normalizeKitchenProgress(raw.kitchen_progress ?? raw.kitchenProgress, validRowIds),
+        sync: {
+          local: localSync,
+          sheet: sheetSync
+        }
+      };
+    }
+
+    function loadLocalOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ORDERS_KEY) || "{}") || {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function saveLocalOrders(map) {
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(map || {}));
+    }
+
+    function ordersToMap(orders) {
+      const map = {};
+      for (const order of orders || []) {
+        const key = order?.code || order?.id;
+        if (!key) continue;
+        map[key] = order;
+      }
+      return map;
+    }
+
+    function saveMergedOrders(orders) {
+      saveLocalOrders(ordersToMap(orders));
+    }
+
+    function orderStamp(order) {
+      const stamp = new Date(order.updated_at || order.created_at).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function mergeOrders(remoteOrders, localMap) {
+      const merged = new Map();
+      const localOrders = Object.values(localMap || {}).map(normalizeOrder);
+
+      for (const order of remoteOrders.map(normalizeOrder)) {
+        merged.set(order.code || order.id, order);
+      }
+
+      for (const localOrder of localOrders) {
+        const key = localOrder.code || localOrder.id;
+        if (!merged.has(key)) {
+          merged.set(key, localOrder);
+          continue;
+        }
+
+        const remoteOrder = merged.get(key);
+        const useLocal = orderStamp(localOrder) >= orderStamp(remoteOrder);
+        const primary = useLocal ? localOrder : remoteOrder;
+        const fallback = useLocal ? remoteOrder : localOrder;
+        merged.set(key, normalizeOrder({
+          ...fallback,
+          ...primary,
+          status: normalizeStatus(primary.status || fallback.status),
+          comment: primary.comment || fallback.comment,
+          items: primary.items.length ? primary.items : fallback.items,
+          kitchen_progress: pickBetterKitchenProgress(primary.kitchen_progress, fallback.kitchen_progress),
+          sync: {
+            local: pickBetterSync("local", localOrder.sync?.local, remoteOrder.sync?.local),
+            sheet: pickBetterSync("sheet", localOrder.sync?.sheet, remoteOrder.sync?.sheet)
+          }
+        }));
+      }
+
+      return Array.from(merged.values()).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    async function fetchOrdersRemote() {
+      const response = await fetch(`${API_BASE}?action=get_orders`, { cache: "no-store" });
+      return response.json();
+    }
+
+    async function fetchOrdersLocalBridge() {
+      if (!LOCAL_API_BASE) return { ok: false, orders: [], error: "local_bridge_unavailable" };
+      try {
+        const response = await fetch(LOCAL_API_BASE, { cache: "no-store" });
+        if (!response.ok) {
+          return { ok: false, error: `Local bridge HTTP ${response.status}` };
+        }
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    function decorateRemoteOrders(orders) {
+      return (orders || []).map(order => ({
+        ...order,
+        sync: {
+          ...(order.sync || {}),
+          sheet: pickBetterSync("sheet", order.sync?.sheet, {
+            ok: true,
+            source: "sheets",
+            updated_at: order.updated_at || order.created_at || nowIso()
+          })
+        }
+      }));
+    }
+
+    function dateInputValue(value) {
+      const date = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function fmtTime(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      return date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function timeAgo(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      const diff = Math.max(0, Date.now() - date.getTime());
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return "только что";
+      if (mins < 60) return `${mins} мин`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours} ч`;
+      return `${Math.floor(hours / 24)} д`;
+    }
+
+    function todayOrders() {
+      const today = dateInputValue(new Date());
+      return state.orders.filter(order => dateInputValue(order.created_at) === today);
+    }
+
+    function kitchenProgressSummary(order) {
+      const rows = expandKitchenRows(order).filter(row => row.persistable);
+      const validRowIds = new Set(rows.map(row => row.row_id));
+      const explicitProgress = normalizeKitchenProgress(order.kitchen_progress, validRowIds);
+      let doneRowIds = explicitProgress.done_row_ids.slice();
+
+      if (!doneRowIds.length && ["READY", "HANDED"].includes(normalizeStatus(order.status))) {
+        doneRowIds = rows.map(row => row.row_id);
+      }
+
+      const doneSet = new Set(doneRowIds);
+      return {
+        rows,
+        doneSet,
+        doneCount: rows.filter(row => doneSet.has(row.row_id)).length,
+        totalCount: rows.length,
+        touched: Boolean(explicitProgress.touched),
+        progress: explicitProgress
+      };
+    }
+
+    function resolveOrderStatus(order) {
+      const current = normalizeStatus(order?.status);
+      if (current === "CANCELLED" || current === "HANDED") return current;
+      const progress = kitchenProgressSummary(order);
+      if (!progress.totalCount) return current;
+      if (progress.doneCount >= progress.totalCount) return "READY";
+      if (progress.doneCount > 0) return "COOKING";
+      if (progress.touched) return "NEW";
+      return current;
+    }
+
+    function activeOrders() {
+      const rank = { NEW: 0, COOKING: 1, READY: 2 };
+      return todayOrders()
+        .filter(order => ["NEW", "COOKING", "READY"].includes(resolveOrderStatus(order)))
+        .sort((a, b) => (rank[resolveOrderStatus(a)] ?? 9) - (rank[resolveOrderStatus(b)] ?? 9) || new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    function orderMeta(order) {
+      const parts = [TYPE_META[order.type] || order.type || "Заказ"];
+      if (order.type === "on_site" && order.table) parts.push(`Стол ${order.table}`);
+      if (order.type === "takeaway" && order.pickup_in) parts.push(`Через ${order.pickup_in} мин`);
+      if (order.type === "delivery") parts.push("Доставка");
+      parts.push(timeAgo(order.created_at));
+      if (order.source === "cashier") parts.push("Касса");
+      return parts;
+    }
+
+    function kitchenServiceLabel(order) {
+      if (order.type === "on_site") return order.table ? `На місці • стіл ${order.table}` : "На місці";
+      if (order.type === "takeaway") return "На виніс";
+      if (order.type === "delivery") return "Доставка";
+      return TYPE_META[order.type] || "На виніс";
+    }
+
+    function pickupLabel(order) {
+      if (order.type === "on_site") return order.table ? `стіл ${order.table}` : "на місці";
+      if (order.type === "delivery") return "доставка";
+      const raw = String(order.pickup_in || "").trim();
+      if (!raw) return "15 хв";
+      if (/(мин|хв|min|m)\b/i.test(raw)) return raw;
+      return `${raw} хв`;
+    }
+
+    function noteAgeLabel(order) {
+      const created = fmtTime(order.created_at);
+      const ago = timeAgo(order.created_at);
+      return created === "—" ? ago : `${created} • ${ago}`;
+    }
+
+    function renderKitchenNoteItems(order, progress) {
+      const rows = progress.rows.length ? progress.rows : expandKitchenRows(order);
+      return `
+        <div class="note-items" role="list" aria-label="Позиции заказа">
+          ${rows.map(item => {
+            const isDone = progress.doneSet.has(item.row_id);
+            const comment = item.comment && item.comment !== "—"
+              ? `<small>${escapeHtml(item.comment)}</small>`
+              : "";
+            return `
+              <div class="note-item ${isDone ? "is-done" : ""}" role="listitem">
+                <div class="note-item-code">${escapeHtml(item.code || "—")}</div>
+                <div class="note-item-copy">
+                  <strong>${escapeHtml(item.name || "—")}</strong>
+                  ${comment}
+                </div>
+                ${item.persistable ? `
+                  <button
+                    class="line-ready-btn ${isDone ? "active" : ""}"
+                    type="button"
+                    data-toggle-row="${escapeHtml(item.row_id)}"
+                    data-order-code="${escapeHtml(order.code)}"
+                    aria-label="${escapeHtml(isDone ? "Снять готовность позиции" : "Отметить позицию готовой")}"
+                    ${state.savingRows.has(`${order.code}:${item.row_id}`) ? "disabled" : ""}
+                  >${isDone ? "✓" : ""}</button>
+                ` : `<span class="line-ready-placeholder"></span>`}
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function sheetSyncMeta(order) {
+      if (order.source !== "cashier" && !order.sync?.sheet && !order.sync?.local) return null;
+      const sync = order.sync?.sheet;
+      if (isSyncOk(sync)) return { label: "Sheets ok", className: "ok" };
+      if (sync?.pending || sync?.retrying) return { label: "Sheets retry", className: "warn" };
+      if (sync) return { label: "Sheets local", className: "offline" };
+      return { label: "Sheets ?", className: "muted" };
+    }
+
+    function localSyncMeta(order) {
+      if (order.source !== "cashier" && !order.sync?.local) return null;
+      const sync = order.sync?.local;
+      if (sync?.ok) return { label: "Bridge ok", className: "ok" };
+      if (sync) return { label: "Bridge off", className: "offline" };
+      return { label: "Bridge ?", className: "muted" };
+    }
+
+    async function pushOrderToLocalBridge(orderPayload) {
+      if (!LOCAL_API_BASE) return { ok: false, error: "local_bridge_unavailable" };
+      try {
+        const response = await fetch(LOCAL_API_BASE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderPayload)
+        });
+        if (!response.ok) {
+          return { ok: false, error: `Local bridge HTTP ${response.status}` };
+        }
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function toggleKitchenRowReady(code, rowId) {
+      const order = state.orders.find(entry => entry.code === code);
+      if (!order) return;
+
+      const progress = kitchenProgressSummary(order);
+      const validRowIds = new Set(progress.rows.map(row => row.row_id));
+      if (!validRowIds.has(rowId)) return;
+
+      const saveKey = `${code}:${rowId}`;
+      if (state.savingRows.has(saveKey)) return;
+
+      const doneSet = new Set(progress.doneSet);
+      if (doneSet.has(rowId)) {
+        doneSet.delete(rowId);
+      } else {
+        doneSet.add(rowId);
+      }
+
+      order.kitchen_progress = {
+        done_row_ids: progress.rows.map(row => row.row_id).filter(id => doneSet.has(id)),
+        updated_at: nowIso(),
+        touched: true
+      };
+      order.status = resolveOrderStatus(order);
+      order.updated_at = nowIso();
+      saveMergedOrders(state.orders);
+      renderAll();
+
+      if (!LOCAL_API_BASE) return;
+
+      state.savingRows.add(saveKey);
+      renderAll();
+      const result = await pushOrderToLocalBridge(order);
+      state.savingRows.delete(saveKey);
+
+      if (result?.ok && result.order) {
+        Object.assign(order, normalizeOrder(result.order));
+        setSyncBadge($("#bridgeSyncBadge"), "ok", "Bridge ok");
+        stampSyncTime();
+      } else {
+        setSyncBadge($("#bridgeSyncBadge"), "offline", "Bridge off");
+      }
+
+      saveMergedOrders(state.orders);
+      renderAll();
+    }
+
+    function renderTicket(order) {
+      const resolvedStatus = resolveOrderStatus(order);
+      const status = STATUS_META[resolvedStatus] || STATUS_META.NEW;
+      const progress = kitchenProgressSummary(order);
+      const progressTag = progress.totalCount
+        ? `<span class="tag ${progress.doneCount >= progress.totalCount ? "ok" : progress.doneCount > 0 ? "warn" : "muted"}">готово ${progress.doneCount}/${progress.totalCount}</span>`
+        : "";
+
+      return `
+        <article class="ticket kitchen-note status-${status.className}">
+          <div class="ticket-top">
+            <div>
+              <div class="note-label">Code:</div>
+              <div class="code">${escapeHtml(order.code)}</div>
+            </div>
+            ${progressTag ? `<div class="ticket-progress">${progressTag}</div>` : ""}
+          </div>
+          <div class="note-line"><b>Тип:</b> ${escapeHtml(kitchenServiceLabel(order))}</div>
+          <div class="note-section-title">Позиції:</div>
+          ${renderKitchenNoteItems(order, progress)}
+          <div class="note-line note-pickup"><b>Забрати через:</b> ${escapeHtml(pickupLabel(order))}</div>
+        </article>
+      `;
+    }
+
+    function renderBoard() {
+      const board = $("#ordersBoard");
+      const orders = activeOrders();
+      const html = !orders.length
+        ? `<div class="empty">Пока нет активных заказов на кухне.</div>`
+        : orders.map(renderTicket).join("");
+
+      if (state.renderCache.ordersBoard === html) return;
+      state.renderCache.ordersBoard = html;
+      board.innerHTML = html;
+    }
+
+    function renderStats() {
+      document.title = `DRAGON Monitor • ${activeOrders().length}`;
+    }
+
+    function renderAll() {
+      renderStats();
+      renderBoard();
+    }
+
+    function setSyncBadge(el, mode, text) {
+      if (!el) return;
+      el.className = `sync-pill ${mode}`;
+      el.textContent = text;
+    }
+
+    function stampSyncTime() {
+      $("#lastSync").textContent = new Date().toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+    }
+
+    async function loadOrders() {
+      const localMap = loadLocalOrders();
+      const [remoteResult, bridgeResult] = await Promise.allSettled([
+        fetchOrdersRemote(),
+        fetchOrdersLocalBridge()
+      ]);
+
+      const remoteData = remoteResult.status === "fulfilled" ? remoteResult.value : null;
+      const bridgeData = bridgeResult.status === "fulfilled" ? bridgeResult.value : null;
+      const remoteOrders = decorateRemoteOrders(Array.isArray(remoteData?.orders) ? remoteData.orders : []);
+      const bridgeOrders = Array.isArray(bridgeData?.orders) ? bridgeData.orders : [];
+
+      state.orders = mergeOrders(mergeOrders(remoteOrders, ordersToMap(bridgeOrders)), localMap);
+      saveMergedOrders(state.orders);
+
+      const remoteOk = Array.isArray(remoteData?.orders);
+      const bridgeOk = Boolean(bridgeData?.ok);
+      setSyncBadge($("#bridgeSyncBadge"), bridgeOk ? "ok" : "offline", bridgeOk ? "Bridge ok" : "Bridge off");
+      setSyncBadge($("#sheetSyncBadge"), remoteOk ? "ok" : bridgeOk ? "warn" : "offline", remoteOk ? "Sheets ok" : bridgeOk ? "Sheets retry" : "Sheets off");
+      stampSyncTime();
+
+      renderAll();
+    }
+
+    function scheduleLiveReload(delay = 220) {
+      clearTimeout(state.liveReloadTimer);
+      state.liveReloadTimer = setTimeout(() => {
+        loadOrders();
+      }, delay);
+    }
+
+    function connectLocalEvents() {
+      if (!window.EventSource || !LOCAL_EVENTS_URL.startsWith("http")) return;
+      if (state.eventSource) state.eventSource.close();
+
+      const eventSource = new EventSource(LOCAL_EVENTS_URL);
+      state.eventSource = eventSource;
+      eventSource.addEventListener("orders_updated", () => scheduleLiveReload());
+      eventSource.addEventListener("ready", () => scheduleLiveReload(80));
+    }
+
+    function renderClock() {
+      $("#clock").textContent = new Date().toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+    }
+
+    function init() {
+      $("#refreshBtn")?.addEventListener("click", loadOrders);
+      $(".board").addEventListener("click", event => {
+        const btn = event.target.closest("[data-toggle-row]");
+        if (!btn) return;
+        toggleKitchenRowReady(btn.dataset.orderCode, btn.dataset.toggleRow);
+      });
+      window.addEventListener("storage", event => {
+        if (event.key !== ORDERS_KEY) return;
+        state.orders = mergeOrders([], loadLocalOrders());
+        renderAll();
+      });
+      window.addEventListener("beforeunload", () => {
+        if (state.eventSource) state.eventSource.close();
+      });
+
+      renderClock();
+      connectLocalEvents();
+      loadOrders();
+      state.timer = setInterval(loadOrders, REFRESH_MS);
+      state.clockTimer = setInterval(renderClock, 1000);
+    }
+
+    init();
+  </script>
+  <script src="dragon_burger_menu.js"></script>
+</body>
+</html>

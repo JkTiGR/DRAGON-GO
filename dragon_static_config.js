@@ -95,8 +95,8 @@
   }
 
   const origin = isHttp ? location.origin : "";
-  const defaultOnlinePaymentUrl = "https://bank.gov.ua/qr/QkNECjAwMgoxClVDVAoK0JvRlCDQotGF0ZYg0JrRhdCw0L3RjCDQm9GWClVBNDczMjIwMDEwMDAwMDI2MjAwMzQ0NTAzNjYwCgozMzAwMzIxNzYyCgoK0J_QvtC_0L7QstC90LXQvdC90Y8g0YDQsNGF0YPQvdC60YMKCg==";
-  const defaultOnlinePaymentLabel = "Universal Bank";
+  const defaultOnlinePaymentUrl = "https://www.privat24.ua/send/4a2kl";
+  const defaultOnlinePaymentLabel = "Privat24";
   const allowQueryPaymentOverride = isLoopback || Boolean(global.DRAGON_ALLOW_QUERY_PAYMENT_URL);
   const paramBridgeBase = normalizeBridgeBase(
     params.get("bridgeUrl") ||

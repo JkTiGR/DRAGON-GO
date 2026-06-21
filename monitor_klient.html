@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080101" />
+  <title>DRAGON Client View</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="dragon-theme.css" />
+</head>
+<body class="dragon-client-monitor-page">
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">DRAGON</div>
+        <div>
+          <h1>Заказы DRAGON</h1>
+          <div class="subtitle">Следите за номером заказа на экране. Когда он появится справа, можно забирать.</div>
+        </div>
+      </div>
+      <div class="clock" aria-label="Текущее время">
+        <div class="clock-time" id="clock">--:--</div>
+        <div class="clock-label" id="dateLabel">Сегодня</div>
+      </div>
+    </header>
+
+    <section class="board" aria-label="Экран статусов заказов">
+      <section class="column preparing">
+        <div class="column-head">
+          <div class="column-title">
+            <h2>Готовятся</h2>
+            <div class="column-subtitle">Позиции сейчас в работе</div>
+          </div>
+          <div class="count" id="preparingCount">0</div>
+        </div>
+        <div class="codes" id="preparingList"></div>
+      </section>
+
+      <section class="column ready">
+        <div class="column-head">
+          <div class="column-title">
+            <h2>Готово</h2>
+            <div class="column-subtitle">Заказы готовы к выдаче</div>
+          </div>
+          <div class="count" id="readyCount">0</div>
+        </div>
+        <div class="codes" id="readyList"></div>
+      </section>
+    </section>
+
+    <footer class="sync">
+      <span class="sync-badge" id="syncBadge">Запуск</span>
+      <span>Автообновление каждые 10 секунд</span>
+      <span>Последнее обновление: <b id="lastSync">--:--</b></span>
+    </footer>
+  </main>
+
+  <script src="dragon_static_config.js"></script>
+  <script>
+    const API_BASE = "https://script.google.com/macros/s/AKfycbywwekrmdJvCnKuXKXY-D1_fkJDNm6ES9xAsptqRpoCOS6u9QidiSnGizIK0wybcGTl/exec";
+    const LOCAL_API_BASE = window.DRAGON_STATIC?.localOrdersApi || "";
+    const LOCAL_EVENTS_URL = window.DRAGON_STATIC?.localEventsUrl || "";
+    const ORDERS_KEY = "CD_ORDERS_V1";
+    const REFRESH_MS = 10000;
+    const FRESH_READY_MS = 4 * 60 * 1000;
+
+    const state = {
+      orders: [],
+      timer: null,
+      clockTimer: null,
+      liveReloadTimer: null,
+      eventSource: null,
+      renderCache: {}
+    };
+
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizeStatus(value) {
+      const raw = String(value || "").trim().toUpperCase();
+      if (!raw || raw === "SENT" || raw === "FAILED") return "NEW";
+      if (raw === "CONFIRMED") return "COOKING";
+      if (raw === "COMPLETED" || raw === "DONE") return "HANDED";
+      if (raw === "READY") return "READY";
+      if (raw === "COOKING") return "COOKING";
+      if (raw === "CANCELLED") return "CANCELLED";
+      if (raw === "HANDED") return "HANDED";
+      return "NEW";
+    }
+
+    function normalizeOrder(raw) {
+      const code = String(raw.code || raw.order_code || raw.id || "").trim() || "local";
+      return {
+        id: String(raw.id || raw.order_id || code).trim(),
+        code,
+        status: normalizeStatus(raw.status),
+        created_at: raw.created_at || raw.createdAt || new Date().toISOString(),
+        updated_at: raw.updated_at || raw.updatedAt || raw.created_at || new Date().toISOString()
+      };
+    }
+
+    function loadLocalOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ORDERS_KEY) || "{}") || {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function ordersToMap(list) {
+      const map = {};
+      for (const order of list || []) {
+        const normalized = normalizeOrder(order);
+        map[normalized.code] = normalized;
+      }
+      return map;
+    }
+
+    function orderStamp(order) {
+      const stamp = new Date(order.updated_at || order.created_at).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function mergeOrders(remoteOrders, localMap) {
+      const merged = new Map();
+      const localOrders = Object.values(localMap || {}).map(normalizeOrder);
+
+      for (const order of remoteOrders.map(normalizeOrder)) {
+        merged.set(order.code || order.id, order);
+      }
+
+      for (const localOrder of localOrders) {
+        const key = localOrder.code || localOrder.id;
+        if (!merged.has(key)) {
+          merged.set(key, localOrder);
+          continue;
+        }
+
+        const remoteOrder = merged.get(key);
+        const useLocal = orderStamp(localOrder) >= orderStamp(remoteOrder);
+        const primary = useLocal ? localOrder : remoteOrder;
+        const fallback = useLocal ? remoteOrder : localOrder;
+        merged.set(key, normalizeOrder({
+          ...fallback,
+          ...primary,
+          status: normalizeStatus(primary.status || fallback.status)
+        }));
+      }
+
+      return Array.from(merged.values()).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    async function fetchOrdersRemote() {
+      const response = await fetch(`${API_BASE}?action=get_orders`, { cache: "no-store" });
+      return response.json();
+    }
+
+    async function fetchOrdersLocalBridge() {
+      if (!LOCAL_API_BASE) return { ok: false, orders: [], error: "local_bridge_unavailable" };
+      const response = await fetch(LOCAL_API_BASE, { cache: "no-store" });
+      return response.json();
+    }
+
+    function dateInputValue(value) {
+      const date = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function todayActiveOrders() {
+      const today = dateInputValue(new Date());
+      return state.orders
+        .filter(order => dateInputValue(order.created_at) === today)
+        .filter(order => ["NEW", "COOKING", "READY"].includes(order.status));
+    }
+
+    function preparingOrders() {
+      return todayActiveOrders()
+        .filter(order => order.status === "NEW" || order.status === "COOKING")
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    function readyOrders() {
+      return todayActiveOrders()
+        .filter(order => order.status === "READY")
+        .sort((a, b) => new Date(a.updated_at || a.created_at) - new Date(b.updated_at || b.created_at));
+    }
+
+    function isFreshReady(order) {
+      const stamp = new Date(order.updated_at || order.created_at).getTime();
+      return Number.isFinite(stamp) && Date.now() - stamp <= FRESH_READY_MS;
+    }
+
+    function renderCodeCard(order, mode) {
+      const freshClass = mode === "ready" && isFreshReady(order) ? " fresh" : "";
+      return `
+        <article class="code-card ${mode}${freshClass}">
+          <div class="code">${escapeHtml(order.code)}</div>
+        </article>
+      `;
+    }
+
+    function renderColumn(list, listId, countId, mode, emptyText) {
+      const wrap = $(listId);
+      $(countId).textContent = String(list.length);
+
+      const html = !list.length
+        ? `<div class="empty">${escapeHtml(emptyText)}</div>`
+        : list.map(order => renderCodeCard(order, mode)).join("");
+
+      if (state.renderCache[listId] === html) return;
+      state.renderCache[listId] = html;
+      wrap.innerHTML = html;
+    }
+
+    function renderAll() {
+      renderColumn(
+        preparingOrders(),
+        "#preparingList",
+        "#preparingCount",
+        "preparing",
+        "Сейчас нет заказов в работе."
+      );
+      renderColumn(
+        readyOrders(),
+        "#readyList",
+        "#readyCount",
+        "ready",
+        "Готовые заказы появятся здесь."
+      );
+    }
+
+    function setSync(mode, text) {
+      const badge = $("#syncBadge");
+      badge.className = `sync-badge ${mode}`;
+      badge.textContent = text;
+      $("#lastSync").textContent = new Date().toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+    }
+
+    async function loadOrders() {
+      const localMap = loadLocalOrders();
+      const [remoteResult, bridgeResult] = await Promise.allSettled([
+        fetchOrdersRemote(),
+        fetchOrdersLocalBridge()
+      ]);
+
+      const remoteData = remoteResult.status === "fulfilled" ? remoteResult.value : null;
+      const bridgeData = bridgeResult.status === "fulfilled" ? bridgeResult.value : null;
+      const remoteOrders = Array.isArray(remoteData?.orders) ? remoteData.orders : [];
+      const bridgeMap = ordersToMap(Array.isArray(bridgeData?.orders) ? bridgeData.orders : []);
+
+      state.orders = mergeOrders(mergeOrders(remoteOrders, bridgeMap), localMap);
+
+      const remoteOk = Array.isArray(remoteData?.orders);
+      const bridgeOk = Boolean(bridgeData?.ok);
+      setSync(remoteOk ? "ok" : bridgeOk ? "warn" : "offline", remoteOk ? "Sheets + Bridge" : bridgeOk ? "Bridge LAN" : "Локально");
+
+      renderAll();
+    }
+
+    function scheduleLiveReload(delay = 220) {
+      clearTimeout(state.liveReloadTimer);
+      state.liveReloadTimer = setTimeout(() => {
+        loadOrders();
+      }, delay);
+    }
+
+    function connectLocalEvents() {
+      if (!window.EventSource || !LOCAL_EVENTS_URL.startsWith("http")) return;
+      if (state.eventSource) state.eventSource.close();
+
+      const eventSource = new EventSource(LOCAL_EVENTS_URL);
+      state.eventSource = eventSource;
+      eventSource.addEventListener("orders_updated", () => scheduleLiveReload());
+      eventSource.addEventListener("ready", () => scheduleLiveReload(80));
+    }
+
+    function renderClock() {
+      const now = new Date();
+      $("#clock").textContent = now.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+      $("#dateLabel").textContent = now.toLocaleDateString("ru-RU", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long"
+      });
+    }
+
+    function init() {
+      window.addEventListener("storage", event => {
+        if (event.key !== ORDERS_KEY) return;
+        state.orders = mergeOrders([], loadLocalOrders());
+        renderAll();
+      });
+      window.addEventListener("beforeunload", () => {
+        if (state.eventSource) state.eventSource.close();
+      });
+
+      renderClock();
+      connectLocalEvents();
+      loadOrders();
+      state.timer = setInterval(loadOrders, REFRESH_MS);
+      state.clockTimer = setInterval(renderClock, 1000);
+    }
+
+    init();
+  </script>
+  <script src="dragon_burger_menu.js"></script>
+</body>
+</html>

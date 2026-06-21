@@ -1,0 +1,4906 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080101" />
+  <title>DRAGON KASSA</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="dragon-theme.css" />
+</head>
+<body class="dragon-kassa-page locked">
+  <section class="auth-screen" id="authScreen" aria-label="PIN кассы">
+    <form class="auth-card" id="pinForm" autocomplete="off">
+      <div class="auth-mark">DRAGON</div>
+      <div class="auth-copy">
+        <h1>Вход в кассу</h1>
+        <p>Введите PIN кассира, чтобы открыть заказы, оплату и смену.</p>
+      </div>
+      <input class="input" id="pinInput" type="password" inputmode="numeric" maxlength="8" placeholder="PIN / пароль" aria-label="PIN кассы" />
+      <button class="btn primary" type="submit">Открыть кассу</button>
+      <div class="auth-error" id="pinError" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <div class="app">
+    <main class="main">
+      <section class="hero">
+        <div class="hero-copy">
+          <h2>Панель кассира DRAGON</h2>
+          <p>Текущие заказы, оплата, сумма, смена и быстрый ручной заказ в одном окне. Поток работы: касса принимает заказ, кухня меняет статус, клиент получает готовую позицию по коду.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn secondary" id="refreshBtn">Обновить</button>
+          <button class="btn primary" id="openManualBtn">+ Ручной заказ</button>
+          <a class="btn secondary" href="monitor_klient.html" data-bridge-link>Client View</a>
+          <a class="btn secondary" href="monitor_kuhnhya.html" data-bridge-link>Monitor</a>
+          <a class="btn secondary" href="admin.html" data-bridge-link>Admin Panel</a>
+          <button class="btn secondary" id="sendScreenshotBtn" type="button">Full screenshot в VN</button>
+          <button class="btn ghost" id="clearCacheBtn">Очистить всё (кэш)</button>
+          <button class="btn ghost" id="lockKassaBtn">Выйти</button>
+        </div>
+        <section class="side-card remote-access-card">
+          <div class="remote-access-head">
+            <div>
+              <h3>Удалённый bridge</h3>
+              <p id="remoteBridgeHint">GitHub Pages сам bridge не держит. Вставь публичный cloud-адрес, и касса начнет видеть живые заказы из дома.</p>
+            </div>
+            <span class="sync-pill offline" id="bridgeSyncBadge">Bridge не задан</span>
+          </div>
+          <div class="remote-access-meta">
+            <span class="sync-pill warn" id="sheetSyncBadge">Sheets: запуск</span>
+            <span>Последний sync: <b id="lastSyncTime">—</b></span>
+          </div>
+          <div class="remote-access-form">
+            <input class="input" id="remoteBridgeInput" type="url" inputmode="url" placeholder="https://api.vash-domen.com" spellcheck="false" />
+            <button class="btn secondary small" id="saveRemoteBridgeBtn" type="button">Подключить cloud</button>
+            <button class="btn ghost small" id="copyRemoteBridgeLinkBtn" type="button">Копировать ссылку</button>
+            <button class="btn ghost small" id="clearRemoteBridgeBtn" type="button">Сбросить</button>
+          </div>
+          <div class="remote-access-current" id="remoteBridgeCurrent">Cloud bridge пока не задан.</div>
+        </section>
+      </section>
+
+      <section class="stats">
+        <div class="stat">
+          <div class="label">Новые</div>
+          <div class="value" id="statNew">0</div>
+          <div class="meta">ждут кассу или кухню</div>
+        </div>
+        <div class="stat">
+          <div class="label">Готовятся</div>
+          <div class="value" id="statCooking">0</div>
+          <div class="meta">в работе сейчас</div>
+        </div>
+        <div class="stat">
+          <div class="label">Готово</div>
+          <div class="value" id="statReady">0</div>
+          <div class="meta">можно выдавать</div>
+        </div>
+        <div class="stat">
+          <div class="label">Наличные</div>
+          <div class="value" id="statCash">0 грн</div>
+          <div class="meta">по активной смене</div>
+        </div>
+        <div class="stat">
+          <div class="label">Карта</div>
+          <div class="value" id="statCard">0 грн</div>
+          <div class="meta">по активной смене</div>
+        </div>
+      </section>
+
+      <section class="filters-wrap">
+        <div class="date-toolbar">
+          <div class="date-chips">
+            <button class="date-chip active" type="button" data-quick-date="today">Сегодня</button>
+            <button class="date-chip" type="button" data-quick-date="yesterday">Вчера</button>
+            <button class="date-chip" type="button" data-quick-date="all">Все даты</button>
+          </div>
+          <input class="input date-input" id="dateFilter" type="date" />
+          <div class="date-meta" id="dateFilterLabel">Период: сегодня</div>
+        </div>
+
+        <div class="filters">
+          <input class="input" id="searchFilter" type="text" placeholder="Поиск: код заказа, телефон, блюдо, код блюда, комментарий..." />
+          <select class="select" id="statusFilter">
+            <option value="">Все статусы</option>
+            <option value="NEW">Новое</option>
+            <option value="COOKING">Готовится</option>
+            <option value="READY">Готово</option>
+            <option value="HANDED">Выдано</option>
+            <option value="CANCELLED">Отменено</option>
+          </select>
+          <select class="select" id="typeFilter">
+            <option value="">Все типы</option>
+            <option value="on_site">На месте</option>
+            <option value="takeaway">На вынос</option>
+            <option value="delivery">Доставка</option>
+          </select>
+          <select class="select" id="paymentFilter">
+            <option value="">Все оплаты</option>
+            <option value="cash">Наличные</option>
+            <option value="card">Карта</option>
+            <option value="split">Смешанная</option>
+            <option value="unknown">ХЗ</option>
+          </select>
+          <select class="select" id="sourceFilter">
+            <option value="">Все источники</option>
+            <option value="site">Сайт</option>
+            <option value="cashier">Касса</option>
+          </select>
+          <select class="select" id="sortFilter">
+            <option value="newest">Сначала новые</option>
+            <option value="oldest">Сначала старые</option>
+            <option value="amount_desc">Сумма сверху</option>
+            <option value="ready_first">Сначала готово</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="board">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Текущие заказы</h3>
+              <p>Коды блюд, комментарии, статус, оплата и действия для кассы и кухни.</p>
+            </div>
+            <div class="panel-subtitle" id="ordersCountLabel">0 заказов</div>
+          </div>
+          <div class="panel-body">
+            <div class="orders-grid" id="ordersList"></div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Касса смены</h3>
+              <p>Открытие смены, стартовая наличность, заметка и расчет по активным заказам.</p>
+            </div>
+          </div>
+          <div class="panel-body panel-stack">
+            <div class="cash-grid">
+              <div class="cash-cell">
+                <div class="k">Заказов в смене</div>
+                <div class="v" id="shiftOrdersCount">0</div>
+              </div>
+              <div class="cash-cell">
+                <div class="k">Средний чек</div>
+                <div class="v" id="shiftAvgCheck">0 грн</div>
+              </div>
+              <div class="cash-cell">
+                <div class="k">Наличные</div>
+                <div class="v" id="shiftCashTotal">0 грн</div>
+              </div>
+              <div class="cash-cell">
+                <div class="k">Карта</div>
+                <div class="v" id="shiftCardTotal">0 грн</div>
+              </div>
+            </div>
+
+            <div class="cash-line">
+              <div>
+                <strong>Смена открыта</strong>
+                <span id="shiftOpenedAt">—</span>
+              </div>
+              <strong id="shiftElapsed">—</strong>
+            </div>
+
+            <div class="cash-line">
+              <div>
+                <strong>Стартовая наличность</strong>
+                <span>Учитывается в ожидаемом остатке кассы.</span>
+              </div>
+              <strong id="shiftOpeningCashLabel">0 грн</strong>
+            </div>
+
+            <div class="cash-line">
+              <div>
+                <strong>Ожидаемая наличность</strong>
+                <span>Стартовая сумма + все наличные заказы в смене без отмен.</span>
+              </div>
+              <strong id="shiftExpectedCash">0 грн</strong>
+            </div>
+
+            <section class="side-card">
+              <h3>Автоостаток по складу</h3>
+              <p>Заготовка берется из админ-панели, продажи из кассы списываются автоматически. Остаток порций пересчитывается без ручной математики.</p>
+              <div class="sync-list" id="inventoryPoolList"></div>
+            </section>
+
+            <div class="shift-controls">
+              <div class="shift-row">
+                <label class="helper" for="shiftOpeningCashInput">Стартовая наличность</label>
+                <input class="input" id="shiftOpeningCashInput" type="number" min="0" step="1" placeholder="0" />
+              </div>
+              <div class="shift-row">
+                <label class="helper" for="shiftNote">Нотатка по смене</label>
+                <textarea class="textarea" id="shiftNote" placeholder="Например: доставка отключена, один возврат наличными, заказ b014 выдан без чека..."></textarea>
+              </div>
+              <div class="shift-actions">
+                <button class="btn primary" id="saveShiftBtn">Сохранить смену</button>
+                <button class="btn secondary" id="restartShiftBtn">Начать новую смену</button>
+                <button class="btn ghost" id="clearShiftCacheBtn">Очистить кэш</button>
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="k">Последняя локальная заметка</div>
+              <div class="muted" id="shiftNotePreview">—</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel report-panel">
+        <div class="panel-head">
+          <div>
+            <h3 id="dailyReportTitle">Báo cáo cuối ngày</h3>
+            <p id="dailyReportDescription">Mỗi dòng là một món theo ngày đã chọn. Đơn đã hủy không vào bảng.</p>
+          </div>
+          <div class="report-tools">
+            <div class="panel-subtitle" id="dailyReportLabel">Hôm nay • 0 dòng</div>
+            <div class="report-lang-toggle" id="reportLangToggle" aria-label="Report language">
+              <button class="toggle-btn active" type="button" data-report-lang="vn">VN</button>
+              <button class="toggle-btn" type="button" data-report-lang="ru">RU</button>
+            </div>
+            <button class="btn secondary small" id="reportScreenshotBtn" type="button">Full screenshot</button>
+            <button class="btn secondary small" id="copyReportBtn">Sao chép TSV</button>
+          </div>
+        </div>
+        <div class="panel-body panel-stack">
+          <div class="report-summary">
+            <div class="mini-card">
+              <div class="k" id="reportOrdersLabel">Đơn</div>
+              <div class="v" id="reportOrdersCount">0</div>
+            </div>
+            <div class="mini-card">
+              <div class="k" id="reportQtyLabel">Phần</div>
+              <div class="v" id="reportQtyTotal">0</div>
+            </div>
+            <div class="mini-card">
+              <div class="k" id="reportCardLabel">Thẻ</div>
+              <div class="v" id="reportCardTotal">0 UAH</div>
+            </div>
+            <div class="mini-card">
+              <div class="k" id="reportCashLabel">Tiền mặt</div>
+              <div class="v" id="reportCashTotal">0 UAH</div>
+            </div>
+            <div class="mini-card">
+              <div class="k" id="reportTurnoverLabel">Doanh thu</div>
+              <div class="v" id="reportPriceTotal">0 UAH</div>
+            </div>
+          </div>
+
+          <div class="report-table-wrap">
+            <table class="report-table">
+              <thead>
+                <tr id="dailyReportHead"></tr>
+              </thead>
+              <tbody id="dailyReportBody"></tbody>
+              <tfoot id="dailyReportFoot"></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="manualModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-head-copy">
+          <h3>Ручной заказ</h3>
+          <p>Добавь реальные блюда из DRAGON по коду или названию, выбери тип заказа и оплату, укажи телефон/комментарий и сразу отправь заказ в Google Sheets + Telegram.</p>
+        </div>
+        <button class="btn secondary modal-close-btn" id="closeManualBtn" type="button" aria-label="Закрыть ручной заказ">×</button>
+      </div>
+
+      <div class="modal-body">
+        <section class="panel manual-order-panel">
+          <div class="manual-order-layout">
+            <section class="manual-section manual-params-section">
+              <div class="panel-head">
+                <div>
+                  <h3>Поиск блюда</h3>
+                  <p>Найди позицию по коду или названию. После «Выбрать» карточка раскроется прямо в списке.</p>
+                </div>
+              </div>
+              <div class="panel-body panel-stack">
+                <div class="field">
+                  <label for="manualSearch">Поиск блюда по коду или названию</label>
+                  <input class="input" id="manualSearch" type="text" placeholder="Например: PBx, MXB, Фо, Miến..." />
+                </div>
+
+                <div class="menu-search">
+                  <div class="menu-results" id="manualSearchResults"></div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="manual-summary">
+              <section class="manual-section manual-compose-section">
+                <div class="panel-head">
+                  <div>
+                    <h3>Состав заказа <span class="order-draft-pill" id="manualDraftCode">#NEW</span></h3>
+                    <p>Параметры клиента, сборка блюда и уже добавленные позиции.</p>
+                  </div>
+                </div>
+                <div class="panel-body panel-stack">
+                  <div class="field">
+                    <label>Тип заказа</label>
+                    <div class="toggle-row" id="manualTypeToggle">
+                      <button class="toggle-btn active" type="button" data-type="takeaway">На вынос</button>
+                      <button class="toggle-btn" type="button" data-type="on_site">На месте</button>
+                      <button class="toggle-btn" type="button" data-type="delivery">Доставка</button>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label>Тип оплаты</label>
+                    <div class="toggle-row" id="manualPaymentToggle">
+                      <button class="toggle-btn active" type="button" data-payment="cash">Наличные</button>
+                      <button class="toggle-btn" type="button" data-payment="card">Карта</button>
+                      <button class="toggle-btn" type="button" data-payment="split">Смешанная</button>
+                      <button class="toggle-btn" type="button" data-payment="unknown">ХЗ</button>
+                    </div>
+                  </div>
+
+                  <div class="form-grid hidden" id="manualSplitFields">
+                    <div class="field">
+                      <label for="manualCashAmount">Наличные</label>
+                      <input class="input" id="manualCashAmount" type="number" min="0" step="0.01" value="0" />
+                    </div>
+                    <div class="field">
+                      <label for="manualCardAmount">Карта</label>
+                      <input class="input" id="manualCardAmount" type="number" min="0" step="0.01" value="0" />
+                    </div>
+                  </div>
+
+                  <div class="form-grid">
+                    <div class="field hidden" id="manualTableField">
+                      <label for="manualTable">Стол</label>
+                      <input class="input" id="manualTable" type="text" placeholder="Например, 4" />
+                    </div>
+                    <div class="field" id="manualPickupField">
+                      <label for="manualPickup">Через сколько забрать</label>
+                      <input class="input" id="manualPickup" type="number" min="0" step="5" placeholder="15" />
+                    </div>
+                    <div class="field full hidden" id="manualAddressField">
+                      <label for="manualAddress">Адрес доставки</label>
+                      <input class="input" id="manualAddress" type="text" placeholder="Город, улица, дом..." />
+                    </div>
+                    <div class="field">
+                      <label for="manualPhone">Телефон клиента</label>
+                      <input class="input" id="manualPhone" type="tel" placeholder="+380 63 000 00 00" />
+                    </div>
+                    <div class="field hidden" id="manualDeliveryFeeField">
+                      <label for="manualDeliveryFee">Стоимость доставки</label>
+                      <input class="input" id="manualDeliveryFee" type="number" min="0" step="1" value="50" />
+                    </div>
+                    <div class="field full">
+                      <label for="manualComment">Комментарий по заказу</label>
+                      <textarea class="textarea" id="manualComment" placeholder="Например: без кинзы, отдать сразу на кухню, клиент заберет через 20 минут..."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="manual-builder-home" id="manualBuilderHome">
+                    <section class="modifier-builder hidden" id="manualModifierBuilder">
+                      <div class="modifier-builder-head">
+                        <div class="modifier-builder-copy">
+                          <strong id="manualModifierTitle">Выбери базовое блюдо</strong>
+                          <span id="manualModifierMeta">Сначала выбери базу, потом при необходимости открой EDIT для мяса, креветок, зелени или nem.</span>
+                        </div>
+                        <button class="btn small ghost" id="clearManualBuilderBtn" type="button">Сбросить</button>
+                      </div>
+
+                      <div class="modifier-quick-card">
+                        <div class="modifier-preview" id="manualModifierPreview"></div>
+                        <div class="modifier-quick-actions">
+                          <label class="field modifier-qty-field">
+                            <span>Qty</span>
+                            <input class="input" id="manualBuilderQtyInput" type="number" min="1" step="1" value="1" />
+                          </label>
+                          <button class="btn primary modifier-plus-btn" id="addConfiguredItemBtn" type="button" aria-label="Добавить позицию">+</button>
+                          <button class="btn secondary modifier-edit-btn" id="toggleBuilderEditBtn" type="button" aria-expanded="false">EDIT</button>
+                        </div>
+                      </div>
+
+                      <div class="modifier-editor-panel" id="manualModifierEditorPanel">
+                        <div class="modifier-groups" id="manualModifierGroups"></div>
+                        <div class="modifier-preview modifier-total-preview">
+                          <strong id="manualModifierCodePreview">—</strong>
+                          <div class="meta" id="manualModifierPricePreview">Выбери базовое блюдо, чтобы увидеть итоговую позицию.</div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="manual-items" id="manualItemsList"></div>
+                </div>
+              </section>
+
+              <section class="summary-box manual-section">
+                <div class="summary-title">Сумма</div>
+                <div class="summary-line">
+                  <span>Позиций</span>
+                  <strong id="manualItemsCount">0</strong>
+                </div>
+                <div class="summary-line">
+                  <span>Сумма блюд</span>
+                  <strong id="manualSubtotal">0 грн</strong>
+                </div>
+                <div class="summary-line">
+                  <span>Доставка</span>
+                  <strong id="manualDeliveryValue">0 грн</strong>
+                </div>
+                <div class="summary-line total">
+                  <span>Итого</span>
+                  <strong id="manualTotal">0 грн</strong>
+                </div>
+                <p class="modal-tip">После создания заказ сразу появится в списке. Если API временно не ответит, запись останется локально и не пропадет.</p>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </div>
+
+      <div class="modal-footer">
+        <div class="manual-submit-copy">
+          <span class="k">Быстрое действие</span>
+          <strong class="v" id="manualSubmitMeta">Добавь блюда, чтобы создать заказ</strong>
+        </div>
+        <button class="btn primary manual-submit-btn" id="submitManualOrderBtn" type="button" disabled>Создать заказ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" data-html2canvas-ignore="true"></div>
+
+  <script src="dragon_static_config.js"></script>
+  <script src="menu.js"></script>
+  <script src="dragon_kassa_modifier_logic.js"></script>
+  <script>
+    const API_BASE = "https://script.google.com/macros/s/AKfycbywwekrmdJvCnKuXKXY-D1_fkJDNm6ES9xAsptqRpoCOS6u9QidiSnGizIK0wybcGTl/exec";
+    const CURRENCY = "грн";
+    const ORDERS_KEY = "CD_ORDERS_V1";
+    const SHIFT_KEY = "CD_KASSA_SHIFT_V1";
+    const REPORT_LANG_KEY = "CD_KASSA_REPORT_LANG_V1";
+    const REPORT_COMMENT_OVERRIDES_KEY = "CD_KASSA_REPORT_COMMENT_OVERRIDES_V1";
+    const LAST_SYNC_KEY = "CD_KASSA_LAST_SYNC_V1";
+    const TRACE_DEVICE_KEY = "CD_DRAGON_KASSA_DEVICE_ID_V1";
+    const TRACE_SESSION_KEY = "CD_DRAGON_KASSA_SESSION_ID_V1";
+    const TRACE_SESSION_STARTED_AT_KEY = "CD_DRAGON_KASSA_SESSION_STARTED_AT_V1";
+    const CONTRON_STORAGE_KEY = "DRAGON_CONTRON_PANEL_V2";
+    const STOCK_SUMMARY_KEY = "DRAGON_STOCK_SUMMARY_V1";
+    const LOCAL_API_BASE = window.DRAGON_STATIC?.localOrdersApi || "";
+    const LOCAL_EVENTS_URL = window.DRAGON_STATIC?.localEventsUrl || "";
+    const TELEGRAM_MESSAGE_API = window.DRAGON_STATIC?.telegramMessageApi || "";
+    const TELEGRAM_DOCUMENT_API = window.DRAGON_STATIC?.telegramDocumentApi || "";
+    const KASSA_SESSION_API = window.DRAGON_STATIC?.kassaSessionApi || "";
+    // Static hosting cannot protect a secret PIN; this is only a local fallback when the bridge API is unavailable.
+    const KASSA_LOCAL_PIN = String(window.DRAGON_STATIC?.kassaLocalPin || "1990").trim();
+    const KASSA_LOCAL_AUTH_KEY = "CD_DRAGON_KASSA_LOCAL_AUTH_V1";
+    const SCREENSHOT_MODE = new URLSearchParams(window.location.search).get("screenshot") === "1";
+    const HTML2CANVAS_URL = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+    const REFRESH_MS = 30000;
+    const SHEETS_RETRY_COOLDOWN_MS = 12000;
+    const BRIDGE_QUERY_KEYS = ["bridgeUrl", "bridge_url", "remoteBridge", "remote_bridge"];
+
+    const TG = {
+      MAIN_CHANNEL: "main",
+      VN_CHANNEL: "vn",
+      PROXY_URL: TELEGRAM_MESSAGE_API,
+      DOCUMENT_PROXY_URL: TELEGRAM_DOCUMENT_API
+    };
+
+    const STATUS_META = {
+      NEW: { label: "Новое", className: "new" },
+      COOKING: { label: "Готовится", className: "cooking" },
+      READY: { label: "Готово", className: "ready" },
+      HANDED: { label: "Выдано", className: "handed" },
+      CANCELLED: { label: "Отменено", className: "cancelled" }
+    };
+
+    const TYPE_META = {
+      on_site: { label: "На месте" },
+      takeaway: { label: "На вынос" },
+      delivery: { label: "Доставка" }
+    };
+
+    const PAYMENT_META = {
+      cash: { label: "Наличные", className: "cash" },
+      card: { label: "Карта", className: "card" },
+      split: { label: "Наличные + Карта", className: "split" },
+      unknown: { label: "ХЗ", className: "unknown" }
+    };
+
+    const SOURCE_META = {
+      site: "Сайт",
+      cashier: "Касса"
+    };
+
+    const REPORT_I18N = {
+      vn: {
+        title: "Báo cáo cuối ngày",
+        description: "Mỗi dòng là một món theo ngày đã chọn. Đơn đã hủy không vào bảng.",
+        copy: "Sao chép TSV",
+        copied: "Đã sao chép báo cáo TSV",
+        emptyCopy: "Không có dòng để sao chép",
+        copyError: "Không sao chép được báo cáo",
+        labels: {
+          orders: "Đơn",
+          portions: "Phần",
+          card: "Thẻ",
+          cash: "Tiền mặt",
+          turnover: "Doanh thu"
+        },
+        headers: ["Mã", "Mang đi / Ăn tại chỗ", "Tên món", "Ghi chú", "THẺ", "TIỀN MẶT", "Trạng thái", "Giờ"],
+        rowsWord: "dòng",
+        orderWord: "Đơn",
+        total: "TỔNG:",
+        emptyTitle: "Chưa có dữ liệu báo cáo",
+        emptyText: "Chọn ngày khác hoặc chờ đơn trong ngày hiện tại.",
+        commentPlaceholder: "Nhập ghi chú...",
+        today: "Hôm nay",
+        yesterday: "Hôm qua",
+        allDates: "Tất cả ngày",
+        deliveryName: "Phí giao hàng",
+        deliveryComment: "Phí giao hàng",
+        noItemsName: "Đơn không có món",
+        noItemsComment: "Chưa có danh sách món",
+        adjustmentName: "Điều chỉnh",
+        discountName: "Giảm giá / điều chỉnh",
+        adjustmentComment: "Đối chiếu tổng tiền đơn",
+        fallbackItem: "Món"
+      },
+      ru: {
+        title: "Отчёт завершения дня",
+        description: "Каждая строка = отдельная позиция по выбранной дате. Отменённые заказы в таблицу не попадают.",
+        copy: "Скопировать TSV",
+        copied: "Отчёт скопирован в TSV",
+        emptyCopy: "Нет строк для копирования в отчёт",
+        copyError: "Не удалось скопировать отчёт",
+        labels: {
+          orders: "Заказов",
+          portions: "Порций",
+          card: "Карта",
+          cash: "Наличные",
+          turnover: "Оборот"
+        },
+        headers: ["КОД", "На вынос / в зале", "Название", "Комментарий", "КАРТА", "НАЛИЧНЫЕ", "Статус", "Время"],
+        rowsWord: null,
+        orderWord: "Заказ",
+        total: "TOTAL:",
+        emptyTitle: "Нет данных для отчёта",
+        emptyText: "Выбери другую дату или дождись заказов за текущий день.",
+        commentPlaceholder: "Введите комментарий...",
+        today: "Сегодня",
+        yesterday: "Вчера",
+        allDates: "Все даты",
+        deliveryName: "Доставка",
+        deliveryComment: "Стоимость доставки",
+        noItemsName: "Заказ без позиций",
+        noItemsComment: "Позиции не переданы",
+        adjustmentName: "Корректировка",
+        discountName: "Скидка / корректировка",
+        adjustmentComment: "Сверка суммы заказа",
+        fallbackItem: "Позиция"
+      }
+    };
+
+    // Mix-блюда временно списываются из говядины, чтобы касса считала общий остаток
+    // из одной заготовки. Если кухня введет отдельный пул для mix, достаточно поменять
+    // этот словарь и соответствующие правила ниже.
+    const STOCK_CODE_POOL_OVERRIDES = {
+      PMIX: "beef",
+      MMIX: "beef",
+      MNMIX: "beef",
+      BMIX: "beef",
+      BSMIX: "beef",
+      MXMIX: "beef",
+      MTXMIX: "beef",
+      MIXMIX: "beef",
+      PXMIX: "beef",
+      CMIX: "beef",
+      CRMIX: "beef"
+    };
+
+    const STOCK_POOL_META = {
+      beef: {
+        label: "Говядина",
+        prep_matchers: ["говядина", "thit bo"],
+        item_matchers: ["говядин", "ялович"],
+        note: "PBx / BBx / BsB / CRB / Mix"
+      },
+      chicken: {
+        label: "Курица",
+        prep_matchers: ["курица", "thit ga"],
+        item_matchers: ["куриц", "курк"],
+        note: "PGx / BGx / MXG / CRG"
+      },
+      pork: {
+        label: "Свинина",
+        prep_matchers: ["свинина", "thit heo"],
+        item_matchers: ["свинин", "свини"],
+        note: "PLx / BLx / MXH / CRL"
+      },
+      shrimp: {
+        label: "Креветки",
+        prep_matchers: ["креветки", "tom"],
+        item_matchers: ["кревет"],
+        note: "PT / BT / MXT / CRT"
+      },
+      nem: {
+        label: "Nem",
+        prep_matchers: ["nem"],
+        item_matchers: ["нем", "нэм", "nem"],
+        note: "BsN / CNem / CRNem"
+      }
+    };
+
+    const STOCK_POOL_ORDER = ["beef", "chicken", "pork", "shrimp", "nem"];
+
+    const state = {
+      orders: [],
+      menu: [],
+      menuByKey: {},
+      menuByCode: {},
+      manual: {
+        draft_code: "",
+        editing_order_code: "",
+        type: "takeaway",
+        payment_type: "cash",
+        items: [],
+        builder: {
+          base_key: "",
+          base_code: "",
+          addons: {},
+          qty: 1,
+          editing: false
+        }
+      },
+      date_scope: "today",
+      report_lang: loadReportLang(),
+      report_comment_overrides: loadReportCommentOverrides(),
+      inventory: {
+        pools: [],
+        byKey: {}
+      },
+      shift: loadShift(),
+      timer: null,
+      liveReloadTimer: null,
+      eventSource: null,
+      ordersRenderSignature: "",
+      screenshotBusy: false,
+      kassa_authenticated: false,
+      initialized: false,
+      savingRows: new Set()
+    };
+
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+    let html2canvasLoader = null;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function fmtMoney(value) {
+      const num = Number(value || 0);
+      return `${num.toFixed(2).replace(".00", "")} ${CURRENCY}`;
+    }
+
+    function normalizeAmount(value) {
+      const num = Number(value || 0);
+      if (!Number.isFinite(num)) return 0;
+      return Math.max(0, Math.round(num * 100) / 100);
+    }
+
+    function roundMetric(value, digits = 2) {
+      const num = Number(value || 0);
+      if (!Number.isFinite(num)) return 0;
+      const factor = 10 ** digits;
+      return Math.round(num * factor) / factor;
+    }
+
+    function fmtPortions(value) {
+      const num = roundMetric(value, 2);
+      if (!Number.isFinite(num)) return "0";
+      return Number.isInteger(num) ? String(num) : num.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    function normalizeLookup(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-zа-яё0-9]+/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function textContainsAny(haystack, needles = []) {
+      const text = normalizeLookup(haystack);
+      return needles.some(needle => text.includes(normalizeLookup(needle)));
+    }
+
+    function sameMoney(a, b) {
+      return Math.abs(normalizeAmount(a) - normalizeAmount(b)) < 0.01;
+    }
+
+    function fmtDateTime(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      return date.toLocaleString("ru-RU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function fmtTime(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      return date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function timeAgo(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      const diff = Math.max(0, Date.now() - date.getTime());
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return "только что";
+      if (mins < 60) return `${mins} мин назад`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours} ч назад`;
+      const days = Math.floor(hours / 24);
+      return `${days} дн назад`;
+    }
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function syncStamp(sync) {
+      if (!sync || typeof sync !== "object") return 0;
+      const raw = sync.updated_at || sync.attempted_at || sync.requested_at || sync.created_at;
+      const stamp = new Date(raw || 0).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function syncScore(channel, sync) {
+      if (!sync || typeof sync !== "object") return 0;
+      if (channel === "sheet") {
+        if (sync.ok || sync.id) return 4;
+        if (sync.pending || sync.retrying) return 3;
+        return 2;
+      }
+      if (channel === "local") {
+        return sync.ok ? 3 : 1;
+      }
+      return sync.ok ? 2 : 1;
+    }
+
+    function pickBetterSync(channel, left, right) {
+      const leftScore = syncScore(channel, left);
+      const rightScore = syncScore(channel, right);
+      if (leftScore !== rightScore) return leftScore > rightScore ? left : right;
+      return syncStamp(left) >= syncStamp(right) ? left : right;
+    }
+
+    function hasKitchenProgress(progress) {
+      if (!progress || typeof progress !== "object") return false;
+      const doneRows = Array.isArray(progress.done_row_ids)
+        ? progress.done_row_ids
+        : Array.isArray(progress.doneRowIds)
+          ? progress.doneRowIds
+          : [];
+      return Boolean(doneRows.length || progress.touched || progress.updated_at || progress.updatedAt);
+    }
+
+    function kitchenProgressStamp(progress) {
+      if (!progress || typeof progress !== "object") return 0;
+      const stamp = new Date(progress.updated_at || progress.updatedAt || 0).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function pickBetterKitchenProgress(primary, fallback) {
+      const primaryHas = hasKitchenProgress(primary);
+      const fallbackHas = hasKitchenProgress(fallback);
+      if (primaryHas && !fallbackHas) return primary;
+      if (fallbackHas && !primaryHas) return fallback;
+      if (primaryHas && fallbackHas) {
+        return kitchenProgressStamp(primary) >= kitchenProgressStamp(fallback) ? primary : fallback;
+      }
+      return primary || fallback || {};
+    }
+
+    function isSyncOk(sync) {
+      return Boolean(sync?.ok || sync?.id);
+    }
+
+    function sheetSyncLabel(sync) {
+      if (isSyncOk(sync)) return "ok";
+      if (sync?.pending || sync?.retrying) return "retry";
+      if (sync) return "local";
+      return "—";
+    }
+
+    function localSyncLabel(sync) {
+      if (sync?.ok) return "ok";
+      if (sync) return "off";
+      return "—";
+    }
+
+    function buildOrdersRenderSignature(orders = []) {
+      return JSON.stringify((orders || []).map(order => ({
+        code: order.code,
+        id: order.id,
+        status: order.status,
+        type: order.type,
+        payment_type: order.payment_type,
+        payment_cash: normalizeAmount(order.payment_cash),
+        payment_card: normalizeAmount(order.payment_card),
+        subtotal: normalizeAmount(order.subtotal),
+        delivery_fee: normalizeAmount(order.delivery_fee),
+        total: normalizeAmount(order.total),
+        table: order.table || "",
+        pickup_in: order.pickup_in || "",
+        address: order.address || "",
+        phone: order.phone || "",
+        comment: order.comment || "",
+        source: order.source || "",
+        receipt_link: order.receipt_link || "",
+        created_at: order.created_at || "",
+        updated_at: order.updated_at || "",
+        sheet_state: sheetSyncLabel(order.sync?.sheet),
+        local_state: localSyncLabel(order.sync?.local),
+        telegram_ok: Boolean(order.sync?.telegram?.ok || order.sync?.telegram_vn?.ok),
+        items: (order.items || []).map(item => ({
+          key: item.key || "",
+          menu_key: item.menu_key || "",
+          base_code: item.base_code || "",
+          code: item.code || "",
+          display_code: item.display_code || "",
+          name: item.name || "",
+          qty: Number(item.qty || 0),
+          price: normalizeAmount(item.price),
+          total: normalizeAmount(item.total),
+          note: item.note || "",
+          modifiers: Array.isArray(item.modifiers) ? item.modifiers : [],
+          base_usage: item.base_usage || {},
+          stock_usage: item.stock_usage || {}
+        })),
+        kitchen_progress: order.kitchen_progress || {}
+      })));
+    }
+
+    function dateInputValue(value) {
+      const date = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function humanDateLabel(value) {
+      if (!value) return "Все даты";
+      const parts = String(value).split("-");
+      if (parts.length !== 3) return value;
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+
+    function selectedDateLabel(locale = "ru") {
+      const reportText = REPORT_I18N[locale] || REPORT_I18N.ru;
+      if (state.date_scope === "today") return reportText.today;
+      if (state.date_scope === "yesterday") return reportText.yesterday;
+      const current = $("#dateFilter")?.value || "";
+      if (!current) return reportText.allDates;
+      return humanDateLabel(current);
+    }
+
+    function syncDateScopeUI() {
+      const label = $("#dateFilterLabel");
+      if (label) label.textContent = `Период: ${selectedDateLabel().toLowerCase()}`;
+      $$(".date-chip").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.quickDate === state.date_scope);
+      });
+    }
+
+    function applyQuickDateFilter(scope) {
+      const input = $("#dateFilter");
+      if (!input) return;
+      state.date_scope = scope;
+      if (scope === "today") {
+        input.value = dateInputValue(new Date());
+      } else if (scope === "yesterday") {
+        const date = new Date();
+        date.setDate(date.getDate() - 1);
+        input.value = dateInputValue(date);
+      } else {
+        input.value = "";
+      }
+      syncDateScopeUI();
+      renderAll();
+    }
+
+    function handleDateInputChange() {
+      const input = $("#dateFilter");
+      if (!input) return;
+      state.date_scope = input.value ? "custom" : "all";
+      syncDateScopeUI();
+      renderAll();
+    }
+
+    function debounce(fn, wait = 160) {
+      let t = null;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    function parseJSON(value, fallback) {
+      if (!value) return fallback;
+      if (typeof value !== "string") return value;
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function storageArea(kind) {
+      try {
+        return window[kind] || null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function readStored(area, key) {
+      try {
+        return String(area?.getItem(key) || "").trim();
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function writeStored(area, key, value) {
+      try {
+        area?.setItem(key, String(value || ""));
+      } catch (_) {}
+    }
+
+    function generateTraceId(prefix) {
+      const token = window.crypto?.randomUUID
+        ? window.crypto.randomUUID().replace(/-/g, "").slice(0, 12)
+        : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+      return `${prefix}-${token}`;
+    }
+
+    const TRACE_DEVICE_ID = (() => {
+      const area = storageArea("localStorage");
+      const existing = readStored(area, TRACE_DEVICE_KEY);
+      if (existing) return existing;
+      const next = generateTraceId("dragondev");
+      writeStored(area, TRACE_DEVICE_KEY, next);
+      return next;
+    })();
+
+    const TRACE_SESSION_ID = (() => {
+      const area = storageArea("sessionStorage");
+      const existing = readStored(area, TRACE_SESSION_KEY);
+      if (existing) return existing;
+      const next = generateTraceId("dragonsess");
+      writeStored(area, TRACE_SESSION_KEY, next);
+      return next;
+    })();
+
+    const TRACE_SESSION_STARTED_AT = (() => {
+      const area = storageArea("sessionStorage");
+      const existing = readStored(area, TRACE_SESSION_STARTED_AT_KEY);
+      if (existing) return existing;
+      const next = new Date().toISOString();
+      writeStored(area, TRACE_SESSION_STARTED_AT_KEY, next);
+      return next;
+    })();
+
+    function traceOriginLabel() {
+      try {
+        const url = new URL(window.location.href);
+        if (url.protocol === "file:") {
+          const fileName = url.pathname.split("/").filter(Boolean).pop() || "local-file";
+          return `file://${fileName}`;
+        }
+        return `${url.origin}${url.pathname}`;
+      } catch (_) {
+        return String(window.location.href || "").trim();
+      }
+    }
+
+    function traceBrowserLabel() {
+      return [String(navigator.platform || "").trim(), String(navigator.language || "").trim()]
+        .filter(Boolean)
+        .join(" • ");
+    }
+
+    function currentCashierTrace() {
+      const shiftNote = String(state.shift?.note || "").trim();
+      return {
+        device_id: TRACE_DEVICE_ID,
+        session_id: TRACE_SESSION_ID,
+        session_started_at: TRACE_SESSION_STARTED_AT,
+        source_url: traceOriginLabel(),
+        browser_label: traceBrowserLabel(),
+        shift_note: shiftNote
+      };
+    }
+
+    function inferPaymentType(cash, card, fallback = "unknown") {
+      const cashAmount = normalizeAmount(cash);
+      const cardAmount = normalizeAmount(card);
+      if (cashAmount > 0 && cardAmount > 0) return "split";
+      if (cashAmount > 0) return "cash";
+      if (cardAmount > 0) return "card";
+      return normalizePayment(fallback);
+    }
+
+    function parsePaymentAmount(text, labels) {
+      const source = String(text || "");
+      if (!source) return 0;
+      const escapedLabels = labels.map(label => String(label).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+      if (!escapedLabels) return 0;
+      const match = source.match(new RegExp(`(?:${escapedLabels})\\s*:\\s*([0-9]+(?:[.,][0-9]+)?)`, "i"));
+      if (!match) return 0;
+      return normalizeAmount(String(match[1] || "").replace(",", "."));
+    }
+
+    function recoverPaymentAmountsFromSync(raw, total) {
+      const texts = [
+        raw?.sync?.telegram?.data?.result?.text,
+        raw?.sync?.telegram_vn?.data?.result?.text,
+        raw?.tg?.data?.result?.text,
+        raw?.vn_tg?.data?.result?.text,
+        raw?.sync?.telegram?.text,
+        raw?.sync?.telegram_vn?.text
+      ].filter(Boolean);
+
+      let cash = 0;
+      let card = 0;
+
+      for (const text of texts) {
+        cash = Math.max(cash, parsePaymentAmount(text, ["Готівка", "Наличные", "Tiền mặt", "Cash"]));
+        card = Math.max(card, parsePaymentAmount(text, ["Картка", "Карта", "Thẻ", "Card"]));
+      }
+
+      if (cash <= 0 && card <= 0) {
+        return { payment_cash: 0, payment_card: 0 };
+      }
+
+      const sum = normalizeAmount(cash + card);
+      if (total > 0 && !sameMoney(sum, total)) {
+        const diff = normalizeAmount(total - sum);
+        if (diff > 0) {
+          if (card > 0) card = normalizeAmount(card + diff);
+          else cash = normalizeAmount(cash + diff);
+        }
+      }
+
+      return {
+        payment_cash: cash,
+        payment_card: card
+      };
+    }
+
+    function derivePaymentAmounts(raw, total, fallbackType) {
+      const baseType = normalizePayment(fallbackType);
+      const hasCash = raw && (raw.payment_cash !== undefined || raw.cash_amount !== undefined);
+      const hasCard = raw && (raw.payment_card !== undefined || raw.card_amount !== undefined);
+      let cash = normalizeAmount(raw?.payment_cash ?? raw?.cash_amount ?? 0);
+      let card = normalizeAmount(raw?.payment_card ?? raw?.card_amount ?? 0);
+
+      const needsRecovery = total > 0 && (
+        (!hasCash && !hasCard) ||
+        (cash <= 0 && card <= 0)
+      );
+
+      if (needsRecovery && baseType === "split") {
+        const recovered = recoverPaymentAmountsFromSync(raw, total);
+        cash = recovered.payment_cash;
+        card = recovered.payment_card;
+      }
+
+      if ((cash <= 0 && card <= 0) && needsRecovery) {
+        if (baseType === "cash") cash = normalizeAmount(total);
+        if (baseType === "card") card = normalizeAmount(total);
+      }
+
+      return {
+        payment_cash: cash,
+        payment_card: card,
+        payment_type: inferPaymentType(cash, card, baseType)
+      };
+    }
+
+    function normalizeStatus(value) {
+      const raw = String(value || "").trim().toUpperCase();
+      if (!raw || raw === "SENT" || raw === "FAILED") return "NEW";
+      if (raw === "CONFIRMED") return "COOKING";
+      if (raw === "COMPLETED" || raw === "DONE") return "HANDED";
+      if (raw === "READY") return "READY";
+      if (raw === "COOKING") return "COOKING";
+      if (raw === "CANCELLED") return "CANCELLED";
+      if (raw === "HANDED") return "HANDED";
+      return "NEW";
+    }
+
+    function normalizeType(value) {
+      const raw = String(value || "").trim().toLowerCase();
+      if (["on_site", "onsite", "dinein"].includes(raw)) return "on_site";
+      if (["takeaway", "take_away", "pickup"].includes(raw)) return "takeaway";
+      if (raw === "delivery") return "delivery";
+      if (raw.includes("мест")) return "on_site";
+      if (raw.includes("вынос")) return "takeaway";
+      if (raw.includes("достав")) return "delivery";
+      return "takeaway";
+    }
+
+    function normalizePayment(value) {
+      const raw = String(value || "").trim().toLowerCase();
+      if (["cash", "cashless", "gotivka", "наличные", "готівка"].includes(raw)) return "cash";
+      if (["card", "карта", "card_payment"].includes(raw)) return "card";
+      if (["split", "mixed", "cash_card", "cash+card"].includes(raw)) return "split";
+      return "unknown";
+    }
+
+    function normalizeItems(items) {
+      const parsed = parseJSON(items, []);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((item, index) => ({
+        id: item.id || `${item.key || item.code || "item"}-${index}`,
+        key: item.key || "",
+        menu_key: item.menu_key || item.menuKey || "",
+        base_code: item.base_code || item.baseCode || "",
+        code: item.code || "",
+        display_code: item.display_code || item.displayCode || "",
+        name: item.name || item.title || item.code || `Позиция ${index + 1}`,
+        qty: Math.max(1, Number(item.qty || 1)),
+        price: Number(item.price || item.unit_price || 0),
+        total: Number(item.total || 0),
+        note: String(item.note || item.comment || "").trim(),
+        modifiers: Array.isArray(item.modifiers) ? item.modifiers : [],
+        base_usage: item.base_usage || item.baseUsage || {},
+        stock_usage: item.stock_usage || item.stockUsage || {},
+        selections: item.selections || {}
+      }));
+    }
+
+    function normalizeKitchenProgress(raw, validRowIds = new Set()) {
+      const payload = raw && typeof raw === "object" ? raw : {};
+      const source = Array.isArray(payload.done_row_ids)
+        ? payload.done_row_ids
+        : Array.isArray(payload.doneRowIds)
+          ? payload.doneRowIds
+          : [];
+      const doneRowIds = [];
+      const seen = new Set();
+
+      for (const value of source) {
+        const rowId = String(value || "").trim();
+        if (!rowId || seen.has(rowId)) continue;
+        if (validRowIds.size && !validRowIds.has(rowId)) continue;
+        seen.add(rowId);
+        doneRowIds.push(rowId);
+      }
+
+      return {
+        done_row_ids: doneRowIds,
+        updated_at: String(payload.updated_at || payload.updatedAt || "").trim(),
+        touched: Boolean(payload.touched || doneRowIds.length || payload.updated_at || payload.updatedAt)
+      };
+    }
+
+    function expandKitchenRows(order) {
+      const rows = [];
+      const sourceItems = order?.items?.length ? order.items : [];
+
+      sourceItems.forEach((item, itemIndex) => {
+        const qty = Math.max(1, Number(item.qty || 1));
+        const units = Number.isInteger(qty) ? qty : 1;
+        const itemId = String(item.id || item.key || item.code || `item-${itemIndex}`).trim() || `item-${itemIndex}`;
+        for (let unitIndex = 0; unitIndex < units; unitIndex += 1) {
+          rows.push({
+            ...item,
+            qty: Number.isInteger(qty) ? 1 : qty,
+            row_id: `${itemId}:${unitIndex}`,
+            unit_index: unitIndex,
+            unit_count: units,
+            persistable: true
+          });
+        }
+      });
+
+      return rows;
+    }
+
+    function kitchenProgressSummary(order) {
+      const rows = expandKitchenRows(order);
+      const validRowIds = new Set(rows.map(row => row.row_id));
+      const explicitProgress = normalizeKitchenProgress(order?.kitchen_progress, validRowIds);
+      let doneRowIds = explicitProgress.done_row_ids.slice();
+
+      if (!doneRowIds.length && ["READY", "HANDED"].includes(normalizeStatus(order?.status))) {
+        doneRowIds = rows.map(row => row.row_id);
+      }
+
+      const doneSet = new Set(doneRowIds);
+      return {
+        rows,
+        doneSet,
+        doneCount: rows.filter(row => doneSet.has(row.row_id)).length,
+        totalCount: rows.length,
+        touched: Boolean(explicitProgress.touched),
+        progress: explicitProgress
+      };
+    }
+
+    function resolveOrderStatus(order) {
+      const current = normalizeStatus(order?.status);
+      if (current === "CANCELLED" || current === "HANDED") return current;
+      const progress = kitchenProgressSummary(order);
+      if (!progress.totalCount) return current;
+      if (progress.doneCount >= progress.totalCount) return "READY";
+      if (progress.doneCount > 0) return "COOKING";
+      if (progress.touched) return "NEW";
+      return current;
+    }
+
+    function fallbackTotal(items) {
+      return items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0), 0);
+    }
+
+    function normalizeOrder(raw) {
+      const items = normalizeItems(raw.items);
+      const subtotal = Number(raw.subtotal ?? raw.sum ?? fallbackTotal(items));
+      const deliveryFee = Number(raw.delivery_fee ?? raw.deliveryFee ?? 0);
+      const total = Number(raw.total ?? subtotal + deliveryFee);
+      const code = String(raw.code || raw.order_code || raw.id || "").trim() || generateShortCode();
+      const id = String(raw.id || raw.order_id || code).trim();
+      const localSync = raw.sync?.local ?? raw.local_sync ?? null;
+      const tgSync = raw.sync?.telegram ?? raw.tg ?? null;
+      const tgSyncVN = raw.sync?.telegram_vn ?? raw.vn_tg ?? null;
+      const sheetSync = raw.sync?.sheet ?? raw.sheet ?? null;
+      const payment = derivePaymentAmounts(raw, total, raw.payment_type || raw.payment || raw.payment_method);
+      const trace = raw.trace && typeof raw.trace === "object" ? raw.trace : {};
+      const deviceId = String(raw.device_id || trace.device_id || "").trim();
+      const sessionId = String(raw.session_id || trace.session_id || "").trim();
+      const sessionStartedAt = String(raw.session_started_at || trace.session_started_at || "").trim();
+      const sourceUrl = String(raw.source_url || trace.source_url || "").trim();
+      const browserLabel = String(raw.browser_label || trace.browser_label || "").trim();
+      const shiftNote = String(raw.shift_note || trace.shift_note || "").trim();
+
+      const normalized = {
+        id,
+        code,
+        status: normalizeStatus(raw.status),
+        type: normalizeType(raw.type),
+        payment_type: payment.payment_type,
+        payment_cash: payment.payment_cash,
+        payment_card: payment.payment_card,
+        table: String(raw.table || "").trim(),
+        pickup_in: String(raw.pickup_in || "").trim(),
+        address: String(raw.address || "").trim(),
+        phone: String(raw.phone || "").trim(),
+        comment: String(raw.comment || raw.order_comment || raw.note || "").trim(),
+        items,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        source: raw.source === "cashier" ? "cashier" : "site",
+        created_at: raw.created_at || raw.createdAt || new Date().toISOString(),
+        updated_at: raw.updated_at || raw.updatedAt || raw.created_at || new Date().toISOString(),
+        receipt_link: raw.receipt_link || "",
+        meta: Array.isArray(raw.meta) ? raw.meta : [],
+        device_id: deviceId,
+        session_id: sessionId,
+        session_started_at: sessionStartedAt,
+        source_url: sourceUrl,
+        browser_label: browserLabel,
+        shift_note: shiftNote,
+        trace: {
+          device_id: deviceId,
+          session_id: sessionId,
+          session_started_at: sessionStartedAt,
+          source_url: sourceUrl,
+          browser_label: browserLabel,
+          shift_note: shiftNote
+        },
+        sync: {
+          local: localSync,
+          telegram: tgSync,
+          telegram_vn: tgSyncVN,
+          sheet: sheetSync
+        }
+      };
+      const validRowIds = new Set(expandKitchenRows(normalized).map(row => row.row_id));
+      normalized.kitchen_progress = normalizeKitchenProgress(raw.kitchen_progress ?? raw.kitchenProgress, validRowIds);
+      normalized.status = resolveOrderStatus(normalized);
+      return normalized;
+    }
+
+    function loadLocalOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ORDERS_KEY) || "{}") || {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function saveLocalOrders(map) {
+      const nextValue = JSON.stringify(map || {});
+      if (localStorage.getItem(ORDERS_KEY) === nextValue) return false;
+      localStorage.setItem(ORDERS_KEY, nextValue);
+      return true;
+    }
+
+    function ordersToMap(orders) {
+      const map = {};
+      for (const order of orders || []) {
+        const key = order?.code || order?.id;
+        if (!key) continue;
+        map[key] = order;
+      }
+      return map;
+    }
+
+    function orderStamp(order) {
+      const stamp = new Date(order?.updated_at || order?.created_at || 0).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function upsertLocalOrder(order) {
+      const map = loadLocalOrders();
+      map[order.code] = order;
+      saveLocalOrders(map);
+    }
+
+    function mergeOrders(remoteOrders, localMap) {
+      const merged = new Map();
+      const localOrders = Object.values(localMap || {}).map(normalizeOrder);
+
+      for (const order of remoteOrders.map(normalizeOrder)) {
+        merged.set(order.code || order.id, order);
+      }
+
+      for (const localOrder of localOrders) {
+        const key = localOrder.code || localOrder.id;
+        if (!merged.has(key)) {
+          merged.set(key, localOrder);
+          continue;
+        }
+
+        const remoteOrder = merged.get(key);
+        const useLocal = orderStamp(localOrder) >= orderStamp(remoteOrder);
+        const primary = useLocal ? localOrder : remoteOrder;
+        const fallback = useLocal ? remoteOrder : localOrder;
+        merged.set(key, normalizeOrder({
+          ...fallback,
+          ...primary,
+          status: normalizeStatus(primary.status || fallback.status),
+          comment: primary.comment || fallback.comment,
+          source: primary.source || fallback.source,
+          receipt_link: primary.receipt_link || fallback.receipt_link,
+          items: primary.items.length ? primary.items : fallback.items,
+          kitchen_progress: pickBetterKitchenProgress(primary.kitchen_progress, fallback.kitchen_progress),
+          payment_type: primary.payment_type !== "unknown" ? primary.payment_type : fallback.payment_type,
+          payment_cash: primary.payment_cash ?? fallback.payment_cash ?? 0,
+          payment_card: primary.payment_card ?? fallback.payment_card ?? 0,
+          sync: {
+            local: pickBetterSync("local", localOrder.sync?.local, remoteOrder.sync?.local),
+            telegram: pickBetterSync("telegram", localOrder.sync?.telegram, remoteOrder.sync?.telegram),
+            telegram_vn: pickBetterSync("telegram", localOrder.sync?.telegram_vn, remoteOrder.sync?.telegram_vn),
+            sheet: pickBetterSync("sheet", localOrder.sync?.sheet, remoteOrder.sync?.sheet)
+          }
+        }));
+      }
+
+      return Array.from(merged.values()).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+
+    function saveMergedOrders(orders) {
+      const next = {};
+      for (const order of orders) next[order.code] = order;
+      saveLocalOrders(next);
+    }
+
+    function refreshOrdersFromCache(shouldRender = true) {
+      state.orders = mergeOrders(state.orders, loadLocalOrders());
+      if (shouldRender) renderAll();
+    }
+
+    function persistOrderSnapshot(order, shouldRender = true) {
+      upsertLocalOrder(order);
+      refreshOrdersFromCache(shouldRender);
+    }
+
+    function decorateRemoteOrders(orders) {
+      return (orders || []).map(order => ({
+        ...order,
+        sync: {
+          ...(order.sync || {}),
+          sheet: pickBetterSync("sheet", order.sync?.sheet, {
+            ok: true,
+            source: "sheets",
+            updated_at: order.updated_at || order.created_at || nowIso()
+          })
+        }
+      }));
+    }
+
+    function markSheetPending(order, reason, errorText = "") {
+      order.sync = order.sync || {};
+      order.sync.sheet = {
+        ...(order.sync.sheet || {}),
+        ok: false,
+        pending: true,
+        reason,
+        error: errorText ? String(errorText) : String(order.sync.sheet?.error || ""),
+        attempted_at: nowIso(),
+        updated_at: nowIso()
+      };
+    }
+
+    function applySheetSyncResult(order, result, reason = "") {
+      const ok = isSyncOk(result);
+      order.sync = order.sync || {};
+      order.sync.sheet = ok ? {
+        ...(result || {}),
+        ok: true,
+        pending: false,
+        reason,
+        updated_at: nowIso()
+      } : {
+        ...(result || {}),
+        ok: false,
+        pending: true,
+        reason,
+        error: String(result?.error || "Sheets unavailable"),
+        attempted_at: nowIso(),
+        updated_at: nowIso()
+      };
+    }
+
+    function applyLocalBridgeResult(order, result) {
+      order.sync = order.sync || {};
+      order.sync.local = result?.ok ? {
+        ok: true,
+        via: "local_bridge",
+        updated_at: result?.updated_at || result?.order?.sync?.local?.updated_at || nowIso()
+      } : {
+        ok: false,
+        error: String(result?.error || "Local bridge unavailable"),
+        updated_at: nowIso()
+      };
+    }
+
+    function shouldRetrySheetSync(order) {
+      if (order.source !== "cashier") return false;
+      if (isSyncOk(order.sync?.sheet)) return false;
+      return Date.now() - syncStamp(order.sync?.sheet) >= SHEETS_RETRY_COOLDOWN_MS;
+    }
+
+    function defaultShiftStart() {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      return now.toISOString();
+    }
+
+    function loadShift() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(SHIFT_KEY) || "{}") || {};
+        return {
+          opened_at: saved.opened_at || defaultShiftStart(),
+          opening_cash: Number(saved.opening_cash || 0),
+          note: String(saved.note || "").trim()
+        };
+      } catch (_) {
+        return {
+          opened_at: defaultShiftStart(),
+          opening_cash: 0,
+          note: ""
+        };
+      }
+    }
+
+    function loadReportLang() {
+      try {
+        const saved = String(localStorage.getItem(REPORT_LANG_KEY) || "").toLowerCase();
+        return saved === "ru" || saved === "vn" ? saved : "vn";
+      } catch (_) {
+        return "vn";
+      }
+    }
+
+    function saveReportLang() {
+      localStorage.setItem(REPORT_LANG_KEY, state.report_lang || "vn");
+    }
+
+    function loadReportCommentOverrides() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(REPORT_COMMENT_OVERRIDES_KEY) || "{}") || {};
+        return saved && typeof saved === "object" ? saved : {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function saveReportCommentOverrides() {
+      localStorage.setItem(REPORT_COMMENT_OVERRIDES_KEY, JSON.stringify(state.report_comment_overrides || {}));
+    }
+
+    function saveShift() {
+      localStorage.setItem(SHIFT_KEY, JSON.stringify(state.shift));
+    }
+
+    function setLastSyncLabel(text) {
+      const lastSyncTime = $("#lastSyncTime");
+      if (lastSyncTime) lastSyncTime.textContent = text || "—";
+      localStorage.setItem(LAST_SYNC_KEY, text || "");
+    }
+
+    function restoreLastSyncLabel() {
+      const saved = localStorage.getItem(LAST_SYNC_KEY) || "";
+      const lastSyncTime = $("#lastSyncTime");
+      if (saved && lastSyncTime) lastSyncTime.textContent = saved;
+    }
+
+    function setSyncBadge(el, mode, text) {
+      if (!el) return;
+      el.className = `sync-pill ${mode}`;
+      el.textContent = text;
+    }
+
+    function showToast(message, tone = "ok") {
+      const wrap = $("#toastWrap");
+      const el = document.createElement("div");
+      el.className = `toast ${tone}`;
+      el.textContent = message;
+      wrap.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(6px)";
+        setTimeout(() => el.remove(), 180);
+      }, 2800);
+    }
+
+    function currentBridgeBase() {
+      return String(window.DRAGON_STATIC?.bridgeBase || "").trim();
+    }
+
+    function currentBridgeToken() {
+      return String(window.DRAGON_STATIC?.bridgeToken || "").trim();
+    }
+
+    function normalizeBridgeBaseInput(rawValue) {
+      const raw = String(rawValue || "").trim();
+      if (!raw) return "";
+      try {
+        const url = new URL(raw, window.location.href);
+        if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+        return `${url.origin}${url.pathname.replace(/\/+$/, "")}`;
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function buildBridgeAwareUrl(targetHref, bridgeBase = currentBridgeBase()) {
+      const url = new URL(targetHref, window.location.href);
+      BRIDGE_QUERY_KEYS.forEach(key => url.searchParams.delete(key));
+      ["bridgeToken", "bridge_token", "remoteBridgeToken", "remote_bridge_token"].forEach(key => url.searchParams.delete(key));
+      if (bridgeBase) {
+        url.searchParams.set("bridgeUrl", bridgeBase);
+      }
+      const bridgeToken = currentBridgeToken();
+      if (bridgeToken) {
+        url.searchParams.set("bridgeToken", bridgeToken);
+      }
+      return url.toString();
+    }
+
+    function buildKassaHomeUrl(bridgeBase = currentBridgeBase()) {
+      const url = new URL(window.location.href);
+      url.pathname = url.pathname.replace(/\/kassa_dragon\.html$/i, "/kassa_dragon.html");
+      return buildBridgeAwareUrl(url.toString(), bridgeBase);
+    }
+
+    function refreshBridgeAwareLinks(bridgeBase = currentBridgeBase()) {
+      $$("[data-bridge-link]").forEach(link => {
+        if (!link.dataset.baseHref) {
+          link.dataset.baseHref = link.getAttribute("href") || "";
+        }
+        const baseHref = link.dataset.baseHref || link.getAttribute("href") || "";
+        link.setAttribute("href", buildBridgeAwareUrl(baseHref, bridgeBase));
+      });
+    }
+
+    function renderRemoteAccessPanel() {
+      const bridgeBase = currentBridgeBase();
+      const input = $("#remoteBridgeInput");
+      const bridgeBadge = $("#bridgeSyncBadge");
+      const current = $("#remoteBridgeCurrent");
+      const hint = $("#remoteBridgeHint");
+      const isGithubPages = Boolean(window.DRAGON_STATIC?.isGithubPages);
+
+      if (input && document.activeElement !== input) {
+        input.value = bridgeBase;
+      }
+
+      if (hint) {
+        hint.textContent = isGithubPages
+          ? "GitHub Pages сам bridge не держит. Вставь публичный cloud-адрес, и касса начнет видеть живые заказы из дома."
+          : "Этот адрес можно сохранить в браузере или в ссылке, чтобы monitor, view и profil открывались с тем же bridge.";
+      }
+
+      if (current) {
+        if (bridgeBase) {
+          current.innerHTML = `Текущий bridge: <b>${escapeHtml(bridgeBase)}</b> • кнопка «Копировать ссылку» соберет готовый домашний URL.`;
+        } else if (isGithubPages) {
+          current.textContent = "Bridge ещё не задан. На GitHub Pages без него касса видит только Google Sheets и локальный браузер.";
+        } else {
+          current.textContent = "Сейчас используется локальный сервер. Если нужен доступ из дома, сюда можно сохранить публичный cloud bridge URL.";
+        }
+      }
+
+      if (bridgeBadge) {
+        if (bridgeBase) {
+          setSyncBadge(bridgeBadge, "warn", "Bridge сохранён");
+        } else {
+          setSyncBadge(bridgeBadge, isGithubPages ? "offline" : "warn", isGithubPages ? "Bridge не задан" : "Bridge локально");
+        }
+      }
+
+      refreshBridgeAwareLinks(bridgeBase);
+    }
+
+    async function probeBridgeHealth(bridgeBase) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 4500);
+
+      try {
+        const response = await fetch(`${bridgeBase}/api/health`, {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        let data = null;
+        try {
+          data = await response.json();
+        } catch (_) {}
+        if (!response.ok) {
+          return {
+            ok: false,
+            error: data?.error || `HTTP ${response.status}`
+          };
+        }
+        return { ok: true, data };
+      } catch (error) {
+        return {
+          ok: false,
+          error: error?.name === "AbortError" ? "timeout" : String(error?.message || error)
+        };
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function saveRemoteBridgeSettings(event) {
+      const input = $("#remoteBridgeInput");
+      const btn = event?.currentTarget || $("#saveRemoteBridgeBtn");
+      if (!input || !btn) return;
+
+      const normalized = normalizeBridgeBaseInput(input.value);
+      if (!normalized) {
+        showToast("Укажи полный адрес bridge, например https://abc123.ngrok.io", "warn");
+        input.focus();
+        return;
+      }
+
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Проверка...";
+
+      const health = await probeBridgeHealth(normalized);
+      if (!health.ok) {
+        const confirmed = window.confirm(
+          `Bridge ${normalized} не ответил (${health.error}). Всё равно сохранить адрес и перезагрузить кассу?`
+        );
+        if (!confirmed) {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          return;
+        }
+      }
+
+      btn.textContent = "Подключаю...";
+      window.DRAGON_STATIC?.setBridgeBase(normalized);
+      window.location.assign(buildKassaHomeUrl(normalized));
+    }
+
+    function clearRemoteBridgeSettings() {
+      const hasBridge = Boolean(currentBridgeBase() || $("#remoteBridgeInput")?.value);
+      if (!hasBridge) {
+        showToast("Cloud bridge уже не задан", "warn");
+        return;
+      }
+
+      const confirmed = window.confirm(
+        "Удалить сохранённый cloud bridge и открыть кассу как обычную статическую страницу?"
+      );
+      if (!confirmed) return;
+
+      window.DRAGON_STATIC?.clearBridgeBase();
+      window.location.assign(buildKassaHomeUrl(""));
+    }
+
+    async function copyRemoteBridgeLink() {
+      const inputValue = $("#remoteBridgeInput")?.value || "";
+      const bridgeBase = currentBridgeBase() || normalizeBridgeBaseInput(inputValue);
+      if (!bridgeBase) {
+        showToast("Сначала укажи публичный bridge URL", "warn");
+        $("#remoteBridgeInput")?.focus();
+        return;
+      }
+
+      try {
+        await copyTextToClipboard(buildKassaHomeUrl(bridgeBase));
+        showToast("Домашняя ссылка скопирована");
+      } catch (_) {
+        showToast("Не удалось скопировать ссылку", "error");
+      }
+    }
+
+    function isKassaUnlocked() {
+      return !!state.kassa_authenticated;
+    }
+
+    function showKassa() {
+      document.body.classList.remove("locked");
+      document.body.classList.add("unlocked");
+      $("#authScreen")?.setAttribute("aria-hidden", "true");
+    }
+
+    function hideKassa() {
+      document.body.classList.add("locked");
+      document.body.classList.remove("unlocked");
+      $("#authScreen")?.setAttribute("aria-hidden", "false");
+      setTimeout(() => $("#pinInput")?.focus(), 30);
+    }
+
+    function startKassaApp() {
+      if (!state.initialized) {
+        init();
+        return;
+      }
+
+      renderRemoteAccessPanel();
+      renderAll();
+      loadOrders();
+      if (SCREENSHOT_MODE) return;
+      if (state.timer) clearInterval(state.timer);
+      state.timer = setInterval(pollOrdersWhenVisible, REFRESH_MS);
+    }
+
+    function hasKassaSessionApi() {
+      return Boolean(String(KASSA_SESSION_API || "").trim());
+    }
+
+    function isLocalKassaPinValid(pin) {
+      return Boolean(KASSA_LOCAL_PIN) && String(pin || "").trim() === KASSA_LOCAL_PIN;
+    }
+
+    function setLocalKassaSession(active) {
+      const area = storageArea("sessionStorage");
+      if (!area) return;
+      if (active) writeStored(area, KASSA_LOCAL_AUTH_KEY, "1");
+      else area.removeItem?.(KASSA_LOCAL_AUTH_KEY);
+    }
+
+    function hasLocalKassaSession() {
+      const area = storageArea("sessionStorage");
+      return readStored(area, KASSA_LOCAL_AUTH_KEY) === "1";
+    }
+
+    function unlockKassaLocal(message = "") {
+      setLocalKassaSession(true);
+      unlockKassa();
+      if (message) showToast(message, "warn");
+    }
+
+    function unlockKassa() {
+      state.kassa_authenticated = true;
+      $("#pinError").textContent = "";
+      showKassa();
+      startKassaApp();
+    }
+
+    async function lockKassa() {
+      setLocalKassaSession(false);
+      if (hasKassaSessionApi()) {
+        try {
+          await fetch(KASSA_SESSION_API, { method: "DELETE" });
+        } catch (_) {
+          // Ignore network errors while logging out locally.
+        }
+      }
+      state.kassa_authenticated = false;
+      if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+      }
+      $("#pinInput").value = "";
+      hideKassa();
+    }
+
+    async function refreshKassaSession() {
+      if (!hasKassaSessionApi()) {
+        state.kassa_authenticated = hasLocalKassaSession();
+        return state.kassa_authenticated;
+      }
+
+      try {
+        const response = await fetch(KASSA_SESSION_API, { cache: "no-store" });
+        if (!response.ok) {
+          state.kassa_authenticated = false;
+          return false;
+        }
+        const payload = await response.json();
+        state.kassa_authenticated = !!payload?.authenticated;
+        return state.kassa_authenticated;
+      } catch (_) {
+        state.kassa_authenticated = false;
+        return false;
+      }
+    }
+
+    async function handlePinSubmit(event) {
+      event.preventDefault();
+      const input = $("#pinInput");
+      const error = $("#pinError");
+      const pin = input.value.trim();
+      if (!pin) {
+        error.textContent = "Введите PIN.";
+        return;
+      }
+
+      error.textContent = "";
+      input.disabled = true;
+
+      if (!hasKassaSessionApi()) {
+        if (isLocalKassaPinValid(pin)) {
+          unlockKassaLocal("Касса открыта локально: bridge PIN API не задан.");
+        } else {
+          error.textContent = "Неверный PIN. Попробуйте ещё раз.";
+          input.select();
+        }
+        input.disabled = false;
+        return;
+      }
+
+      try {
+        const response = await fetch(KASSA_SESSION_API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pin })
+        });
+        let payload = null;
+        try {
+          payload = await response.json();
+        } catch (_) {}
+        if (!response.ok || !payload?.ok) {
+          if ((response.status === 404 || response.status === 405 || response.status >= 500) && isLocalKassaPinValid(pin)) {
+            unlockKassaLocal("Сервер PIN недоступен, касса открыта локально.");
+            return;
+          }
+          error.textContent = payload?.error || "Неверный PIN. Попробуйте ещё раз.";
+          input.select();
+          return;
+        }
+        unlockKassa();
+      } catch (_) {
+        if (isLocalKassaPinValid(pin)) {
+          unlockKassaLocal("Сервер PIN недоступен, касса открыта локально.");
+        } else {
+          error.textContent = "Не удалось проверить PIN на сервере.";
+        }
+      } finally {
+        input.disabled = false;
+      }
+    }
+
+    function inferStockPoolFromMenuItem(item) {
+      if (!item) return "";
+
+      const code = String(item.code || "").trim().toUpperCase();
+      if (STOCK_CODE_POOL_OVERRIDES[code]) return STOCK_CODE_POOL_OVERRIDES[code];
+
+      const haystack = [
+        item.name_ru || item.name || "",
+        item.name_ua || "",
+        item.name_vn || ""
+      ].join(" ");
+
+      return STOCK_POOL_ORDER.find(poolKey => textContainsAny(haystack, STOCK_POOL_META[poolKey]?.item_matchers || [])) || "";
+    }
+
+    function inferStockPoolFromPrepItem(item) {
+      if (!item) return "";
+      const haystack = [item.ru || "", item.vn || ""].join(" ");
+      return STOCK_POOL_ORDER.find(poolKey => textContainsAny(haystack, STOCK_POOL_META[poolKey]?.prep_matchers || [])) || "";
+    }
+
+    function findMenuItemByCode(code) {
+      if (!code) return null;
+      return state.menuByCode[String(code).trim().toUpperCase()] || null;
+    }
+
+    function resolveTrackedStockUsage(rawItem) {
+      if (!rawItem) return null;
+
+      const menuItem = rawItem.key ? findMenuItem(rawItem.key) : findMenuItemByCode(rawItem.code);
+      const poolKey = menuItem?.stock_pool || inferStockPoolFromMenuItem({
+        code: rawItem.code,
+        name_ru: rawItem.name || "",
+        name_ua: rawItem.name || "",
+        name_vn: rawItem.name || ""
+      });
+
+      if (!poolKey) return null;
+
+      return {
+        poolKey,
+        units: Math.max(0, Number(rawItem.qty || 1)),
+        menuItem
+      };
+    }
+
+    function getContronSections() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CONTRON_STORAGE_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function flattenContronItems() {
+      return getContronSections().flatMap(section => Array.isArray(section?.items) ? section.items : []);
+    }
+
+    function prepExpectedPortions(item) {
+      const portionNorm = Number(item?.portion_norm || 0);
+      if (!Number.isFinite(portionNorm) || portionNorm <= 0) return 0;
+
+      const cleanWeight = Number(item?.clean_weight || 0);
+      const beginning = Number(item?.beginning || 0);
+      const purchased = Number(item?.purchased || 0);
+      const remainder = Number(item?.remainder || 0);
+      const fallbackWeight = Math.max(0, beginning + purchased - remainder);
+      const baseWeight = cleanWeight > 0 ? cleanWeight : fallbackWeight;
+
+      if (baseWeight <= 0) return 0;
+      return roundMetric(baseWeight / portionNorm, 2);
+    }
+
+    function currentInventoryFallbackStamp() {
+      const dateValue = $("#dateFilter")?.value || dateInputValue(new Date());
+      if (!dateValue) return 0;
+      const stamp = new Date(`${dateValue}T00:00:00`).getTime();
+      return Number.isFinite(stamp) ? stamp : 0;
+    }
+
+    function prepStartedAt(item) {
+      const prepDate = String(item?.prep_date || item?.date || "").trim();
+      const prepTime = String(item?.prep_time || "").trim();
+
+      if (prepDate) {
+        const stamp = new Date(`${prepDate}T${prepTime || "00:00:00"}`).getTime();
+        if (Number.isFinite(stamp)) return stamp;
+      }
+
+      return currentInventoryFallbackStamp();
+    }
+
+    function pickLatestPrepBatch(items, poolKey) {
+      const candidates = (items || [])
+        .map(item => {
+          const key = inferStockPoolFromPrepItem(item);
+          if (key !== poolKey) return null;
+
+          return {
+            poolKey,
+            label: STOCK_POOL_META[poolKey]?.label || poolKey,
+            item,
+            expected: prepExpectedPortions(item),
+            startedAt: prepStartedAt(item)
+          };
+        })
+        .filter(Boolean)
+        .filter(entry => entry.expected > 0);
+
+      if (!candidates.length) return null;
+
+      candidates.sort((left, right) => (
+        right.startedAt - left.startedAt ||
+        right.expected - left.expected
+      ));
+
+      return candidates[0];
+    }
+
+    function buildInventorySnapshot() {
+      const stockSummarySnapshot = buildInventorySnapshotFromStockSummary();
+      if (stockSummarySnapshot) return stockSummarySnapshot;
+
+      const prepItems = flattenContronItems();
+      const soldByPoolAllTime = {};
+
+      for (const order of state.orders) {
+        if (order.status === "CANCELLED") continue;
+        for (const item of order.items || []) {
+          const usage = resolveTrackedStockUsage(item);
+          if (!usage) continue;
+          soldByPoolAllTime[usage.poolKey] = roundMetric((soldByPoolAllTime[usage.poolKey] || 0) + usage.units, 2);
+        }
+      }
+
+      const poolKeys = new Set([...Object.keys(soldByPoolAllTime), ...STOCK_POOL_ORDER]);
+      const pools = [];
+
+      for (const poolKey of poolKeys) {
+        const meta = STOCK_POOL_META[poolKey];
+        if (!meta) continue;
+
+        const batch = pickLatestPrepBatch(prepItems, poolKey);
+        const startedAt = batch?.startedAt || currentInventoryFallbackStamp();
+
+        let sold = 0;
+        let soldOrders = 0;
+        for (const order of state.orders) {
+          if (order.status === "CANCELLED") continue;
+          const createdAt = new Date(order.created_at || 0).getTime();
+          if (Number.isFinite(startedAt) && startedAt > 0 && createdAt < startedAt) continue;
+
+          let usedInOrder = 0;
+          for (const item of order.items || []) {
+            const usage = resolveTrackedStockUsage(item);
+            if (!usage || usage.poolKey !== poolKey) continue;
+            usedInOrder += usage.units;
+          }
+
+          if (usedInOrder > 0) {
+            sold = roundMetric(sold + usedInOrder, 2);
+            soldOrders += 1;
+          }
+        }
+
+        const prepared = roundMetric(batch?.expected || 0, 2);
+        const remaining = roundMetric(prepared - sold, 2);
+        const hasPrep = Boolean(batch);
+        const hasData = hasPrep || sold > 0 || (soldByPoolAllTime[poolKey] || 0) > 0;
+
+        if (!hasData) continue;
+
+        let tone = "ok";
+        if (!hasPrep || remaining <= 0) tone = "danger";
+        else if (remaining <= 3) tone = "warn";
+
+        pools.push({
+          key: poolKey,
+          label: meta.label,
+          prepared,
+          sold,
+          soldOrders,
+          remaining,
+          startedAt,
+          startedLabel: batch ? fmtDateTime(new Date(startedAt).toISOString()) : "Нет активной партии",
+          note: meta.note || "",
+          hasPrep,
+          tone
+        });
+      }
+
+      pools.sort((left, right) => {
+        const leftIndex = STOCK_POOL_ORDER.indexOf(left.key);
+        const rightIndex = STOCK_POOL_ORDER.indexOf(right.key);
+        return leftIndex - rightIndex;
+      });
+
+      return {
+        pools,
+        byKey: Object.fromEntries(pools.map(pool => [pool.key, pool]))
+      };
+    }
+
+    function inventoryRemainingText(pool) {
+      if (!pool?.hasPrep) return "нет партии";
+      if (pool.portionsLeft != null && Number.isFinite(Number(pool.portionsLeft))) {
+        return `${fmtPortions(pool.portionsLeft)} порц.`;
+      }
+      return `${fmtPortions(pool.remaining)} ${pool.unit || "порц."}`;
+    }
+
+    function inventoryPillMode(pool) {
+      if (!pool?.hasPrep || pool.tone === "danger") return "offline";
+      if (pool.tone === "warn") return "warn";
+      return "ok";
+    }
+
+    function buildTrackedItemStockNote(rawItem) {
+      const estimate = estimateConfiguredItemStock(rawItem);
+      if (estimate) {
+        const limitingLabel = estimate.limitingLabel || estimate.limitingStockKey || "склад";
+        return `
+          <div class="stock-note ${estimate.tone}">
+            Осталось: ${escapeHtml(fmtPortions(estimate.portionsLeft))} порц. • лимит: ${escapeHtml(limitingLabel)}
+          </div>
+        `;
+      }
+
+      const usage = resolveTrackedStockUsage(rawItem);
+      if (!usage) return "";
+
+      const pool = state.inventory.byKey[usage.poolKey];
+      const label = pool?.label || STOCK_POOL_META[usage.poolKey]?.label || usage.poolKey;
+      if (!pool) {
+        return `<div class="stock-note danger">Склад: ${escapeHtml(label)} • нет активной партии в Contron</div>`;
+      }
+
+      return `
+        <div class="stock-note ${pool.tone}">
+          Склад: ${escapeHtml(label)} • осталось ${escapeHtml(inventoryRemainingText(pool))}
+        </div>
+      `;
+    }
+
+    function buildMenuIndex() {
+      const flat = [];
+      const byKey = {};
+      const byCode = {};
+      const groups = typeof menuData === "object" && menuData ? Object.entries(menuData) : [];
+      for (const [groupKey, items] of groups) {
+        if (!Array.isArray(items)) continue;
+        for (const item of items) {
+          const nameRu = item.translations?.ru || item.translations?.ua || item.translations?.vn || item.key || "";
+          const nameUa = item.translations?.ua || item.translations?.ru || item.translations?.vn || item.key || "";
+          const nameVn = item.translations?.vn || item.translations?.ua || item.translations?.ru || item.key || "";
+          const nextItem = {
+            key: item.key || "",
+            code: item.code || "",
+            name: nameRu,
+            name_ru: nameRu,
+            name_ua: nameUa,
+            name_vn: nameVn,
+            category: groupKey,
+            price: Number(item.price || 0),
+            weight: Number(item.weight || 0),
+            spicy: Number(item.spicy || 0),
+            short: item.short?.ru || item.short?.ua || item.short?.vn || ""
+          };
+          nextItem.stock_pool = inferStockPoolFromMenuItem(nextItem);
+          flat.push(nextItem);
+          if (nextItem.key) byKey[nextItem.key] = nextItem;
+          if (nextItem.code) byCode[String(nextItem.code).trim().toUpperCase()] = nextItem;
+        }
+      }
+      state.menu = flat.sort((a, b) => a.name.localeCompare(b.name, "ru"));
+      state.menuByKey = byKey;
+      state.menuByCode = byCode;
+    }
+
+    function findMenuItem(key) {
+      return state.menuByKey[key] || null;
+    }
+
+    function searchMenu(query) {
+      const q = String(query || "").trim().toLowerCase();
+      const base = q
+        ? state.menu.filter(item => {
+            const hay = [
+              item.code,
+              item.name,
+              item.name_ua,
+              item.name_vn,
+              item.category,
+              item.short
+            ].join(" ").toLowerCase();
+            return hay.includes(q);
+          })
+        : state.menu;
+      return base.slice(0, 14);
+    }
+
+    function modifierApi() {
+      return window.DRAGON_MODIFIERS || null;
+    }
+
+    function displayItemCode(item) {
+      return item?.display_code || item?.code || "—";
+    }
+
+    function getStockSummary() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STOCK_SUMMARY_KEY) || "{}");
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function supportsModifierLogic(menuItem) {
+      const api = modifierApi();
+      if (!api || !menuItem) return false;
+      if ([
+        "NEM",
+        "GCX",
+        "BBAO",
+        "BOH",
+        "CPV",
+        "P03",
+        "PBL",
+        "PCS33",
+        "PSC33",
+        "PZ33",
+        "P50",
+        "PTR50",
+        "M7",
+        "WTR",
+        "JCE",
+        "JT50",
+        "JAG50",
+        "JM50"
+      ].includes(String(menuItem.code || "").toUpperCase())) {
+        return false;
+      }
+      return Boolean(api.getBase(menuItem.code));
+    }
+
+    function manualBuilderBaseMenuItem() {
+      return state.manual.builder?.base_key ? findMenuItem(state.manual.builder.base_key) : null;
+    }
+
+    function manualBuilderBaseDef() {
+      const api = modifierApi();
+      if (!api) return null;
+      const baseCode = state.manual.builder?.base_code || manualBuilderBaseMenuItem()?.code || "";
+      return baseCode ? api.getBase(baseCode) : null;
+    }
+
+    function manualBuilderAddons() {
+      return Object.values(state.manual.builder?.addons || {});
+    }
+
+    function manualSearchQuery() {
+      return $("#manualSearch")?.value || "";
+    }
+
+    function parkManualBuilder() {
+      const builder = $("#manualModifierBuilder");
+      const home = $("#manualBuilderHome");
+      if (!builder || !home || builder.parentElement === home) return;
+      home.appendChild(builder);
+    }
+
+    function placeManualBuilder() {
+      const builder = $("#manualModifierBuilder");
+      const home = $("#manualBuilderHome");
+      if (!builder) return;
+
+      const selectedKey = state.manual.builder?.base_key || "";
+      const slot = selectedKey
+        ? $$("[data-builder-slot]").find(node => node.dataset.builderSlot === selectedKey)
+        : null;
+
+      if (slot) {
+        if (builder.parentElement !== slot) slot.appendChild(builder);
+        return;
+      }
+
+      if (home && builder.parentElement !== home) {
+        home.appendChild(builder);
+      }
+    }
+
+    function buildManualItemFromBuilder(note = "") {
+      const api = modifierApi();
+      const baseDef = manualBuilderBaseDef();
+      if (!api || !baseDef) return null;
+      return api.buildOrderItem(
+        baseDef.code,
+        manualBuilderAddons(),
+        Math.max(1, Number(state.manual.builder?.qty || 1)),
+        note
+      );
+    }
+
+    function syncConfiguredManualItem(item) {
+      const api = modifierApi();
+      if (!api || !item) return item;
+
+      const baseCode = item.base_code || item.code || "";
+      if (!api.getBase(baseCode)) return item;
+
+      const rebuilt = api.buildOrderItem(baseCode, item.modifiers || item.selections?.modifiers || [], item.qty, item.note || "");
+      Object.assign(item, {
+        ...rebuilt,
+        id: item.id || rebuilt.key,
+        menu_key: rebuilt.menu_key || item.menu_key || ""
+      });
+      return item;
+    }
+
+    function clearManualBuilder() {
+      state.manual.builder = {
+        base_key: "",
+        base_code: "",
+        addons: {},
+        qty: 1,
+        editing: false
+      };
+      renderManualModifierBuilder();
+      renderMenuResults(manualSearchQuery());
+    }
+
+    function setManualBuilderBase(menuItem) {
+      if (!menuItem) return;
+      state.manual.builder = {
+        base_key: menuItem.key || "",
+        base_code: menuItem.code || "",
+        addons: {},
+        qty: 1,
+        editing: false
+      };
+      renderManualModifierBuilder();
+      renderMenuResults(manualSearchQuery());
+    }
+
+    function setManualBuilderQty(value) {
+      state.manual.builder.qty = Math.max(1, Math.round(Number(value || 1)));
+      renderManualModifierBuilder();
+    }
+
+    function toggleManualBuilderEdit() {
+      if (!manualBuilderBaseDef()) {
+        showToast("Сначала выбери базовое блюдо", "warn");
+        return;
+      }
+      state.manual.builder.editing = !state.manual.builder.editing;
+      renderManualModifierBuilder();
+    }
+
+    function toggleManualBuilderAddon(code, valueType, value) {
+      const nextCode = String(code || "").toUpperCase();
+      const current = state.manual.builder.addons[nextCode];
+      const nextValue = Number(value || 0);
+      const payload = { code: nextCode };
+      payload[valueType] = nextValue;
+
+      if (current && Number(current[valueType] || 0) === nextValue) {
+        delete state.manual.builder.addons[nextCode];
+      } else {
+        state.manual.builder.addons[nextCode] = payload;
+      }
+      renderManualModifierBuilder();
+    }
+
+    function addConfiguredItemFromBuilder() {
+      const built = buildManualItemFromBuilder();
+      if (!built) {
+        showToast("Сначала выбери базовое блюдо", "warn");
+        return;
+      }
+
+      const existing = state.manual.items.find(item => (
+        displayItemCode(item) === built.display_code &&
+        String(item.note || "").trim() === ""
+      ));
+
+      if (existing) {
+        existing.qty = Math.max(1, Number(existing.qty || 1)) + Math.max(1, Number(built.qty || 1));
+        syncConfiguredManualItem(existing);
+      } else {
+        state.manual.items.push({
+          ...built,
+          id: built.key
+        });
+      }
+
+      state.manual.builder.qty = 1;
+      renderManualItems();
+      renderManualModifierBuilder();
+    }
+
+    function modifierOptionLabel(addon, value) {
+      if (!addon) return "";
+      if (addon.allowedGrams) return `${value}g`;
+      return `${value} шт`;
+    }
+
+    function renderManualModifierBuilder() {
+      const wrap = $("#manualModifierBuilder");
+      if (!wrap) return;
+
+      const api = modifierApi();
+      const baseMenuItem = manualBuilderBaseMenuItem();
+      const baseDef = manualBuilderBaseDef();
+      const preview = $("#manualModifierPreview");
+      const title = $("#manualModifierTitle");
+      const meta = $("#manualModifierMeta");
+      const groups = $("#manualModifierGroups");
+      const qtyInput = $("#manualBuilderQtyInput");
+      const codePreview = $("#manualModifierCodePreview");
+      const pricePreview = $("#manualModifierPricePreview");
+      const editBtn = $("#toggleBuilderEditBtn");
+
+      if (!api || !baseDef || !baseMenuItem) {
+        wrap.classList.add("hidden");
+        wrap.classList.remove("editing");
+        if (preview) {
+          preview.innerHTML = `
+            <strong>База не выбрана</strong>
+            <div class="meta">Найди блюдо по коду или названию и нажми «Выбрать», чтобы собрать позицию с добавками.</div>
+          `;
+        }
+        if (groups) groups.innerHTML = "";
+        if (codePreview) codePreview.textContent = "—";
+        if (pricePreview) pricePreview.textContent = "Выбери базовое блюдо, чтобы увидеть итоговую позицию.";
+        if (editBtn) {
+          editBtn.textContent = "EDIT";
+          editBtn.setAttribute("aria-expanded", "false");
+        }
+        placeManualBuilder();
+        return;
+      }
+
+      const built = buildManualItemFromBuilder();
+      wrap.classList.remove("hidden");
+      wrap.classList.toggle("editing", Boolean(state.manual.builder?.editing));
+
+      if (title) title.textContent = `${baseDef.code} — ${baseDef.name}`;
+      if (meta) meta.textContent = `База из меню: ${baseMenuItem.code} • добавки влияют на код, цену и автосписание со склада.`;
+      if (qtyInput) qtyInput.value = String(Math.max(1, Number(state.manual.builder?.qty || 1)));
+      if (editBtn) {
+        const isEditing = Boolean(state.manual.builder?.editing);
+        editBtn.textContent = isEditing ? "ГОТОВО" : "EDIT";
+        editBtn.setAttribute("aria-expanded", isEditing ? "true" : "false");
+      }
+
+      if (preview && built) {
+        preview.innerHTML = `
+          <strong class="modifier-code-xl">${escapeHtml(built.display_code)}</strong>
+          <div class="meta">${escapeHtml(built.name)}</div>
+          <div class="meta">Цена за порцию: ${escapeHtml(fmtMoney(built.price))} • Итого: ${escapeHtml(fmtMoney(built.total))}</div>
+          ${buildTrackedItemStockNote(built)}
+        `;
+      }
+
+      if (codePreview && built) codePreview.textContent = built.display_code;
+      if (pricePreview && built) {
+        pricePreview.textContent = `${built.name} • ${fmtMoney(built.price)} / порция • ${fmtMoney(built.total)} итого`;
+      }
+
+      if (!groups) return;
+      groups.innerHTML = Object.values(api.ADDONS || {}).map(addon => {
+        const selected = state.manual.builder.addons?.[addon.code];
+        const values = addon.allowedGrams || addon.allowedQty || [];
+        const valueType = addon.allowedGrams ? "grams" : "qty";
+
+        return `
+          <div class="modifier-group">
+            <div class="modifier-group-head">
+              <strong>${escapeHtml(addon.code)} — ${escapeHtml(addon.name)}</strong>
+              <span class="muted">${escapeHtml(addon.stockKey)}</span>
+            </div>
+            <div class="modifier-options">
+              ${values.map(value => `
+                <button
+                  class="modifier-option ${selected && Number(selected[valueType] || 0) === Number(value) ? "active" : ""}"
+                  type="button"
+                  data-builder-addon="${escapeHtml(addon.code)}"
+                  data-builder-kind="${escapeHtml(valueType)}"
+                  data-builder-value="${escapeHtml(String(value))}"
+                >${escapeHtml(modifierOptionLabel(addon, value))}</button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+      placeManualBuilder();
+    }
+
+    function summaryEntryTone(entry) {
+      const portionsLeft = Number(entry?.portionsLeft);
+      if (portionsLeft <= 0) return "danger";
+      if (portionsLeft < 3) return "danger";
+      if (portionsLeft < 10) return "warn";
+      return "ok";
+    }
+
+    function buildInventorySnapshotFromStockSummary() {
+      const api = modifierApi();
+      const summary = getStockSummary();
+      const stock = summary.stock || {};
+      const order = [
+        "bo",
+        "ga",
+        "heo",
+        "tom",
+        "ga_xu",
+        "nem",
+        "banh_bao",
+        "pho",
+        "bun",
+        "mien",
+        "mi",
+        "com",
+        "com_rang",
+        "rau",
+        "nuoc_xuong"
+      ];
+
+      const pools = order
+        .filter(key => stock[key])
+        .map(key => {
+          const entry = stock[key];
+          const meta = api?.STOCK_ITEMS?.[key] || {};
+          const tone = summaryEntryTone(entry);
+          return {
+            key,
+            label: meta.name || key,
+            prepared: Number(entry.clean || 0),
+            sold: Number(entry.used || 0),
+            remaining: Number(entry.remaining || 0),
+            portionsLeft: Number(entry.portionsLeft || 0),
+            unit: entry.unit || meta.unit || "",
+            hasPrep: true,
+            tone,
+            note: `норма ${entry.portionNorm || meta.portionNorm || 0}${entry.unit || meta.unit || ""}`
+          };
+        });
+
+      if (!pools.length) return null;
+      return {
+        pools,
+        byKey: Object.fromEntries(pools.map(pool => [pool.key, pool])),
+        updated_at: summary.updated_at || ""
+      };
+    }
+
+    function estimateConfiguredItemStock(rawItem) {
+      const api = modifierApi();
+      if (!api) return null;
+      const summary = getStockSummary();
+      if (!summary?.stock) return null;
+      const code = rawItem?.base_code || rawItem?.code || rawItem?.display_code || "";
+      if (!code) return null;
+      return api.estimateBasePortionsLeft(code, summary);
+    }
+
+    function typeLabelByLocale(type, locale = "ru") {
+      const labels = {
+        ru: { on_site: "На месте", takeaway: "На вынос", delivery: "Доставка" },
+        ua: { on_site: "У закладі", takeaway: "На виніс", delivery: "Доставка" },
+        vn: { on_site: "Ăn tại chỗ", takeaway: "Mang đi", delivery: "Giao hàng" }
+      };
+      return labels[locale]?.[type] || labels.ru[type] || type || "—";
+    }
+
+    function paymentLabelByLocale(payment, locale = "ru") {
+      const labels = {
+        ru: { cash: "Наличные", card: "Карта", split: "Наличные + Карта", unknown: "Не указано" },
+        ua: { cash: "Готівка", card: "Картка", split: "Готівка + картка", unknown: "Не вказано" },
+        vn: { cash: "Tiền mặt", card: "Thẻ", split: "Tiền mặt + thẻ", unknown: "Chưa rõ" }
+      };
+      return labels[locale]?.[payment] || labels.ru[payment] || payment || "—";
+    }
+
+    function statusLabelByLocale(status, locale = "ru") {
+      const labels = {
+        ru: { NEW: "Новое", COOKING: "Готовится", READY: "Готово", HANDED: "Выдано", CANCELLED: "Отменено" },
+        ua: { NEW: "Нове", COOKING: "Готується", READY: "Готове", HANDED: "Видано", CANCELLED: "Скасовано" },
+        vn: { NEW: "Mới", COOKING: "Đang nấu", READY: "Sẵn sàng", HANDED: "Đã giao", CANCELLED: "Đã hủy" }
+      };
+      return labels[locale]?.[status] || labels.ru[status] || status || "—";
+    }
+
+    function itemNameByLocale(item, locale = "ru") {
+      if (!item) return "—";
+      if (locale === "ua") return item.name_ua || item.name || "—";
+      if (locale === "vn") return item.name_vn || item.name_ua || item.name || "—";
+      return item.name_ru || item.name || "—";
+    }
+
+    function orderItemNameByLocale(item, locale = "ru") {
+      const menuItem = item?.key ? findMenuItem(item.key) : null;
+      if (menuItem) return itemNameByLocale(menuItem, locale);
+      return item?.name || item?.code || "—";
+    }
+
+    function paymentBreakdownLines(order, locale = "ru") {
+      const lines = [];
+      if (normalizeAmount(order.payment_cash) > 0) {
+        lines.push(`${paymentLabelByLocale("cash", locale)}: <b>${fmtMoney(order.payment_cash)}</b>`);
+      }
+      if (normalizeAmount(order.payment_card) > 0) {
+        lines.push(`${paymentLabelByLocale("card", locale)}: <b>${fmtMoney(order.payment_card)}</b>`);
+      }
+      if (!lines.length) {
+        lines.push(`${locale === "vn" ? "Thanh toán" : locale === "ua" ? "Оплата" : "Оплата"}: <b>${paymentLabelByLocale(order.payment_type, locale)}</b>`);
+      }
+      return lines;
+    }
+
+    function manualPaymentDraft(total) {
+      const amount = normalizeAmount(total);
+      if (state.manual.payment_type === "cash") {
+        return { payment_type: "cash", payment_cash: amount, payment_card: 0 };
+      }
+      if (state.manual.payment_type === "card") {
+        return { payment_type: "card", payment_cash: 0, payment_card: amount };
+      }
+      if (state.manual.payment_type === "unknown") {
+        return { payment_type: "unknown", payment_cash: 0, payment_card: 0 };
+      }
+      const cash = normalizeAmount($("#manualCashAmount")?.value || 0);
+      const card = normalizeAmount($("#manualCardAmount")?.value || 0);
+      return {
+        payment_type: inferPaymentType(cash, card, "split"),
+        payment_cash: cash,
+        payment_card: card
+      };
+    }
+
+    function syncManualSplitFields() {
+      const totals = manualTotals();
+      const splitWrap = $("#manualSplitFields");
+      if (!splitWrap) return;
+      const isSplit = state.manual.payment_type === "split";
+      splitWrap.classList.toggle("hidden", !isSplit);
+
+      if (!isSplit) return;
+
+      const cashInput = $("#manualCashAmount");
+      const cardInput = $("#manualCardAmount");
+      const cash = normalizeAmount(cashInput.value || 0);
+      const card = normalizeAmount(cardInput.value || 0);
+      const total = normalizeAmount(totals.total);
+      if (cash === 0 && card === 0 && total > 0) {
+        cashInput.value = total.toFixed(2);
+        cardInput.value = "0";
+      }
+    }
+
+    async function persistOrder(order, successMessage = "") {
+      markSheetPending(order, "upsert");
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      const result = await createOrderOnSheet(order);
+      applySheetSyncResult(order, result, "upsert");
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      if (isSyncOk(result)) {
+        setSyncBadge($("#sheetSyncBadge"), "ok", "Онлайн");
+        setLastSyncLabel(fmtDateTime(nowIso()));
+        if (successMessage) showToast(successMessage);
+        return true;
+      }
+
+      setSyncBadge($("#sheetSyncBadge"), "warn", "Частично");
+      showToast("Локально сохранено, Sheets не ответил", "warn");
+      return false;
+    }
+
+    function renderMenuResults(query = "") {
+      const list = $("#manualSearchResults");
+      parkManualBuilder();
+      const items = searchMenu(query);
+      if (!items.length) {
+        list.innerHTML = `
+          <div class="empty">
+            <strong>Блюдо не найдено</strong>
+            <p>Попробуй код блюда вроде <b>PBx</b>, <b>MXB</b> или название блюда.</p>
+          </div>
+        `;
+        placeManualBuilder();
+        return;
+      }
+
+      list.innerHTML = items.map(item => {
+        const isModifierItem = supportsModifierLogic(item);
+        const isExpanded = isModifierItem && state.manual.builder?.base_key === item.key;
+
+        if (isExpanded) {
+          return `
+            <div class="menu-result expanded" data-menu-result-key="${escapeHtml(item.key)}">
+              <div class="menu-result-builder-slot" data-builder-slot="${escapeHtml(item.key)}"></div>
+            </div>
+          `;
+        }
+
+        return `
+        <div class="menu-result" data-menu-result-key="${escapeHtml(item.key)}">
+          <div class="menu-result-top">
+            <div>
+              <strong>${escapeHtml(item.name)}</strong>
+              <div class="meta">${escapeHtml(item.code)} • ${escapeHtml(item.category)}${item.weight ? ` • ${item.weight} г` : ""}</div>
+              ${buildTrackedItemStockNote({ key: item.key, code: item.code, name: item.name, qty: 1 })}
+            </div>
+            <button class="btn small primary" type="button" data-add-item="${escapeHtml(item.key)}">${isModifierItem ? "Выбрать" : "Добавить"}</button>
+          </div>
+          ${item.short ? `<div class="meta">${escapeHtml(item.short)}</div>` : ""}
+        </div>
+      `;
+      }).join("");
+      placeManualBuilder();
+    }
+
+    function addManualItem(key) {
+      const item = findMenuItem(key);
+      if (!item) return;
+      if (supportsModifierLogic(item)) {
+        setManualBuilderBase(item);
+        return;
+      }
+      const existing = state.manual.items.find(entry => entry.key === key && !entry.note);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.manual.items.push({
+          key: item.key,
+          code: item.code,
+          name: item.name,
+          price: item.price,
+          qty: 1,
+          note: ""
+        });
+      }
+      renderManualItems();
+    }
+
+    function changeManualItemQty(index, delta) {
+      const item = state.manual.items[index];
+      if (!item) return;
+      item.qty = Math.max(0, item.qty + delta);
+      if (item.qty === 0) state.manual.items.splice(index, 1);
+      else syncConfiguredManualItem(item);
+      renderManualItems();
+    }
+
+    function updateManualItemNote(index, value) {
+      if (!state.manual.items[index]) return;
+      state.manual.items[index].note = value;
+      syncConfiguredManualItem(state.manual.items[index]);
+    }
+
+    function removeManualItem(index) {
+      state.manual.items.splice(index, 1);
+      renderManualItems();
+    }
+
+    function manualItemCountLabel(count) {
+      const safeCount = Math.abs(Math.trunc(Number(count) || 0));
+      const lastDigit = safeCount % 10;
+      const lastTwoDigits = safeCount % 100;
+
+      if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "позиций";
+      if (lastDigit === 1) return "позиция";
+      if (lastDigit >= 2 && lastDigit <= 4) return "позиции";
+      return "позиций";
+    }
+
+    function manualTotals() {
+      const subtotal = state.manual.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const deliveryFee = state.manual.type === "delivery" ? Math.max(0, Number($("#manualDeliveryFee").value || 0)) : 0;
+      return {
+        subtotal,
+        deliveryFee,
+        total: subtotal + deliveryFee,
+        count: state.manual.items.reduce((sum, item) => sum + item.qty, 0)
+      };
+    }
+
+    function syncManualDraftCode() {
+      const label = $("#manualDraftCode");
+      if (!label) return;
+      label.textContent = `#${String(state.manual.draft_code || "new").toUpperCase()}`;
+    }
+
+    function renderManualItems() {
+      const list = $("#manualItemsList");
+      syncManualDraftCode();
+      if (!state.manual.items.length) {
+        list.innerHTML = `
+          <div class="empty">
+            <strong>Пока пусто</strong>
+            <p>Добавь блюда по коду или названию, и они появятся здесь.</p>
+          </div>
+        `;
+      } else {
+        list.innerHTML = state.manual.items.map((item, index) => `
+          <div class="manual-item" data-manual-index="${index}">
+            <div class="manual-item-top">
+              <div>
+                <strong>${escapeHtml(item.name)}</strong>
+                <div class="meta">${escapeHtml(displayItemCode(item))} • ${fmtMoney(item.price)} за порцию</div>
+                ${buildTrackedItemStockNote(item)}
+              </div>
+              <strong>${fmtMoney(item.price * item.qty)}</strong>
+            </div>
+            <div class="manual-item-controls">
+              <div class="qty-box">
+                <button type="button" data-qty-action="minus">−</button>
+                <span>${item.qty}</span>
+                <button type="button" data-qty-action="plus">+</button>
+              </div>
+              <input class="input" type="text" data-manual-note placeholder="Комментарий к позиции" value="${escapeHtml(item.note)}" />
+              <button class="btn small danger" type="button" data-remove-item>Удалить</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const totals = manualTotals();
+      $("#manualItemsCount").textContent = String(totals.count);
+      $("#manualSubtotal").textContent = fmtMoney(totals.subtotal);
+      $("#manualDeliveryValue").textContent = fmtMoney(totals.deliveryFee);
+      $("#manualTotal").textContent = fmtMoney(totals.total);
+
+      const submitBtn = $("#submitManualOrderBtn");
+      const submitMeta = $("#manualSubmitMeta");
+      const hasItems = totals.count > 0;
+      const isEditingOrder = Boolean(state.manual.editing_order_code);
+      if (submitBtn) {
+        submitBtn.disabled = !hasItems;
+        submitBtn.textContent = hasItems
+          ? `${isEditingOrder ? "Сохранить заказ" : "Создать заказ"} • ${fmtMoney(totals.total)}`
+          : "Добавь блюда";
+      }
+      if (submitMeta) {
+        submitMeta.textContent = hasItems
+          ? `${isEditingOrder ? `Редактирование ${state.manual.editing_order_code}` : `${totals.count} ${manualItemCountLabel(totals.count)}`} • ${fmtMoney(totals.total)}`
+          : "Добавь блюда, чтобы создать заказ";
+      }
+
+      syncManualSplitFields();
+    }
+
+    function applyManualType() {
+      $("#manualTableField").classList.toggle("hidden", state.manual.type !== "on_site");
+      $("#manualPickupField").classList.toggle("hidden", state.manual.type !== "takeaway");
+      $("#manualAddressField").classList.toggle("hidden", state.manual.type !== "delivery");
+      $("#manualDeliveryFeeField").classList.toggle("hidden", state.manual.type !== "delivery");
+      $$("#manualTypeToggle .toggle-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.type === state.manual.type);
+      });
+      renderManualItems();
+    }
+
+    function applyManualPayment() {
+      $$("#manualPaymentToggle .toggle-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.payment === state.manual.payment_type);
+      });
+      syncManualSplitFields();
+    }
+
+    function openManualModal() {
+      renderMenuResults($("#manualSearch")?.value || "");
+      renderManualItems();
+      renderManualModifierBuilder();
+      $("#manualModal").classList.add("open");
+      $("#manualModal").setAttribute("aria-hidden", "false");
+      $("#manualSearch").focus();
+    }
+
+    function closeManualModal() {
+      $("#manualModal").classList.remove("open");
+      $("#manualModal").setAttribute("aria-hidden", "true");
+    }
+
+    function resetManualOrder() {
+      state.manual = {
+        draft_code: generateShortCode(),
+        editing_order_code: "",
+        type: "takeaway",
+        payment_type: "cash",
+        items: [],
+        builder: {
+          base_key: "",
+          base_code: "",
+          addons: {},
+          qty: 1,
+          editing: false
+        }
+      };
+      $("#manualTable").value = "";
+      $("#manualPickup").value = "15";
+      $("#manualAddress").value = "";
+      $("#manualPhone").value = "";
+      $("#manualComment").value = "";
+      $("#manualDeliveryFee").value = "50";
+      $("#manualCashAmount").value = "0";
+      $("#manualCardAmount").value = "0";
+      $("#manualSearch").value = "";
+      syncManualDraftCode();
+      applyManualType();
+      applyManualPayment();
+      renderMenuResults("");
+      renderManualItems();
+      renderManualModifierBuilder();
+    }
+
+    function manualItemFromOrderItem(item) {
+      const copy = {
+        id: item.id || item.key || item.code || "",
+        key: item.key || "",
+        menu_key: item.menu_key || "",
+        base_code: item.base_code || "",
+        code: item.code || "",
+        display_code: item.display_code || "",
+        name: item.name || item.title || item.code || "Позиция",
+        price: Number(item.price || 0),
+        qty: Math.max(1, Number(item.qty || 1)),
+        note: String(item.note || "").trim(),
+        modifiers: Array.isArray(item.modifiers) ? item.modifiers : [],
+        base_usage: item.base_usage || {},
+        stock_usage: item.stock_usage || {},
+        selections: item.selections || {}
+      };
+      return syncConfiguredManualItem(copy);
+    }
+
+    function openEditOrder(code) {
+      const order = state.orders.find(entry => entry.code === code || entry.id === code);
+      if (!order) {
+        showToast("Заказ не найден для редактирования", "warn");
+        return;
+      }
+
+      resetManualOrder();
+      state.manual.draft_code = order.code;
+      state.manual.editing_order_code = order.code;
+      state.manual.type = order.type || "takeaway";
+      state.manual.payment_type = order.payment_type || "unknown";
+      state.manual.items = (order.items || []).map(manualItemFromOrderItem);
+
+      $("#manualTable").value = order.table || "";
+      $("#manualPickup").value = order.pickup_in || "15";
+      $("#manualAddress").value = order.address || "";
+      $("#manualPhone").value = order.phone || "";
+      $("#manualComment").value = order.comment || "";
+      $("#manualDeliveryFee").value = String(order.delivery_fee || 0);
+      $("#manualCashAmount").value = normalizeAmount(order.payment_cash || 0).toFixed(2);
+      $("#manualCardAmount").value = normalizeAmount(order.payment_card || 0).toFixed(2);
+      $("#manualSearch").value = "";
+
+      applyManualType();
+      applyManualPayment();
+      renderMenuResults("");
+      renderManualItems();
+      renderManualModifierBuilder();
+      openManualModal();
+    }
+
+    function TG_ENDPOINT() {
+      return String(TG.PROXY_URL || "").trim();
+    }
+
+    function TG_DOCUMENT_ENDPOINT() {
+      return String(TG.DOCUMENT_PROXY_URL || "").trim();
+    }
+
+    async function sendTelegramMessage(channel, text) {
+      const endpoint = TG_ENDPOINT();
+      if (!endpoint) {
+        return { ok: false, error: "telegram_proxy_missing" };
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          channel,
+          text,
+          parse_mode: "HTML",
+          disable_web_page_preview: true
+        })
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (_) {}
+
+      if (!response.ok || data?.ok === false) {
+        return {
+          ok: false,
+          error: data?.description || `HTTP ${response.status}`
+        };
+      }
+
+      return { ok: true, data };
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || "");
+          const marker = "base64,";
+          const index = result.indexOf(marker);
+          resolve(index >= 0 ? result.slice(index + marker.length) : result);
+        };
+        reader.onerror = () => reject(reader.error || new Error("Не удалось прочитать файл"));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function ensureHtml2Canvas() {
+      if (window.html2canvas) return Promise.resolve(window.html2canvas);
+      if (html2canvasLoader) return html2canvasLoader;
+
+      html2canvasLoader = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = HTML2CANVAS_URL;
+        script.async = true;
+        script.onload = () => {
+          if (window.html2canvas) {
+            resolve(window.html2canvas);
+            return;
+          }
+          reject(new Error("html2canvas loaded without window.html2canvas"));
+        };
+        script.onerror = () => reject(new Error("Не удалось загрузить html2canvas"));
+        document.head.appendChild(script);
+      }).catch(error => {
+        html2canvasLoader = null;
+        throw error;
+      });
+
+      return html2canvasLoader;
+    }
+
+    function nextPaint() {
+      return new Promise(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
+    }
+
+    async function captureFullPagePng() {
+      const html2canvas = await ensureHtml2Canvas();
+      await nextPaint();
+
+      const root = document.documentElement;
+      const body = document.body;
+      const width = Math.max(root.scrollWidth, body?.scrollWidth || 0, window.innerWidth);
+      const height = Math.max(root.scrollHeight, body?.scrollHeight || 0, window.innerHeight);
+
+      const canvas = await html2canvas(root, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 1,
+        width,
+        height,
+        windowWidth: width,
+        windowHeight: height,
+        scrollX: 0,
+        scrollY: 0
+      });
+
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            resolve(blob);
+            return;
+          }
+          reject(new Error("Не удалось собрать PNG из canvas"));
+        }, "image/png");
+      });
+    }
+
+    async function captureElementPng(selector) {
+      const html2canvas = await ensureHtml2Canvas();
+      await nextPaint();
+
+      const target = $(selector);
+      if (!target) throw new Error(`Не найден блок ${selector}`);
+
+      const rect = target.getBoundingClientRect();
+      const width = Math.ceil(Math.max(target.scrollWidth, rect.width));
+      const height = Math.ceil(Math.max(target.scrollHeight, rect.height));
+
+      const canvas = await html2canvas(target, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 1,
+        width,
+        height,
+        windowWidth: Math.max(width, window.innerWidth),
+        windowHeight: Math.max(height, window.innerHeight),
+        scrollX: 0,
+        scrollY: 0
+      });
+
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            resolve(blob);
+            return;
+          }
+          reject(new Error("Не удалось собрать PNG из блока отчёта"));
+        }, "image/png");
+      });
+    }
+
+    async function sendTelegramDocument(channel, blob, filename, caption) {
+      const endpoint = TG_DOCUMENT_ENDPOINT();
+      if (!endpoint) {
+        return { ok: false, error: "telegram_proxy_missing" };
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          channel,
+          caption,
+          filename,
+          mime_type: blob?.type || "application/octet-stream",
+          document_base64: await blobToBase64(blob)
+        })
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (_) {}
+
+      if (!response.ok || data?.ok === false) {
+        return {
+          ok: false,
+          error: data?.description || `HTTP ${response.status}`
+        };
+      }
+
+      return { ok: true, data };
+    }
+
+    async function sendFullScreenshotToVN(event) {
+      const btn = event?.currentTarget || $("#sendScreenshotBtn");
+      if (!btn || state.screenshotBusy) return;
+      if (!TG_DOCUMENT_ENDPOINT()) {
+        showToast("Telegram proxy не настроен", "error");
+        return;
+      }
+
+      const originalText = btn.textContent;
+      state.screenshotBusy = true;
+      btn.dataset.busy = "1";
+      btn.disabled = true;
+      btn.textContent = "Снимок...";
+
+      try {
+        const imageBlob = await captureFullPagePng();
+        btn.textContent = "Отправка...";
+
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const caption = `DRAGON Kassa full screenshot • ${fmtDateTime(nowIso())}`;
+        const result = await sendTelegramDocument(
+          TG.VN_CHANNEL,
+          imageBlob,
+          `dragon-kassa-full-${stamp}.png`,
+          caption
+        );
+
+        if (!result.ok) {
+          throw new Error(result.error || "Telegram sendDocument failed");
+        }
+
+        showToast("Full screenshot отправлен в VN");
+      } catch (error) {
+        showToast(`Скрин не отправлен: ${error?.message || error}`, "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        state.screenshotBusy = false;
+        delete btn.dataset.busy;
+      }
+    }
+
+    async function sendReportScreenshotToVN(event) {
+      const btn = event?.currentTarget || $("#reportScreenshotBtn");
+      if (!btn || state.screenshotBusy) return;
+      if (!TG_DOCUMENT_ENDPOINT()) {
+        showToast("Telegram proxy не настроен", "error");
+        return;
+      }
+
+      const originalText = btn.textContent;
+      state.screenshotBusy = true;
+      btn.dataset.busy = "1";
+      btn.disabled = true;
+      btn.textContent = "Снимок...";
+
+      try {
+        const imageBlob = await captureElementPng(".report-panel");
+        btn.textContent = "Отправка...";
+
+        const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const caption = `DRAGON report screenshot • ${fmtDateTime(nowIso())}`;
+        const result = await sendTelegramDocument(
+          TG.VN_CHANNEL,
+          imageBlob,
+          `dragon-day-report-${stamp}.png`,
+          caption
+        );
+
+        if (!result.ok) {
+          throw new Error(result.error || "Telegram sendDocument failed");
+        }
+
+        showToast("Скрин отчёта отправлен в VN");
+      } catch (error) {
+        showToast(`Скрин отчёта не отправлен: ${error?.message || error}`, "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        state.screenshotBusy = false;
+        delete btn.dataset.busy;
+      }
+    }
+
+    function buildTelegramTextUA(order) {
+      const lines = expandOrderItemsForDisplay(order).map(item => {
+        const comment = item.note ? ` • 📝 ${escapeHtml(item.note)}` : "";
+        const name = orderItemNameByLocale(item, "ua");
+        return `• ${escapeHtml(displayItemCode(item))} ${escapeHtml(name)}${comment}`.trim();
+      }).join("\n") || "—";
+
+      const meta = [];
+      meta.push(`Тип: <b>${escapeHtml(typeLabelByLocale(order.type, "ua"))}</b>`);
+      meta.push(...paymentBreakdownLines(order, "ua"));
+      if (order.table) meta.push(`Стіл: <b>${escapeHtml(order.table)}</b>`);
+      if (order.pickup_in) meta.push(`Забрати через: <b>${escapeHtml(order.pickup_in)} хв</b>`);
+      if (order.address) meta.push(`Адреса: <b>${escapeHtml(order.address)}</b>`);
+      if (order.phone) meta.push(`Телефон: <b>${escapeHtml(order.phone)}</b>`);
+      if (order.comment) meta.push(`Коментар: <b>${escapeHtml(order.comment)}</b>`);
+      if (order.device_id) meta.push(`Device ID: <code>${escapeHtml(order.device_id)}</code>`);
+      if (order.session_id) meta.push(`Session ID: <code>${escapeHtml(order.session_id)}</code>`);
+      if (order.session_started_at) meta.push(`Початок сесії: <b>${escapeHtml(fmtDateTime(order.session_started_at))}</b>`);
+      if (order.browser_label) meta.push(`Пристрій: <b>${escapeHtml(order.browser_label)}</b>`);
+      if (order.source_url) meta.push(`Джерело: <code>${escapeHtml(order.source_url)}</code>`);
+      if (order.shift_note) meta.push(`Нотатка зміни: <b>${escapeHtml(order.shift_note)}</b>`);
+
+      return `<b>DRAGON KASSA — Нове замовлення</b>
+ID: <code>${escapeHtml(order.id)}</code>
+Code: <b>${escapeHtml(order.code)}</b>
+Статус: <b>${escapeHtml(statusLabelByLocale(order.status, "ua"))}</b>
+Сума страв: <b>${fmtMoney(order.subtotal)}</b>
+${order.delivery_fee ? `Доставка: <b>${fmtMoney(order.delivery_fee)}</b>\n` : ""}Разом: <b>${fmtMoney(order.total)}</b>
+${meta.join("\n")}
+<b>Позиції:</b>
+${lines}`;
+    }
+
+    function buildTelegramTextVN(order) {
+      const lines = expandOrderItemsForDisplay(order).map(item => {
+        const comment = item.note ? ` • 📝 ${escapeHtml(item.note)}` : "";
+        const name = orderItemNameByLocale(item, "vn");
+        return `• ${escapeHtml(displayItemCode(item))} ${escapeHtml(name)}${comment}`.trim();
+      }).join("\n") || "—";
+
+      const meta = [];
+      meta.push(`Hình thức: <b>${escapeHtml(typeLabelByLocale(order.type, "vn"))}</b>`);
+      meta.push(...paymentBreakdownLines(order, "vn"));
+      if (order.table) meta.push(`Bàn: <b>${escapeHtml(order.table)}</b>`);
+      if (order.pickup_in) meta.push(`Nhận sau: <b>${escapeHtml(order.pickup_in)} phút</b>`);
+      if (order.address) meta.push(`Địa chỉ: <b>${escapeHtml(order.address)}</b>`);
+      if (order.phone) meta.push(`SĐT: <b>${escapeHtml(order.phone)}</b>`);
+      if (order.comment) meta.push(`Ghi chú: <b>${escapeHtml(order.comment)}</b>`);
+      if (order.device_id) meta.push(`Device ID: <code>${escapeHtml(order.device_id)}</code>`);
+      if (order.session_id) meta.push(`Session ID: <code>${escapeHtml(order.session_id)}</code>`);
+      if (order.session_started_at) meta.push(`Bat dau phien: <b>${escapeHtml(fmtDateTime(order.session_started_at))}</b>`);
+      if (order.browser_label) meta.push(`Thiet bi: <b>${escapeHtml(order.browser_label)}</b>`);
+      if (order.source_url) meta.push(`Nguon: <code>${escapeHtml(order.source_url)}</code>`);
+      if (order.shift_note) meta.push(`Ghi chu ca: <b>${escapeHtml(order.shift_note)}</b>`);
+
+      return `<b>DRAGON KASSA — Đơn mới</b>
+ID: <code>${escapeHtml(order.id)}</code>
+Code: <b>${escapeHtml(order.code)}</b>
+Trạng thái: <b>${escapeHtml(statusLabelByLocale(order.status, "vn"))}</b>
+Tiền món: <b>${fmtMoney(order.subtotal)}</b>
+${order.delivery_fee ? `Phí giao hàng: <b>${fmtMoney(order.delivery_fee)}</b>\n` : ""}Tổng cộng: <b>${fmtMoney(order.total)}</b>
+${meta.join("\n")}
+<b>Món:</b>
+${lines}`;
+    }
+
+    async function createOrderOnSheet(orderPayload) {
+      try {
+        const response = await fetch(API_BASE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "create", ...orderPayload })
+        });
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function fetchOrdersLocalBridge() {
+      if (!LOCAL_API_BASE) return { ok: false, orders: [], error: "local_bridge_unavailable" };
+      try {
+        const response = await fetch(LOCAL_API_BASE, { cache: "no-store" });
+        if (!response.ok) {
+          return { ok: false, error: `Local bridge HTTP ${response.status}` };
+        }
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function clearOrdersLocalBridge() {
+      if (!LOCAL_API_BASE) return { ok: false, error: "local_bridge_unavailable" };
+      try {
+        const response = await fetch(LOCAL_API_BASE, {
+          method: "DELETE"
+        });
+        if (!response.ok) {
+          return { ok: false, error: `Local bridge HTTP ${response.status}` };
+        }
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function pushOrderToLocalBridge(orderPayload) {
+      if (!LOCAL_API_BASE) return { ok: false, error: "local_bridge_unavailable" };
+      try {
+        const response = await fetch(LOCAL_API_BASE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderPayload)
+        });
+        if (!response.ok) {
+          return { ok: false, error: `Local bridge HTTP ${response.status}` };
+        }
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function updateOrderStatusRemote(orderId, status) {
+      try {
+        const response = await fetch(API_BASE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "update_status", order_id: orderId, status })
+        });
+        return await response.json();
+      } catch (error) {
+        return { ok: false, error: String(error) };
+      }
+    }
+
+    async function fetchOrdersRemote() {
+      const response = await fetch(`${API_BASE}?action=get_orders`, { cache: "no-store" });
+      return response.json();
+    }
+
+    async function syncOrderToLocalBridge(order, shouldRender = true) {
+      const result = await pushOrderToLocalBridge(order);
+      applyLocalBridgeResult(order, result);
+      if (result?.ok && result.order) {
+        Object.assign(order, normalizeOrder(result.order));
+        applyLocalBridgeResult(order, result);
+      }
+      persistOrderSnapshot(order, shouldRender);
+      return result;
+    }
+
+    async function retryPendingSheetSync() {
+      const pendingOrders = state.orders.filter(shouldRetrySheetSync);
+      if (!pendingOrders.length) return;
+
+      const beforeSignature = buildOrdersRenderSignature(state.orders);
+      let syncedAny = false;
+      let failedAny = false;
+
+      for (const order of pendingOrders) {
+        markSheetPending(order, order.sync?.sheet?.reason || "retry", order.sync?.sheet?.error || "");
+        persistOrderSnapshot(order, false);
+        await syncOrderToLocalBridge(order, false);
+
+        const result = await createOrderOnSheet(order);
+        applySheetSyncResult(order, result, order.sync?.sheet?.reason || "retry");
+        persistOrderSnapshot(order, false);
+        await syncOrderToLocalBridge(order, false);
+
+        if (isSyncOk(result)) {
+          syncedAny = true;
+        } else {
+          failedAny = true;
+        }
+      }
+
+      if (syncedAny) {
+        setSyncBadge($("#sheetSyncBadge"), "ok", "Онлайн");
+        setLastSyncLabel(fmtDateTime(nowIso()));
+      } else if (failedAny) {
+        setSyncBadge($("#sheetSyncBadge"), "warn", "Частично");
+      }
+
+      const afterSignature = buildOrdersRenderSignature(state.orders);
+      if (afterSignature !== beforeSignature) {
+        renderAll();
+      }
+    }
+
+    function generateShortCode() {
+      const letters = "abcdefghijklmnopqrstuvwxyz";
+      const letter = letters[Math.floor(Math.random() * letters.length)];
+      const num = Math.floor(Math.random() * 999) + 1;
+      return letter + String(num).padStart(3, "0");
+    }
+
+    async function loadOrders() {
+      const localMap = loadLocalOrders();
+      const [remoteResult, bridgeResult] = await Promise.allSettled([
+        fetchOrdersRemote(),
+        fetchOrdersLocalBridge()
+      ]);
+
+      const remoteData = remoteResult.status === "fulfilled" ? remoteResult.value : null;
+      const bridgeData = bridgeResult.status === "fulfilled" ? bridgeResult.value : null;
+      const remoteOrders = decorateRemoteOrders(Array.isArray(remoteData?.orders) ? remoteData.orders : []);
+      const bridgeOrders = Array.isArray(bridgeData?.orders) ? bridgeData.orders : [];
+      const bridgeMap = ordersToMap(bridgeOrders);
+      const nextOrders = mergeOrders(mergeOrders(remoteOrders, bridgeMap), localMap);
+      const nextSignature = buildOrdersRenderSignature(nextOrders);
+      const shouldRenderOrders = nextSignature !== state.ordersRenderSignature;
+
+      state.orders = nextOrders;
+      saveMergedOrders(state.orders);
+
+      const remoteOk = Array.isArray(remoteData?.orders);
+      const bridgeOk = Boolean(bridgeData?.ok);
+      const bridgeBase = currentBridgeBase();
+
+      if (bridgeOk) {
+        setSyncBadge($("#bridgeSyncBadge"), "ok", "Bridge онлайн");
+      } else if (bridgeBase) {
+        setSyncBadge($("#bridgeSyncBadge"), "offline", "Bridge off");
+      } else if (window.DRAGON_STATIC?.isGithubPages) {
+        setSyncBadge($("#bridgeSyncBadge"), "offline", "Bridge не задан");
+      } else {
+        setSyncBadge($("#bridgeSyncBadge"), "warn", "Bridge локально");
+      }
+
+      if (remoteOk) {
+        setSyncBadge($("#sheetSyncBadge"), "ok", "Онлайн");
+        setLastSyncLabel(fmtDateTime(nowIso()));
+      } else if (bridgeOk) {
+        setSyncBadge($("#sheetSyncBadge"), "warn", "Через мост");
+        setLastSyncLabel(`Bridge • ${fmtDateTime(nowIso())}`);
+      } else {
+        setSyncBadge($("#sheetSyncBadge"), "offline", "Локальный режим");
+        setLastSyncLabel(`Локально • ${fmtDateTime(nowIso())}`);
+      }
+
+      if (shouldRenderOrders) {
+        renderAll();
+      }
+      if (SCREENSHOT_MODE) return;
+      await retryPendingSheetSync();
+    }
+
+    function scheduleLiveReload(delay = 220) {
+      if (!state.initialized || !isKassaUnlocked() || document.hidden) return;
+      clearTimeout(state.liveReloadTimer);
+      state.liveReloadTimer = setTimeout(() => {
+        loadOrders();
+      }, delay);
+    }
+
+    function pollOrdersWhenVisible() {
+      if (document.hidden || !isKassaUnlocked()) return;
+      loadOrders();
+    }
+
+    function handleKassaVisibilityChange() {
+      if (document.hidden || !isKassaUnlocked()) return;
+      renderAll();
+      loadOrders();
+    }
+
+    function connectLocalEvents() {
+      if (SCREENSHOT_MODE) return;
+      if (!window.EventSource || !LOCAL_EVENTS_URL.startsWith("http")) return;
+      if (state.eventSource) state.eventSource.close();
+
+      const eventSource = new EventSource(LOCAL_EVENTS_URL);
+      state.eventSource = eventSource;
+      eventSource.addEventListener("orders_updated", () => scheduleLiveReload());
+      eventSource.addEventListener("ready", () => scheduleLiveReload(80));
+    }
+
+    function getShiftOrders() {
+      const opened = new Date(state.shift.opened_at).getTime();
+      return state.orders.filter(order => {
+        const created = new Date(order.created_at).getTime();
+        return !Number.isNaN(created) && created >= opened;
+      });
+    }
+
+    function summarizeShift() {
+      const orders = getShiftOrders().filter(order => order.status !== "CANCELLED");
+      const cashTotal = orders.reduce((sum, order) => sum + normalizeAmount(order.payment_cash), 0);
+      const cardTotal = orders.reduce((sum, order) => sum + normalizeAmount(order.payment_card), 0);
+      const total = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+
+      return {
+        ordersCount: orders.length,
+        cashTotal,
+        cardTotal,
+        total,
+        avgCheck: orders.length ? total / orders.length : 0,
+        expectedCash: Number(state.shift.opening_cash || 0) + cashTotal
+      };
+    }
+
+    function getDailyReportOrders() {
+      const dateFilter = $("#dateFilter")?.value || "";
+      let orders = state.orders.filter(order => order.status !== "CANCELLED");
+      if (dateFilter) {
+        orders = orders.filter(order => dateInputValue(order.created_at) === dateFilter);
+      }
+      return orders.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    function reportAmountText(value, blankWhenZero = false) {
+      const num = normalizeAmount(value);
+      if (blankWhenZero && Math.abs(num) < 0.01) return "";
+      return num.toFixed(2).replace(/\.00$/, "");
+    }
+
+    function reportMoneyText(value) {
+      if (reportLang() === "vn") return `${reportAmountText(value)} UAH`;
+      return fmtMoney(value);
+    }
+
+    function reportQtyText(value) {
+      const qty = Number(value || 0);
+      if (!Number.isFinite(qty)) return "0";
+      return Number.isInteger(qty) ? String(qty) : qty.toFixed(2).replace(/\.00$/, "");
+    }
+
+    function reportLang() {
+      return state.report_lang === "ru" ? "ru" : "vn";
+    }
+
+    function reportRowsLabel(value, locale = reportLang()) {
+      if (locale === "vn") return REPORT_I18N.vn.rowsWord;
+
+      const count = Math.abs(Math.trunc(Number(value) || 0));
+      const lastDigit = count % 10;
+      const lastTwoDigits = count % 100;
+
+      if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "строк";
+      if (lastDigit === 1) return "строка";
+      if (lastDigit >= 2 && lastDigit <= 4) return "строки";
+      return "строк";
+    }
+
+    function reportTypeLabel(type, locale = reportLang()) {
+      return typeLabelByLocale(type, locale);
+    }
+
+    function reportBaseCode(item) {
+      return String(displayItemCode(item) || item?.code || "")
+        .split("+")[0]
+        .trim()
+        .toUpperCase();
+    }
+
+    const REPORT_PRICE_REPAIR_MIN = {
+      MXB: 250,
+      MXG: 250,
+      MXH: 250,
+      MXT: 250,
+      MXGCX: 250,
+      MXMIX: 250,
+      MTXB: 250,
+      MTXG: 250,
+      MTXL: 250,
+      MTXT: 270,
+      MTXGCX: 250,
+      MIXB: 250,
+      MIXG: 250,
+      MIXL: 250,
+      MIXT: 270,
+      MIXGCX: 250,
+      MTXMIX: 250,
+      MIXMIX: 250,
+      PXB: 250,
+      PXG: 250,
+      PXH: 250,
+      PXT: 250,
+      PXGCX: 250,
+      PXMIX: 250
+    };
+
+    function shouldRepairReportPrice(code, savedPrice) {
+      const minimum = REPORT_PRICE_REPAIR_MIN[code];
+      return minimum > 0 && savedPrice > 0 && savedPrice < minimum;
+    }
+
+    function reportCurrentMenuItem(item) {
+      const code = reportBaseCode(item);
+      if (!code) return null;
+      const directItem = findMenuItemByCode(code);
+      if (directItem) return directItem;
+
+      const base = modifierApi()?.getBase?.(code);
+      if (base?.menuCode) {
+        return findMenuItemByCode(base.menuCode);
+      }
+
+      return null;
+    }
+
+    function reportCurrentUnitPrice(item) {
+      const savedPrice = normalizeAmount(item?.price);
+      const code = reportBaseCode(item);
+      const api = modifierApi();
+      const canRepairPrice = shouldRepairReportPrice(code, savedPrice);
+
+      if (savedPrice > 0 && !canRepairPrice) {
+        return savedPrice;
+      }
+
+      if (api?.getBase?.(code)) {
+        try {
+          const rebuilt = api.buildOrderItem(
+            code,
+            item?.modifiers || item?.selections?.modifiers || [],
+            1,
+            item?.note || ""
+          );
+          return Math.max(savedPrice, normalizeAmount(rebuilt.price));
+        } catch (_) {}
+      }
+
+      const menuItem = reportCurrentMenuItem(item);
+      if (canRepairPrice || savedPrice <= 0) {
+        return Math.max(savedPrice, normalizeAmount(menuItem?.price));
+      }
+      return savedPrice;
+    }
+
+    function reportStatusLabel(status, locale = reportLang()) {
+      return statusLabelByLocale(status, locale);
+    }
+
+    function reportItemName(item, locale = reportLang()) {
+      const menuItem = reportCurrentMenuItem(item);
+      if (menuItem) return itemNameByLocale(menuItem, locale);
+      if (locale === "vn") {
+        return item?.code ? `${REPORT_I18N.vn.fallbackItem} ${item.code}` : REPORT_I18N.vn.fallbackItem;
+      }
+      return item?.name || item?.code || REPORT_I18N[locale]?.fallbackItem || REPORT_I18N.ru.fallbackItem;
+    }
+
+    function reportPaymentTargets(order, targetTotal) {
+      const cash = normalizeAmount(order.payment_cash);
+      const card = normalizeAmount(order.payment_card);
+      const recordedPayment = normalizeAmount(cash + card);
+      const recordedTotal = normalizeAmount(order.total);
+      const nextTotal = normalizeAmount(targetTotal);
+
+      if (nextTotal <= recordedTotal || !sameMoney(recordedPayment, recordedTotal)) {
+        return { cash, card };
+      }
+
+      if (card > 0 && cash > 0 && recordedPayment > 0) {
+        const nextCard = normalizeAmount((nextTotal * card) / recordedPayment);
+        return {
+          card: nextCard,
+          cash: normalizeAmount(nextTotal - nextCard)
+        };
+      }
+
+      if (card > 0 || order.payment_type === "card") {
+        return { cash: 0, card: nextTotal };
+      }
+
+      return { cash: nextTotal, card: 0 };
+    }
+
+    function buildReportComment(order, lineComment = "") {
+      const parts = [];
+      const itemComment = String(lineComment || "").trim();
+      const orderComment = String(order.comment || "").trim();
+
+      if (itemComment) parts.push(itemComment);
+      if (orderComment && orderComment !== itemComment) parts.push(orderComment);
+
+      return parts.join(" • ");
+    }
+
+    function buildReportRowKey(order, row, index) {
+      return [
+        dateInputValue(order?.created_at || row?.created_at || new Date()),
+        String(order?.code || row?.orderCode || "order").trim(),
+        String(index),
+        String(row?.code || "line").trim(),
+        reportAmountText(row?.price || 0)
+      ].join("|");
+    }
+
+    function applyReportCommentOverride(row) {
+      const key = row.report_key;
+      const overrides = state.report_comment_overrides || {};
+      const original = String(row.comment || "");
+      const hasOverride = Object.prototype.hasOwnProperty.call(overrides, key);
+      return {
+        ...row,
+        original_comment: original,
+        comment: hasOverride ? String(overrides[key] ?? "") : original
+      };
+    }
+
+    function updateReportCommentOverride(key, value, originalValue = "") {
+      if (!key) return;
+      const original = String(originalValue || "");
+      const nextValue = String(value ?? "");
+      const overrides = state.report_comment_overrides || {};
+
+      if (nextValue === original) {
+        delete overrides[key];
+      } else {
+        overrides[key] = nextValue;
+      }
+
+      state.report_comment_overrides = overrides;
+      saveReportCommentOverrides();
+    }
+
+    function splitAmountByRows(rowAmounts, targetAmount) {
+      const rows = Array.isArray(rowAmounts) ? rowAmounts : [];
+      const target = normalizeAmount(targetAmount);
+      if (!rows.length) return [];
+
+      const base = rows.reduce((sum, value) => sum + Number(value || 0), 0);
+      if (Math.abs(base) < 0.01) {
+        return rows.map((_, index) => (index === rows.length - 1 ? target : 0));
+      }
+
+      let used = 0;
+      return rows.map((value, index) => {
+        if (index === rows.length - 1) {
+          return normalizeAmount(target - used);
+        }
+        const part = normalizeAmount((target * Number(value || 0)) / base);
+        used = normalizeAmount(used + part);
+        return part;
+      });
+    }
+
+    function expandOrderItemsForDisplay(order) {
+      return expandKitchenRows(order);
+    }
+
+    function expandDailyReportItemRows(order, item) {
+      const locale = reportLang();
+      const qty = Math.max(1, Number(item.qty || 1));
+      const savedPrice = normalizeAmount(Number(item.price || 0));
+      const safePrice = reportCurrentUnitPrice(item);
+      const priceRepaired = safePrice > savedPrice && savedPrice > 0;
+      const baseRow = {
+        code: displayItemCode(item),
+        type: reportTypeLabel(order.type, locale),
+        name: reportItemName(item, locale),
+        comment: buildReportComment(order, item.note),
+        status: reportStatusLabel(order.status, locale),
+        time: fmtTime(order.created_at),
+        priceRepaired
+      };
+
+      if (!Number.isInteger(qty) || qty <= 1) {
+        return [{
+          ...baseRow,
+          qty,
+          price: normalizeAmount(safePrice * qty)
+        }];
+      }
+
+      return Array.from({ length: qty }, () => ({
+        ...baseRow,
+        qty: 1,
+        price: safePrice
+      }));
+    }
+
+    function buildDailyReportRows(order) {
+      const locale = reportLang();
+      const text = REPORT_I18N[locale] || REPORT_I18N.ru;
+      const rows = order.items.flatMap(item => expandDailyReportItemRows(order, item));
+
+      if (normalizeAmount(order.delivery_fee) > 0) {
+        rows.push({
+          code: "DELIVERY",
+          type: reportTypeLabel(order.type, locale),
+          name: text.deliveryName,
+          comment: buildReportComment(order, order.address || text.deliveryComment),
+          qty: 1,
+          price: normalizeAmount(order.delivery_fee),
+          status: reportStatusLabel(order.status, locale),
+          time: fmtTime(order.created_at)
+        });
+      }
+
+      if (!rows.length && normalizeAmount(order.total) > 0) {
+        rows.push({
+          code: order.code || "—",
+          type: reportTypeLabel(order.type, locale),
+          name: text.noItemsName,
+          comment: buildReportComment(order, text.noItemsComment),
+          qty: 1,
+          price: normalizeAmount(order.total),
+          status: reportStatusLabel(order.status, locale),
+          time: fmtTime(order.created_at)
+        });
+      }
+
+      const rowsTotal = normalizeAmount(rows.reduce((sum, row) => sum + Number(row.price || 0), 0));
+      const hasPriceRepair = rows.some(row => row.priceRepaired);
+      const reportOrderTotal = hasPriceRepair ? Math.max(normalizeAmount(order.total), rowsTotal) : normalizeAmount(order.total);
+      const diff = normalizeAmount(reportOrderTotal - rowsTotal);
+      if (Math.abs(diff) >= 0.01) {
+        rows.push({
+          code: diff > 0 ? "ADJ" : "DISC",
+          type: reportTypeLabel(order.type, locale),
+          name: diff > 0 ? text.adjustmentName : text.discountName,
+          comment: buildReportComment(order, text.adjustmentComment),
+          qty: 1,
+          price: diff,
+          status: reportStatusLabel(order.status, locale),
+          time: fmtTime(order.created_at)
+        });
+      }
+
+      const priceShares = rows.map(row => Number(row.price || 0));
+      const paymentTargets = reportPaymentTargets(order, reportOrderTotal);
+      const cardParts = splitAmountByRows(priceShares, paymentTargets.card);
+      const cashParts = splitAmountByRows(priceShares, paymentTargets.cash);
+
+      return rows.map((row, index) => applyReportCommentOverride({
+        ...row,
+        orderCode: order.code,
+        created_at: order.created_at,
+        report_key: buildReportRowKey(order, row, index),
+        card: cardParts[index] || 0,
+        cash: cashParts[index] || 0
+      }));
+    }
+
+    function buildDailyReportData() {
+      const orders = getDailyReportOrders();
+      const rows = orders.flatMap(buildDailyReportRows);
+      const qtyTotal = rows.reduce((sum, row) => sum + Number(row.qty || 0), 0);
+      const cardTotal = rows.reduce((sum, row) => sum + normalizeAmount(row.card), 0);
+      const cashTotal = rows.reduce((sum, row) => sum + normalizeAmount(row.cash), 0);
+      const priceTotal = rows.reduce((sum, row) => sum + Number(row.price || 0), 0);
+
+      return {
+        orders,
+        rows,
+        qtyTotal,
+        cardTotal,
+        cashTotal,
+        priceTotal
+      };
+    }
+
+    function groupDailyReportRows(rows) {
+      const groups = [];
+
+      for (const row of rows) {
+        const currentGroup = groups[groups.length - 1];
+        if (!currentGroup || currentGroup.orderCode !== row.orderCode) {
+          groups.push({
+            orderCode: row.orderCode || "—",
+            rows: [row]
+          });
+          continue;
+        }
+
+        currentGroup.rows.push(row);
+      }
+
+      return groups;
+    }
+
+    async function copyTextToClipboard(text) {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const ok = document.execCommand("copy");
+      textarea.remove();
+
+      if (!ok) throw new Error("Clipboard copy failed");
+    }
+
+    async function copyDailyReportTsv() {
+      const report = buildDailyReportData();
+      const text = REPORT_I18N[reportLang()] || REPORT_I18N.ru;
+      if (!report.rows.length) {
+        showToast(text.emptyCopy, "warn");
+        return;
+      }
+
+      const sanitize = value => String(value ?? "")
+        .replace(/\t/g, " ")
+        .replace(/\r?\n/g, " ")
+        .trim();
+
+      const lines = [
+        text.headers.join("\t"),
+        ...report.rows.map(row => [
+          sanitize(row.code),
+          sanitize(row.type),
+          sanitize(row.name),
+          sanitize(row.comment),
+          reportAmountText(row.card, true),
+          reportAmountText(row.cash, true),
+          sanitize(row.status),
+          sanitize(row.time)
+        ].join("\t")),
+        ["", "", "", text.total, reportAmountText(report.cardTotal), reportAmountText(report.cashTotal), "", ""].join("\t")
+      ];
+
+      try {
+        await copyTextToClipboard(lines.join("\n"));
+        showToast(text.copied);
+      } catch (error) {
+        showToast(text.copyError, "error");
+      }
+    }
+
+    function filterOrders() {
+      const q = $("#searchFilter").value.trim().toLowerCase();
+      const dateFilter = $("#dateFilter").value;
+      const status = $("#statusFilter").value;
+      const type = $("#typeFilter").value;
+      const payment = $("#paymentFilter").value;
+      const source = $("#sourceFilter").value;
+      const sort = $("#sortFilter").value;
+
+      let filtered = [...state.orders];
+
+      if (status) filtered = filtered.filter(order => order.status === status);
+      if (type) filtered = filtered.filter(order => order.type === type);
+      if (payment) filtered = filtered.filter(order => order.payment_type === payment);
+      if (source) filtered = filtered.filter(order => order.source === source);
+      if (dateFilter) {
+        filtered = filtered.filter(order => dateInputValue(order.created_at) === dateFilter);
+      }
+      if (q) {
+        filtered = filtered.filter(order => {
+          const itemsText = order.items.map(item => `${item.name} ${displayItemCode(item)} ${item.note}`).join(" ");
+          const hay = [
+            order.code,
+            order.id,
+            order.phone,
+            order.comment,
+            order.table,
+            order.pickup_in,
+            order.address,
+            itemsText
+          ].join(" ").toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      if (sort === "oldest") {
+        filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      } else if (sort === "amount_desc") {
+        filtered.sort((a, b) => Number(b.total || 0) - Number(a.total || 0));
+      } else if (sort === "ready_first") {
+        const rank = { READY: 0, COOKING: 1, NEW: 2, HANDED: 3, CANCELLED: 4 };
+        filtered.sort((a, b) => (rank[a.status] ?? 99) - (rank[b.status] ?? 99) || new Date(b.created_at) - new Date(a.created_at));
+      } else {
+        filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+
+      return filtered;
+    }
+
+    function buildOrderMeta(order) {
+      const parts = [];
+      parts.push(TYPE_META[order.type]?.label || order.type);
+      if (order.type === "on_site" && order.table) parts.push(`Стол ${order.table}`);
+      if (order.type === "takeaway" && order.pickup_in) parts.push(`Забрать через ${order.pickup_in} мин`);
+      if (order.type === "delivery" && order.address) parts.push(order.address);
+      if (order.phone) parts.push(`Тел: ${order.phone}`);
+      parts.push(fmtTime(order.created_at));
+      parts.push(timeAgo(order.created_at));
+      return parts;
+    }
+
+    function buildStatusActionsHtml(order, compact = false) {
+      return `
+        <div class="status-actions ${compact ? "compact" : ""}">
+          ${Object.entries(STATUS_META).map(([status, meta]) => `
+            <button
+              class="status-btn ${order.status === status ? "active" : ""}"
+              type="button"
+              data-update-status="${status}"
+              data-order-code="${escapeHtml(order.code)}"
+            >${meta.label}</button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function buildPaymentEditorHtml(order) {
+      const cash = normalizeAmount(order.payment_cash);
+      const card = normalizeAmount(order.payment_card);
+      const total = normalizeAmount(order.total);
+      return `
+        <div class="payment-editor">
+          <div class="payment-summary">
+            <div class="payment-line">
+              <span>Наличные</span>
+              <strong>${fmtMoney(cash)}</strong>
+            </div>
+            <div class="payment-line">
+              <span>Карта</span>
+              <strong>${fmtMoney(card)}</strong>
+            </div>
+          </div>
+          <div class="payment-grid">
+            <label class="payment-field">
+              <span>Наличные</span>
+              <input class="input" type="number" min="0" step="0.01" value="${cash.toFixed(2)}" data-payment-cash />
+            </label>
+            <label class="payment-field">
+              <span>Карта</span>
+              <input class="input" type="number" min="0" step="0.01" value="${card.toFixed(2)}" data-payment-card />
+            </label>
+          </div>
+          <div class="payment-actions">
+            <span class="muted">Наличные + Карта = ${fmtMoney(total)}</span>
+            <button class="btn small secondary" type="button" data-save-payment data-order-code="${escapeHtml(order.code)}">Сохранить оплату</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderInventory() {
+      const list = $("#inventoryPoolList");
+      if (!list) return;
+
+      const pools = state.inventory.pools || [];
+      if (!pools.length) {
+        list.innerHTML = `
+          <div class="sync-row">
+            <div class="inventory-copy">
+              <div class="inventory-title">Нет активной заготовки</div>
+              <div class="inventory-meta">Открой Contron Panel, внеси чистый вес и норму порции для мяса или других продуктов.</div>
+            </div>
+            <div class="inventory-values">
+              <span class="sync-pill warn">ожидание</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = pools.map(pool => `
+        <div class="sync-row">
+          <div class="inventory-copy">
+            <div class="inventory-title">${escapeHtml(pool.label)}</div>
+            <div class="inventory-meta">
+              ${pool.startedLabel ? `Партия: ${escapeHtml(pool.startedLabel)}` : (pool.hasPrep ? "Автосводка из склада" : "В Contron нет активной партии")}
+              ${pool.note ? ` • ${escapeHtml(pool.note)}` : ""}
+            </div>
+            <div class="inventory-meta">
+              Заготовлено: <b>${escapeHtml(fmtPortions(pool.prepared))}</b>${pool.unit ? ` ${escapeHtml(pool.unit)}` : ""} •
+              Списано: <b>${escapeHtml(fmtPortions(pool.sold))}</b>${pool.unit ? ` ${escapeHtml(pool.unit)}` : ""}${typeof pool.soldOrders === "number" ? ` • Заказов: <b>${escapeHtml(String(pool.soldOrders))}</b>` : ""}
+            </div>
+          </div>
+          <div class="inventory-values">
+            <span class="sync-pill ${inventoryPillMode(pool)}">${pool.hasPrep ? "авто" : "нет партии"}</span>
+            <div class="inventory-remaining ${escapeHtml(pool.tone)}">${escapeHtml(inventoryRemainingText(pool))}</div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderOrders() {
+      const list = $("#ordersList");
+      const orders = filterOrders();
+      $("#ordersCountLabel").textContent = `${orders.length} заказов • ${selectedDateLabel()}`;
+
+      if (!orders.length) {
+        list.innerHTML = `
+          <div class="empty">
+            <strong>Заказов по текущим фильтрам нет</strong>
+            <p>Проверь поиск, фильтры или создай ручной заказ для кассы.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = orders.map(order => {
+        const progress = kitchenProgressSummary(order);
+        const resolvedStatus = resolveOrderStatus(order);
+        const statusMeta = STATUS_META[resolvedStatus] || STATUS_META.NEW;
+        const paymentMeta = PAYMENT_META[order.payment_type] || PAYMENT_META.unknown;
+        const tgOk = order.sync?.telegram?.ok || order.sync?.telegram_vn?.ok;
+        const sheetState = sheetSyncLabel(order.sync?.sheet);
+        const localState = localSyncLabel(order.sync?.local);
+        const progressLabel = progress.totalCount
+          ? `готово ${progress.doneCount}/${progress.totalCount}`
+          : "позиции не переданы";
+
+        return `
+          <article class="order-card ${resolvedStatus === "CANCELLED" ? "cancelled-card" : ""} ${order.payment_type === "unknown" ? "payment-unknown-card" : ""}" data-order-code="${escapeHtml(order.code)}">
+            <div class="order-top">
+              <div>
+                <div class="order-id">
+                  <strong>#${escapeHtml(order.code)}</strong>
+                  <span class="badge">${escapeHtml(order.id)}</span>
+                  <span class="status-badge ${statusMeta.className}">${statusMeta.label}</span>
+                  <span class="source-badge">${escapeHtml(SOURCE_META[order.source] || "Сайт")}</span>
+                </div>
+                <div class="order-meta">
+                  ${buildOrderMeta(order).map(part => `<span>${escapeHtml(part)}</span>`).join("")}
+                </div>
+              </div>
+              <div class="order-tools">
+                <span class="payment-badge ${paymentMeta.className}">${paymentMeta.label}</span>
+                ${order.receipt_link ? `<a class="btn small secondary" href="${escapeHtml(order.receipt_link)}" target="_blank" rel="noopener noreferrer">Чек</a>` : ""}
+                <button class="btn small secondary" type="button" data-edit-order="${escapeHtml(order.code)}">Edit order</button>
+              </div>
+            </div>
+
+            <div class="order-stage">
+              <div class="order-stage-head">
+                <div class="order-stage-copy">
+                  <span class="muted">Текущий заказ ${escapeHtml(order.code)}</span>
+                  <strong>${escapeHtml(order.code)}</strong>
+                </div>
+                <div class="order-progress-head">
+                  <span class="order-progress-pill ${progress.doneCount >= progress.totalCount && progress.totalCount ? "done" : progress.doneCount ? "partial" : ""}">${escapeHtml(progressLabel)}</span>
+                  <span class="status-badge ${statusMeta.className}">${statusMeta.label}</span>
+                </div>
+              </div>
+              ${buildStatusActionsHtml(order)}
+            </div>
+
+            <div class="order-items">
+              ${progress.rows.map(item => {
+                const isDone = progress.doneSet.has(item.row_id);
+                return `
+                <div class="order-line-block ${isDone ? "line-done" : ""}" data-order-row="${escapeHtml(item.row_id)}">
+                  <div class="item-row">
+                    <button
+                      class="line-ready-btn ${isDone ? "active" : ""}"
+                      type="button"
+                      data-toggle-order-row="${escapeHtml(item.row_id)}"
+                      data-order-code="${escapeHtml(order.code)}"
+                      aria-label="${escapeHtml(isDone ? "Снять готовность позиции" : "Отметить позицию готовой")}"
+                    >${isDone ? "✓" : "○"}</button>
+                    <div class="order-line-main">
+                      <strong>${escapeHtml(displayItemCode(item))} ${escapeHtml(item.name)}</strong>
+                      ${item.note ? `<div class="item-note">📝 ${escapeHtml(item.note)}</div>` : ""}
+                      ${buildTrackedItemStockNote(item)}
+                    </div>
+                  </div>
+                </div>
+              `;
+              }).join("") || `<div class="muted">Позиции не переданы.</div>`}
+            </div>
+
+            ${order.comment ? `
+              <div class="order-comment">
+                <strong>Комментарий по заказу</strong>
+                ${escapeHtml(order.comment)}
+              </div>
+            ` : ""}
+
+            <div class="sync-note">
+              Bridge: <b>${localState}</b> • Sheets: <b>${sheetState}</b> • Telegram: <b>${tgOk ? "ok" : "—"}</b>
+            </div>
+
+            ${buildPaymentEditorHtml(order)}
+
+            <div class="order-total-row">
+              <div class="order-total-head">
+                <div class="order-total-copy">
+                  <span class="muted">Сумма по заказу ${escapeHtml(order.code)}</span>
+                  <strong>${fmtMoney(order.total)}</strong>
+                </div>
+                ${order.delivery_fee ? `<span class="muted">включая доставку ${fmtMoney(order.delivery_fee)}</span>` : ""}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderStats() {
+      const shift = summarizeShift();
+      const activeOrders = getShiftOrders().filter(order => order.status !== "CANCELLED");
+      const newCount = activeOrders.filter(order => order.status === "NEW").length;
+      const cookingCount = activeOrders.filter(order => order.status === "COOKING").length;
+      const readyCount = activeOrders.filter(order => order.status === "READY").length;
+      const handedCount = activeOrders.filter(order => order.status === "HANDED").length;
+
+      $("#statNew").textContent = String(newCount);
+      $("#statCooking").textContent = String(cookingCount);
+      $("#statReady").textContent = String(readyCount);
+      $("#statCash").textContent = fmtMoney(shift.cashTotal);
+      $("#statCard").textContent = fmtMoney(shift.cardTotal);
+    }
+
+    function renderShift() {
+      const shift = summarizeShift();
+      const openedDate = new Date(state.shift.opened_at);
+      const diff = Math.max(0, Date.now() - openedDate.getTime());
+      const hours = Math.floor(diff / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+
+      $("#shiftOrdersCount").textContent = String(shift.ordersCount);
+      $("#shiftAvgCheck").textContent = fmtMoney(shift.avgCheck);
+      $("#shiftCashTotal").textContent = fmtMoney(shift.cashTotal);
+      $("#shiftCardTotal").textContent = fmtMoney(shift.cardTotal);
+      $("#shiftOpenedAt").textContent = fmtDateTime(state.shift.opened_at);
+      $("#shiftElapsed").textContent = `${hours} ч ${mins} мин`;
+      $("#shiftOpeningCashLabel").textContent = fmtMoney(state.shift.opening_cash);
+      $("#shiftExpectedCash").textContent = fmtMoney(shift.expectedCash);
+      $("#shiftOpeningCashInput").value = String(state.shift.opening_cash || 0);
+      $("#shiftNote").value = state.shift.note || "";
+      $("#shiftNotePreview").textContent = state.shift.note || "—";
+    }
+
+    function renderDailyReport() {
+      const body = $("#dailyReportBody");
+      const foot = $("#dailyReportFoot");
+      if (!body || !foot) return;
+
+      const locale = reportLang();
+      const text = REPORT_I18N[locale] || REPORT_I18N.ru;
+      const report = buildDailyReportData();
+      $("#dailyReportTitle").textContent = text.title;
+      $("#dailyReportDescription").textContent = text.description;
+      $("#copyReportBtn").textContent = text.copy;
+      $("#reportOrdersLabel").textContent = text.labels.orders;
+      $("#reportQtyLabel").textContent = text.labels.portions;
+      $("#reportCardLabel").textContent = text.labels.card;
+      $("#reportCashLabel").textContent = text.labels.cash;
+      $("#reportTurnoverLabel").textContent = text.labels.turnover;
+      $("#dailyReportHead").innerHTML = text.headers.map((header, index) => (
+        `<th${index === 4 || index === 5 ? ' class="num"' : ""}>${escapeHtml(header)}</th>`
+      )).join("");
+      $$("#reportLangToggle [data-report-lang]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.reportLang === locale);
+      });
+
+      $("#dailyReportLabel").textContent = `${selectedDateLabel(locale)} • ${report.rows.length} ${reportRowsLabel(report.rows.length, locale)}`;
+      $("#reportOrdersCount").textContent = String(report.orders.length);
+      $("#reportQtyTotal").textContent = reportQtyText(report.qtyTotal);
+      $("#reportCardTotal").textContent = reportMoneyText(report.cardTotal);
+      $("#reportCashTotal").textContent = reportMoneyText(report.cashTotal);
+      $("#reportPriceTotal").textContent = reportMoneyText(report.priceTotal);
+
+      if (!report.rows.length) {
+        body.innerHTML = `
+          <tr>
+            <td class="report-empty-cell" colspan="8">
+              <div class="empty">
+                <strong>${escapeHtml(text.emptyTitle)}</strong>
+                <p>${escapeHtml(text.emptyText)}</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        foot.innerHTML = "";
+        return;
+      }
+
+      const groupedRows = groupDailyReportRows(report.rows);
+
+      body.innerHTML = groupedRows.map((group, groupIndex) => {
+        const leadRow = group.rows[0] || {};
+        const metaParts = [
+          `${text.orderWord} ${group.orderCode || "—"}`,
+          leadRow.type,
+          `${group.rows.length} ${reportRowsLabel(group.rows.length, locale)}`,
+          leadRow.status,
+          leadRow.time
+        ].filter(Boolean);
+
+        return `
+          <tr class="report-order-row ${groupIndex % 2 ? "alt" : ""}">
+            <td colspan="8">
+              <div class="report-order-meta">
+                <strong>${escapeHtml(metaParts.shift() || `${text.orderWord} —`)}</strong>
+                ${metaParts.map(part => `<span>${escapeHtml(part)}</span>`).join("")}
+              </div>
+            </td>
+          </tr>
+          ${group.rows.map((row, rowIndex) => `
+            <tr class="report-item-row ${groupIndex % 2 ? "alt" : ""} ${rowIndex === 0 ? "group-first" : ""} ${rowIndex === group.rows.length - 1 ? "group-last" : ""}">
+              <td class="code-cell">${escapeHtml(row.code || "—")}</td>
+              <td class="type-cell">${escapeHtml(row.type || "")}</td>
+              <td>${escapeHtml(row.name || "—")}</td>
+              <td class="comment-cell ${row.comment ? "" : "empty-cell"}">
+                <textarea
+                  class="report-comment-input"
+                  rows="2"
+                  data-report-comment-key="${escapeHtml(row.report_key || "")}"
+                  data-report-original-comment="${escapeHtml(row.original_comment || "")}"
+                  placeholder="${escapeHtml(text.commentPlaceholder)}"
+                >${escapeHtml(row.comment || "")}</textarea>
+              </td>
+              <td class="num">${escapeHtml(reportAmountText(row.card, true))}</td>
+              <td class="num">${escapeHtml(reportAmountText(row.cash, true))}</td>
+              <td class="status-cell">${escapeHtml(row.status || "")}</td>
+              <td class="time-cell">${escapeHtml(row.time || "")}</td>
+            </tr>
+          `).join("")}
+        `;
+      }).join("");
+
+      foot.innerHTML = `
+        <tr>
+          <td colspan="4" class="report-total-label">${escapeHtml(text.total)}</td>
+          <td class="num">${escapeHtml(reportAmountText(report.cardTotal))}</td>
+          <td class="num">${escapeHtml(reportAmountText(report.cashTotal))}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      `;
+    }
+
+    function setReportLang(lang) {
+      const nextLang = lang === "ru" ? "ru" : "vn";
+      if (state.report_lang === nextLang) return;
+      state.report_lang = nextLang;
+      saveReportLang();
+      renderDailyReport();
+    }
+
+    function renderAll() {
+      state.inventory = buildInventorySnapshot();
+      renderStats();
+      renderInventory();
+      renderOrders();
+      renderShift();
+      renderDailyReport();
+      if ($("#manualModal")?.classList.contains("open")) {
+        renderMenuResults($("#manualSearch")?.value || "");
+        renderManualItems();
+        renderManualModifierBuilder();
+      }
+      state.ordersRenderSignature = buildOrdersRenderSignature(state.orders);
+    }
+
+    async function saveOrderPayment(code) {
+      const order = state.orders.find(entry => entry.code === code);
+      if (!order) return;
+
+      const article = document.querySelector(`[data-order-code="${CSS.escape(code)}"]`);
+      const cashInput = article?.querySelector("[data-payment-cash]");
+      const cardInput = article?.querySelector("[data-payment-card]");
+      if (!cashInput || !cardInput) return;
+
+      const cash = normalizeAmount(cashInput.value);
+      const card = normalizeAmount(cardInput.value);
+      const total = normalizeAmount(order.total);
+
+      if (!sameMoney(cash + card, total)) {
+        showToast(`Наличные + Карта должны дать ${fmtMoney(total)}`, "warn");
+        return;
+      }
+
+      order.payment_cash = cash;
+      order.payment_card = card;
+      order.payment_type = inferPaymentType(cash, card, order.payment_type);
+      order.updated_at = new Date().toISOString();
+
+      await persistOrder(order, `Оплата ${order.code} сохранена`);
+    }
+
+    async function toggleOrderLineReady(code, rowId) {
+      const order = state.orders.find(entry => entry.code === code || entry.id === code);
+      if (!order || normalizeStatus(order.status) === "CANCELLED") return;
+
+      const progress = kitchenProgressSummary(order);
+      const validRowIds = new Set(progress.rows.map(row => row.row_id));
+      if (!validRowIds.has(rowId)) return;
+
+      const saveKey = `${order.code}:${rowId}`;
+      if (state.savingRows.has(saveKey)) return;
+      state.savingRows.add(saveKey);
+
+      const doneSet = new Set(progress.doneSet);
+      if (doneSet.has(rowId)) {
+        doneSet.delete(rowId);
+      } else {
+        doneSet.add(rowId);
+      }
+
+      order.kitchen_progress = {
+        done_row_ids: progress.rows.map(row => row.row_id).filter(id => doneSet.has(id)),
+        updated_at: nowIso(),
+        touched: true
+      };
+      order.status = resolveOrderStatus(order);
+      order.updated_at = nowIso();
+
+      let result = null;
+      try {
+        markSheetPending(order, "line_ready");
+        persistOrderSnapshot(order);
+        await syncOrderToLocalBridge(order);
+
+        result = await createOrderOnSheet(order);
+        applySheetSyncResult(order, result, "line_ready");
+        persistOrderSnapshot(order);
+        await syncOrderToLocalBridge(order);
+      } catch (error) {
+        console.warn("line ready save failed", error);
+        result = { ok: false, error: error?.message || "line_ready_failed" };
+      } finally {
+        state.savingRows.delete(saveKey);
+      }
+      if (isSyncOk(result)) {
+        setSyncBadge($("#sheetSyncBadge"), "ok", "Онлайн");
+        setLastSyncLabel(fmtDateTime(nowIso()));
+      } else {
+        setSyncBadge($("#sheetSyncBadge"), "warn", "Частично");
+      }
+      showToast(`Позиция ${doneSet.has(rowId) ? "готова" : "снова в работе"} • ${order.code}`);
+    }
+
+    async function setOrderStatus(code, nextStatus) {
+      const order = state.orders.find(entry => entry.code === code);
+      if (!order || order.status === nextStatus) return;
+
+      order.status = nextStatus;
+      order.updated_at = nowIso();
+      markSheetPending(order, "status_update");
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      const result = await updateOrderStatusRemote(order.id || order.code, nextStatus);
+      applySheetSyncResult(order, result, "status_update");
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      if (isSyncOk(result)) {
+        setSyncBadge($("#sheetSyncBadge"), "ok", "Онлайн");
+        setLastSyncLabel(fmtDateTime(nowIso()));
+        showToast(`Статус ${order.code}: ${STATUS_META[nextStatus]?.label || nextStatus}`);
+      } else {
+        setSyncBadge($("#sheetSyncBadge"), "warn", "Частично");
+        showToast(`Статус сохранен локально, Sheets не ответил`, "warn");
+      }
+    }
+
+    async function submitManualOrder() {
+      const totals = manualTotals();
+      if (!state.manual.items.length) {
+        showToast("Добавь хотя бы одно блюдо в ручной заказ", "warn");
+        return;
+      }
+
+      if (state.manual.type === "on_site" && !$("#manualTable").value.trim()) {
+        showToast("Укажи номер стола", "warn");
+        return;
+      }
+
+      if (state.manual.type === "takeaway" && !$("#manualPickup").value.trim()) {
+        showToast("Укажи через сколько минут забрать", "warn");
+        return;
+      }
+
+      if (state.manual.type === "delivery" && !$("#manualAddress").value.trim()) {
+        showToast("Укажи адрес доставки", "warn");
+        return;
+      }
+
+      const paymentDraft = manualPaymentDraft(totals.total);
+      if (paymentDraft.payment_type !== "unknown" && !sameMoney(paymentDraft.payment_cash + paymentDraft.payment_card, totals.total)) {
+        showToast(`Наличные + Карта должны дать ${fmtMoney(totals.total)}`, "warn");
+        return;
+      }
+
+      const editingCode = String(state.manual.editing_order_code || "").trim();
+      const existingOrder = editingCode
+        ? state.orders.find(entry => entry.code === editingCode || entry.id === editingCode)
+        : null;
+      const orderCode = editingCode || state.manual.draft_code || generateShortCode();
+      const now = nowIso();
+      const trace = currentCashierTrace();
+      const order = normalizeOrder({
+        ...(existingOrder || {}),
+        id: existingOrder?.id || `CASH-${now.replace(/[-:TZ.]/g, "").slice(0, 14)}`,
+        code: orderCode,
+        status: "NEW",
+        type: state.manual.type,
+        payment_type: paymentDraft.payment_type,
+        payment_cash: paymentDraft.payment_cash,
+        payment_card: paymentDraft.payment_card,
+        table: $("#manualTable").value.trim(),
+        pickup_in: $("#manualPickup").value.trim(),
+        address: $("#manualAddress").value.trim(),
+        phone: $("#manualPhone").value.trim(),
+        comment: $("#manualComment").value.trim(),
+        items: state.manual.items.map(item => ({
+          key: item.key,
+          menu_key: item.menu_key || "",
+          base_code: item.base_code || "",
+          code: item.code,
+          display_code: item.display_code || "",
+          name: item.name,
+          qty: item.qty,
+          price: item.price,
+          total: normalizeAmount(item.price * item.qty),
+          note: item.note,
+          modifiers: item.modifiers || [],
+          base_usage: item.base_usage || {},
+          stock_usage: item.stock_usage || {},
+          selections: item.selections || {}
+        })),
+        subtotal: totals.subtotal,
+        delivery_fee: totals.deliveryFee,
+        total: totals.total,
+        kitchen_progress: {
+          done_row_ids: [],
+          updated_at: now,
+          touched: false
+        },
+        created_at: existingOrder?.created_at || now,
+        updated_at: now,
+        source: existingOrder?.source || "cashier",
+        device_id: trace.device_id,
+        session_id: trace.session_id,
+        session_started_at: trace.session_started_at,
+        source_url: trace.source_url,
+        browser_label: trace.browser_label,
+        shift_note: trace.shift_note,
+        trace
+      });
+
+      const syncReason = existingOrder ? "edit" : "create";
+      markSheetPending(order, syncReason);
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      const tgTextUA = buildTelegramTextUA(order);
+      const tgTextVN = buildTelegramTextVN(order);
+      const [tgMain, tgVN, sheetRes] = await Promise.all([
+        sendTelegramMessage(TG.MAIN_CHANNEL, tgTextUA),
+        sendTelegramMessage(TG.VN_CHANNEL, tgTextVN),
+        createOrderOnSheet(order)
+      ]);
+
+      order.sync.telegram = tgMain;
+      order.sync.telegram_vn = tgVN;
+      applySheetSyncResult(order, sheetRes, syncReason);
+      persistOrderSnapshot(order);
+      await syncOrderToLocalBridge(order);
+
+      setSyncBadge($("#telegramSyncBadge"), tgMain.ok || tgVN.ok ? "ok" : "warn", tgMain.ok || tgVN.ok ? "Отправлено" : "Ошибка");
+      setSyncBadge($("#sheetSyncBadge"), isSyncOk(sheetRes) ? "ok" : "warn", isSyncOk(sheetRes) ? "Онлайн" : "Частично");
+
+      if (isSyncOk(sheetRes)) {
+        setLastSyncLabel(fmtDateTime(nowIso()));
+      }
+
+      closeManualModal();
+      showToast(existingOrder ? `Заказ ${order.code} сохранён` : `Ручной заказ ${order.code} создан`);
+      resetManualOrder();
+    }
+
+    function saveShiftFromForm() {
+      state.shift.opening_cash = Math.max(0, Number($("#shiftOpeningCashInput").value || 0));
+      state.shift.note = $("#shiftNote").value.trim();
+      saveShift();
+      renderShift();
+      showToast("Смена сохранена");
+    }
+
+    function restartShift() {
+      state.shift = {
+        opened_at: new Date().toISOString(),
+        opening_cash: 0,
+        note: ""
+      };
+      saveShift();
+      renderAll();
+      showToast("Новая смена начата");
+    }
+
+    async function clearLocalCache() {
+      const confirmed = window.confirm(
+        "Очистить локальный кэш кассы, сбросить локальные заказы и начать новую смену?"
+      );
+      if (!confirmed) return;
+
+      const bridgeResult = await clearOrdersLocalBridge();
+      localStorage.removeItem(ORDERS_KEY);
+      localStorage.removeItem(LAST_SYNC_KEY);
+      state.orders = [];
+      state.shift = {
+        opened_at: new Date().toISOString(),
+        opening_cash: 0,
+        note: ""
+      };
+      saveShift();
+      const lastSyncTime = $("#lastSyncTime");
+      if (lastSyncTime) lastSyncTime.textContent = "—";
+      renderAll();
+      await loadOrders();
+
+      if (bridgeResult?.ok) {
+        showToast("Кэш кассы очищен, смена сброшена");
+        return;
+      }
+
+      showToast("Кэш очищен локально, но bridge не сбросился", "warn");
+    }
+
+    function bindEvents() {
+      $("#refreshBtn").addEventListener("click", loadOrders);
+      $("#sendScreenshotBtn").addEventListener("click", sendFullScreenshotToVN);
+      $("#reportScreenshotBtn").addEventListener("click", sendReportScreenshotToVN);
+      $("#clearCacheBtn").addEventListener("click", clearLocalCache);
+      $("#saveRemoteBridgeBtn").addEventListener("click", saveRemoteBridgeSettings);
+      $("#copyRemoteBridgeLinkBtn").addEventListener("click", copyRemoteBridgeLink);
+      $("#clearRemoteBridgeBtn").addEventListener("click", clearRemoteBridgeSettings);
+      $("#openManualBtn").addEventListener("click", openManualModal);
+      $("#lockKassaBtn").addEventListener("click", lockKassa);
+      $("#closeManualBtn").addEventListener("click", closeManualModal);
+      $("#submitManualOrderBtn").addEventListener("click", submitManualOrder);
+      $("#addConfiguredItemBtn").addEventListener("click", addConfiguredItemFromBuilder);
+      $("#toggleBuilderEditBtn").addEventListener("click", toggleManualBuilderEdit);
+      $("#clearManualBuilderBtn").addEventListener("click", clearManualBuilder);
+      $("#saveShiftBtn").addEventListener("click", saveShiftFromForm);
+      $("#restartShiftBtn").addEventListener("click", restartShift);
+      $("#clearShiftCacheBtn").addEventListener("click", clearLocalCache);
+
+      $("#manualModal").addEventListener("click", event => {
+        if (event.target === $("#manualModal")) closeManualModal();
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && $("#manualModal").classList.contains("open")) {
+          closeManualModal();
+        }
+      });
+
+      $$(".date-chip").forEach(btn => {
+        btn.addEventListener("click", () => applyQuickDateFilter(btn.dataset.quickDate));
+      });
+
+      $("#dateFilter").addEventListener("change", handleDateInputChange);
+      $("#copyReportBtn").addEventListener("click", copyDailyReportTsv);
+      $("#remoteBridgeInput").addEventListener("keydown", event => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        saveRemoteBridgeSettings();
+      });
+      $("#reportLangToggle").addEventListener("click", event => {
+        const btn = event.target.closest("[data-report-lang]");
+        if (!btn) return;
+        setReportLang(btn.dataset.reportLang);
+      });
+      $("#dailyReportBody").addEventListener("input", event => {
+        const input = event.target.closest("[data-report-comment-key]");
+        if (!input) return;
+        updateReportCommentOverride(
+          input.dataset.reportCommentKey,
+          input.value,
+          input.dataset.reportOriginalComment || ""
+        );
+      });
+
+      const rerenderOrders = debounce(renderOrders, 120);
+      ["searchFilter", "statusFilter", "typeFilter", "paymentFilter", "sourceFilter", "sortFilter"].forEach(id => {
+        $(`#${id}`).addEventListener(id === "searchFilter" ? "input" : "change", rerenderOrders);
+      });
+
+      $("#manualSearch").addEventListener("input", debounce(event => {
+        renderMenuResults(event.target.value);
+      }, 100));
+
+      $("#manualDeliveryFee").addEventListener("input", renderManualItems);
+      $("#manualCashAmount").addEventListener("input", renderManualItems);
+      $("#manualCardAmount").addEventListener("input", renderManualItems);
+      $("#manualBuilderQtyInput").addEventListener("input", event => {
+        setManualBuilderQty(event.target.value);
+      });
+
+      $("#manualTypeToggle").addEventListener("click", event => {
+        const btn = event.target.closest("[data-type]");
+        if (!btn) return;
+        state.manual.type = btn.dataset.type;
+        applyManualType();
+      });
+
+      $("#manualPaymentToggle").addEventListener("click", event => {
+        const btn = event.target.closest("[data-payment]");
+        if (!btn) return;
+        state.manual.payment_type = btn.dataset.payment;
+        applyManualPayment();
+      });
+
+      $("#manualSearchResults").addEventListener("click", event => {
+        const btn = event.target.closest("[data-add-item]");
+        if (!btn) return;
+        addManualItem(btn.dataset.addItem);
+      });
+
+      $("#manualModifierGroups").addEventListener("click", event => {
+        const btn = event.target.closest("[data-builder-addon]");
+        if (!btn) return;
+        toggleManualBuilderAddon(
+          btn.dataset.builderAddon,
+          btn.dataset.builderKind,
+          btn.dataset.builderValue
+        );
+      });
+
+      $("#manualItemsList").addEventListener("click", event => {
+        const row = event.target.closest("[data-manual-index]");
+        if (!row) return;
+        const index = Number(row.dataset.manualIndex);
+
+        if (event.target.closest("[data-qty-action='minus']")) {
+          changeManualItemQty(index, -1);
+        }
+        if (event.target.closest("[data-qty-action='plus']")) {
+          changeManualItemQty(index, 1);
+        }
+        if (event.target.closest("[data-remove-item]")) {
+          removeManualItem(index);
+        }
+      });
+
+      $("#manualItemsList").addEventListener("input", event => {
+        const input = event.target.closest("[data-manual-note]");
+        if (!input) return;
+        const row = input.closest("[data-manual-index]");
+        if (!row) return;
+        updateManualItemNote(Number(row.dataset.manualIndex), input.value);
+      });
+
+      $("#ordersList").addEventListener("click", event => {
+        const editBtn = event.target.closest("[data-edit-order]");
+        if (editBtn) {
+          openEditOrder(editBtn.dataset.editOrder);
+          return;
+        }
+        const rowBtn = event.target.closest("[data-toggle-order-row]");
+        if (rowBtn) {
+          toggleOrderLineReady(rowBtn.dataset.orderCode, rowBtn.dataset.toggleOrderRow);
+          return;
+        }
+        const paymentBtn = event.target.closest("[data-save-payment]");
+        if (paymentBtn) {
+          saveOrderPayment(paymentBtn.dataset.orderCode);
+          return;
+        }
+        const btn = event.target.closest("[data-update-status]");
+        if (!btn) return;
+        setOrderStatus(btn.dataset.orderCode, btn.dataset.updateStatus);
+      });
+
+      window.addEventListener("storage", event => {
+        if (event.key === STOCK_SUMMARY_KEY) {
+          if (document.hidden) return;
+          renderAll();
+          return;
+        }
+
+        if (event.key === CONTRON_STORAGE_KEY) {
+          if (document.hidden) return;
+          renderAll();
+          return;
+        }
+
+        if (event.key === ORDERS_KEY && isKassaUnlocked()) {
+          if (document.hidden) return;
+          refreshOrdersFromCache();
+        }
+      });
+
+      document.addEventListener("visibilitychange", handleKassaVisibilityChange);
+    }
+
+    function init() {
+      state.initialized = true;
+      restoreLastSyncLabel();
+      buildMenuIndex();
+      bindEvents();
+      renderRemoteAccessPanel();
+      connectLocalEvents();
+      if (!SCREENSHOT_MODE) {
+        window.addEventListener("beforeunload", () => {
+          if (state.eventSource) state.eventSource.close();
+        });
+      }
+      applyQuickDateFilter("today");
+      resetManualOrder();
+      renderAll();
+      loadOrders();
+      if (!SCREENSHOT_MODE) {
+        if (state.timer) clearInterval(state.timer);
+        state.timer = setInterval(pollOrdersWhenVisible, REFRESH_MS);
+      }
+    }
+
+    async function initAuth() {
+      $("#pinForm").addEventListener("submit", handlePinSubmit);
+      const unlocked = await refreshKassaSession();
+      if (unlocked) {
+        showKassa();
+        startKassaApp();
+        return;
+      }
+
+      hideKassa();
+    }
+
+    initAuth();
+  </script>
+  <script src="dragon_burger_menu.js"></script>
+</body>
+</html>
