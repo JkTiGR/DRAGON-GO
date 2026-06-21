@@ -3385,12 +3385,9 @@ ${lines}`;
       const catPillsParent = catPillsEl?.parentNode || null;
       const catPillsSibling = catPillsEl?.nextSibling || null;
 
-      function isDesktopLayout(){
-        return window.matchMedia('(min-width: 1280px)').matches;
-      }
-
       function islandThreshold(){
-        return isDesktopLayout() ? Number.POSITIVE_INFINITY : 80;
+        /* Keep the Dynamic Island available in desktop browsers too (Ubuntu/macOS). */
+        return window.matchMedia('(min-width: 900px)').matches ? 112 : 80;
       }
       let islandActive = false;
 

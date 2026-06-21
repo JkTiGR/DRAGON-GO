@@ -5157,6 +5157,112 @@ body.island.drawer-open .header .bar > .bolt-drawer.nav-pop.open {
   grid-row: 2;
 }
 
+/* Desktop Dynamic Island: a compact, macOS-like floating control for Ubuntu
+   and other desktop browsers. The menu pills remain horizontally scrollable. */
+@media (min-width: 900px) {
+  body.island {
+    --island-top: 12px;
+    --island-w: 680px;
+  }
+
+  body.island .header {
+    position: fixed;
+    inset: 0 0 auto;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  body.island .header::before {
+    height: 90px;
+    background: linear-gradient(180deg, rgba(4, 4, 7, 0.58), transparent);
+  }
+
+  body.island .header .bar {
+    position: relative;
+    left: auto;
+    top: var(--island-top);
+    width: min(var(--island-w), calc(100% - 32px));
+    margin: 0 auto;
+    min-height: 58px;
+    padding: 8px 10px !important;
+    pointer-events: auto;
+    transform: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.08), transparent 32%),
+      linear-gradient(180deg, rgba(18, 18, 23, 0.98), rgba(2, 2, 4, 0.98));
+    box-shadow:
+      0 22px 54px rgba(0, 0, 0, 0.46),
+      0 0 0 1px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(26px) saturate(145%);
+    -webkit-backdrop-filter: blur(26px) saturate(145%);
+    animation: desktopIslandIn 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body.island:not(.drawer-open) .header .bar > .brand {
+    position: relative;
+    min-width: 38px;
+    padding-right: 8px;
+  }
+
+  body.island:not(.drawer-open) .header .bar > .brand::after {
+    content: "";
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #45ef96;
+    box-shadow: 0 0 10px rgba(69, 239, 150, 0.8);
+    transform: translateY(-50%);
+  }
+
+  body.island:not(.drawer-open) .header .bar > .h-scroll .pill {
+    min-height: 36px;
+    padding: 8px 13px;
+    color: rgba(255, 255, 255, 0.72);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: none;
+  }
+
+  body.island:not(.drawer-open) .header .bar > .h-scroll .pill:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  body.island:not(.drawer-open) .header .bar > .h-scroll .pill.active {
+    color: #08090b;
+    background: linear-gradient(135deg, #f8fbff, #dce5ef);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.26);
+  }
+
+  body.island:not(.drawer-open) .header .bar > .burger {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  @keyframes desktopIslandIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.island .header .bar {
+    animation: none;
+  }
+}
+
 /* =========================================================
    DRAGON TERMINAL PAGES
    Extracted from kassa, kitchen, client monitor and admin pages.
