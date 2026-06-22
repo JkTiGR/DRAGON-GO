@@ -9700,3 +9700,516 @@ body.dragon-admin-page .filters { flex-direction: column; }
 
 body.dragon-admin-page .filter-group { width: 100%; }
 }
+
+/* ============================================================
+   POS + MONITORS PALETTE ALIGNMENT
+   Matches the glass dark palette used by index/menu pages.
+   ============================================================ */
+
+body.dragon-kassa-page,
+body.dragon-kitchen-page,
+body.dragon-client-monitor-page {
+  --entry-bg: #070412;
+  --entry-bg-soft: #090616;
+  --entry-panel: rgba(11, 8, 24, 0.62);
+  --entry-panel-strong: rgba(9, 7, 20, 0.84);
+  --entry-panel-deep: rgba(7, 5, 18, 0.94);
+  --entry-line: rgba(234, 224, 255, 0.14);
+  --entry-line-strong: rgba(184, 236, 255, 0.28);
+  --entry-text: #f7f2ff;
+  --entry-muted: rgba(232, 223, 255, 0.76);
+  --entry-accent: #87f0be;
+  --entry-accent-2: #b8ecff;
+  --entry-accent-3: #9b7cff;
+  --entry-warm: #ffd277;
+  --entry-danger: #ff9bb2;
+  --entry-shadow:
+    0 28px 72px rgba(5, 2, 18, 0.48),
+    0 0 30px rgba(153, 110, 255, 0.12);
+  --entry-glow-violet: rgba(155, 113, 255, 0.18);
+  --entry-glow-sky: rgba(184, 236, 255, 0.16);
+  --entry-glow-mint: rgba(135, 240, 190, 0.14);
+}
+
+body.dragon-kassa-page {
+  --bg: var(--entry-bg);
+  --bg-alt: var(--entry-bg-soft);
+  --panel: var(--entry-panel);
+  --panel-2: var(--entry-panel-strong);
+  --panel-3: var(--entry-panel-deep);
+  --line: var(--entry-line);
+  --line-strong: var(--entry-line-strong);
+  --text: var(--entry-text);
+  --muted: var(--entry-muted);
+  --accent: var(--entry-accent);
+  --accent-2: var(--entry-accent-2);
+  --success: var(--entry-accent);
+  --warn: var(--entry-warm);
+  --ready: #9fdcff;
+  --danger: var(--entry-danger);
+  --cash: #ffd7a0;
+  --card: var(--entry-accent-2);
+  --neon-red: var(--entry-glow-violet);
+  --neon-amber: var(--entry-glow-sky);
+  --shadow: var(--entry-shadow);
+}
+
+body.dragon-kitchen-page {
+  --bg: var(--entry-bg);
+  --panel: var(--entry-panel);
+  --panel-2: var(--entry-panel-strong);
+  --line: var(--entry-line);
+  --line-strong: rgba(184, 236, 255, 0.24);
+  --text: var(--entry-text);
+  --muted: var(--entry-muted);
+  --new: var(--entry-accent-3);
+  --cook: var(--entry-warm);
+  --ready: var(--entry-accent);
+  --neon-yellow: rgba(255, 210, 119, 0.3);
+  --neon-green: rgba(135, 240, 190, 0.28);
+  --danger: var(--entry-danger);
+  --neon-red: var(--entry-glow-violet);
+  --neon-amber: var(--entry-glow-sky);
+  --shadow: var(--entry-shadow);
+}
+
+body.dragon-client-monitor-page {
+  --bg: var(--entry-bg);
+  --panel: var(--entry-panel);
+  --panel-2: var(--entry-panel-strong);
+  --line: var(--entry-line);
+  --text: var(--entry-text);
+  --muted: var(--entry-muted);
+  --prep: var(--entry-warm);
+  --ready: var(--entry-accent);
+  --glow-prep: rgba(255, 210, 119, 0.24);
+  --glow-ready: rgba(135, 240, 190, 0.24);
+  --neon-yellow: rgba(255, 210, 119, 0.28);
+  --neon-green: rgba(135, 240, 190, 0.28);
+  --neon-red: var(--entry-glow-violet);
+  --neon-amber: var(--entry-glow-sky);
+  --shadow: var(--entry-shadow);
+}
+
+html:has(> body.dragon-kassa-page),
+body.dragon-kassa-page,
+html:has(> body.dragon-kitchen-page),
+body.dragon-kitchen-page,
+html:has(> body.dragon-client-monitor-page),
+body.dragon-client-monitor-page {
+  background:
+    radial-gradient(540px 360px at 84% 8%, var(--entry-glow-mint), transparent 60%),
+    radial-gradient(520px 340px at 16% 16%, var(--entry-glow-violet), transparent 58%),
+    linear-gradient(180deg, rgba(7, 4, 16, 0.82), rgba(7, 4, 16, 0.94)),
+    url("fonHOME.png") center top / cover no-repeat,
+    var(--entry-bg);
+}
+
+body.dragon-kassa-page::before,
+body.dragon-kitchen-page::before,
+body.dragon-client-monitor-page::before {
+  inset: 0;
+  left: auto;
+  width: auto;
+  height: auto;
+  transform: none;
+  border: 0;
+  border-radius: 0;
+  opacity: 1;
+  box-shadow: none;
+  background:
+    radial-gradient(640px 360px at 24% 10%, rgba(255, 255, 255, 0.08), transparent 54%),
+    linear-gradient(90deg, rgba(5, 3, 14, 0.72), rgba(5, 3, 14, 0.38) 50%, rgba(5, 3, 14, 0.78));
+}
+
+body.dragon-kassa-page::after,
+body.dragon-kitchen-page::after,
+body.dragon-client-monitor-page::after {
+  content: "";
+  position: fixed;
+  right: -140px;
+  bottom: -120px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, var(--entry-glow-sky), transparent 68%);
+  filter: blur(10px);
+}
+
+body.dragon-kassa-page .hero,
+body.dragon-kassa-page .side-card,
+body.dragon-kassa-page .panel,
+body.dragon-kassa-page .stat,
+body.dragon-kassa-page .auth-card,
+body.dragon-kassa-page .modal-card,
+body.dragon-kassa-page .manual-section,
+body.dragon-kassa-page .summary-box,
+body.dragon-kitchen-page .topbar,
+body.dragon-kitchen-page .lane,
+body.dragon-kitchen-page .ticket,
+body.dragon-kitchen-page .board.note-board,
+body.dragon-client-monitor-page .topbar,
+body.dragon-client-monitor-page .column,
+body.dragon-client-monitor-page .code-card {
+  border-color: var(--line);
+  background:
+    radial-gradient(circle at 100% 0%, var(--entry-glow-sky), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, var(--panel), var(--panel-2));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+body.dragon-kassa-page .side-card::after,
+body.dragon-kassa-page .panel::after,
+body.dragon-kassa-page .stat::before,
+body.dragon-kitchen-page .topbar::after,
+body.dragon-kitchen-page .lane::after,
+body.dragon-kitchen-page .ticket::after,
+body.dragon-client-monitor-page .topbar::after,
+body.dragon-client-monitor-page .column::after,
+body.dragon-client-monitor-page .code-card::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 24px rgba(155, 113, 255, 0.08),
+    0 0 24px rgba(184, 236, 255, 0.08);
+}
+
+body.dragon-kassa-page .hero h2,
+body.dragon-kassa-page .panel-head h3,
+body.dragon-kassa-page .modal-head h3,
+body.dragon-kitchen-page h1,
+body.dragon-kitchen-page h2,
+body.dragon-kitchen-page h3,
+body.dragon-client-monitor-page h1,
+body.dragon-client-monitor-page h2 {
+  text-shadow: 0 0 18px rgba(155, 113, 255, 0.18);
+}
+
+body.dragon-kassa-page .hero,
+body.dragon-kassa-page .remote-access-card,
+body.dragon-kassa-page .manual-order-panel,
+body.dragon-kassa-page .modifier-quick-card,
+body.dragon-kassa-page .summary-box {
+  background:
+    radial-gradient(circle at 100% 0%, var(--entry-glow-mint), transparent 34%),
+    radial-gradient(circle at 14% 0%, var(--entry-glow-violet), transparent 30%),
+    linear-gradient(180deg, rgba(11, 8, 24, 0.84), rgba(9, 7, 20, 0.92));
+}
+
+body.dragon-kassa-page .auth-screen {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 113, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 80% 75%, rgba(135, 240, 190, 0.14), transparent 30%),
+    rgba(8, 6, 18, 0.94);
+}
+
+body.dragon-kassa-page .auth-card,
+body.dragon-kassa-page .modal-card,
+body.dragon-kassa-page .modifier-builder,
+body.dragon-kassa-page .modifier-actions {
+  background:
+    radial-gradient(circle at 100% 0%, var(--entry-glow-sky), transparent 32%),
+    linear-gradient(180deg, rgba(12, 10, 24, 0.94), rgba(8, 6, 18, 0.97));
+}
+
+body.dragon-kassa-page .btn.secondary,
+body.dragon-kassa-page .btn.ghost,
+body.dragon-kassa-page .toggle-btn,
+body.dragon-kassa-page .modifier-option,
+body.dragon-kassa-page .qty-box button,
+body.dragon-kitchen-page .btn,
+body.dragon-client-monitor-page .sync-badge {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+body.dragon-kassa-page .btn:hover,
+body.dragon-kitchen-page .btn:hover {
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(155, 113, 255, 0.16);
+}
+
+body.dragon-kassa-page .btn.primary,
+body.dragon-kitchen-page .btn.primary,
+body.dragon-kassa-page .toggle-btn.active,
+body.dragon-kassa-page .modifier-option.active,
+body.dragon-kassa-page .status-btn.active,
+body.dragon-kassa-page .report-lang-toggle .toggle-btn.active {
+  color: #081018;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow:
+    0 0 20px rgba(135, 240, 190, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+body.dragon-kassa-page .input,
+body.dragon-kassa-page .select,
+body.dragon-kassa-page .textarea,
+body.dragon-kassa-page .report-lang-toggle,
+body.dragon-kassa-page .payment-line,
+body.dragon-kassa-page .cash-cell,
+body.dragon-kassa-page .mini-card,
+body.dragon-kassa-page .cash-line,
+body.dragon-kassa-page .sync-row,
+body.dragon-kassa-page .menu-result,
+body.dragon-kassa-page .manual-item,
+body.dragon-kassa-page .modifier-group,
+body.dragon-kassa-page .modifier-preview,
+body.dragon-kassa-page .qty-box,
+body.dragon-kitchen-page .kitchen-table-wrap,
+body.dragon-kitchen-page .order-comment,
+body.dragon-kitchen-page .time,
+body.dragon-client-monitor-page .empty {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+body.dragon-client-monitor-page .clock {
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+body.dragon-kassa-page .input:focus,
+body.dragon-kassa-page .select:focus,
+body.dragon-kassa-page .textarea:focus,
+body.dragon-kassa-page .report-comment-input:focus {
+  border-color: rgba(184, 236, 255, 0.38);
+  box-shadow:
+    0 0 0 3px rgba(184, 236, 255, 0.14),
+    0 0 18px rgba(155, 113, 255, 0.18);
+}
+
+body.dragon-kassa-page .sync-pill.ok,
+body.dragon-kitchen-page .sync-pill.ok,
+body.dragon-kitchen-page .tag.ok,
+body.dragon-client-monitor-page .sync-badge.ok {
+  color: #dff8ff;
+  border-color: rgba(184, 236, 255, 0.24);
+  background: rgba(184, 236, 255, 0.12);
+}
+
+body.dragon-kassa-page .sync-pill.warn,
+body.dragon-kitchen-page .sync-pill.warn,
+body.dragon-kitchen-page .tag.warn,
+body.dragon-client-monitor-page .sync-badge.warn {
+  color: #fff2c0;
+  border-color: rgba(255, 210, 119, 0.26);
+  background: rgba(255, 210, 119, 0.14);
+}
+
+body.dragon-kassa-page .sync-pill.offline,
+body.dragon-kitchen-page .sync-pill.offline,
+body.dragon-kitchen-page .tag.offline,
+body.dragon-client-monitor-page .sync-badge.offline {
+  color: #ffd6e0;
+  border-color: rgba(255, 155, 178, 0.26);
+  background: rgba(255, 155, 178, 0.12);
+}
+
+body.dragon-kassa-page .status-badge.new {
+  color: #d8cbff;
+  border-color: rgba(155, 113, 255, 0.24);
+  background: rgba(155, 113, 255, 0.14);
+}
+
+body.dragon-kassa-page .status-badge.cooking,
+body.dragon-kassa-page .payment-badge.split {
+  color: #fff0bd;
+  border-color: rgba(255, 210, 119, 0.24);
+  background: rgba(255, 210, 119, 0.14);
+}
+
+body.dragon-kassa-page .status-badge.ready,
+body.dragon-kassa-page .payment-badge.card {
+  color: #dff8ff;
+  border-color: rgba(184, 236, 255, 0.24);
+  background: rgba(184, 236, 255, 0.12);
+}
+
+body.dragon-kassa-page .status-badge.handed,
+body.dragon-kassa-page .payment-badge.cash {
+  color: #dcffe9;
+  border-color: rgba(135, 240, 190, 0.24);
+  background: rgba(135, 240, 190, 0.12);
+}
+
+body.dragon-kassa-page .status-badge.cancelled,
+body.dragon-kassa-page .payment-badge.unknown,
+body.dragon-kassa-page .btn.danger {
+  color: #ffd6e0;
+  border-color: rgba(255, 155, 178, 0.26);
+  background: rgba(255, 155, 178, 0.12);
+}
+
+body.dragon-kassa-page .order-draft-pill,
+body.dragon-kassa-page .modifier-total-preview {
+  color: #dff8ff;
+  border-color: rgba(184, 236, 255, 0.26);
+  background: rgba(184, 236, 255, 0.08);
+  box-shadow: 0 0 18px rgba(184, 236, 255, 0.12);
+}
+
+body.dragon-kassa-page .menu-result.expanded,
+body.dragon-kassa-page .manual-section,
+body.dragon-kassa-page .modifier-builder,
+body.dragon-kassa-page .modifier-actions,
+body.dragon-kassa-page .modifier-quick-card,
+body.dragon-kassa-page .summary-box {
+  border-color: rgba(184, 236, 255, 0.16);
+  box-shadow:
+    0 0 28px rgba(155, 113, 255, 0.12),
+    inset 0 0 24px rgba(184, 236, 255, 0.05);
+}
+
+body.dragon-kassa-page .modifier-builder.editing .modifier-edit-btn {
+  color: #081018;
+  background: linear-gradient(135deg, var(--warn), var(--accent-2));
+  box-shadow: 0 0 20px rgba(184, 236, 255, 0.18);
+}
+
+body.dragon-kassa-page .modifier-plus-btn,
+body.dragon-kassa-page .manual-submit-btn,
+body.dragon-kassa-page #addConfiguredItemBtn {
+  box-shadow:
+    0 0 20px rgba(135, 240, 190, 0.16),
+    0 0 40px rgba(155, 113, 255, 0.14),
+    inset 0 0 16px rgba(255, 255, 255, 0.12);
+}
+
+body.dragon-kassa-page .modifier-code-xl,
+body.dragon-kassa-page .summary-line.total strong {
+  text-shadow:
+    0 0 18px rgba(184, 236, 255, 0.22),
+    0 0 32px rgba(155, 113, 255, 0.18);
+}
+
+body.dragon-kitchen-page .topbar::before,
+body.dragon-client-monitor-page .topbar::before {
+  background:
+    linear-gradient(110deg, rgba(155, 113, 255, 0.16), transparent 40%),
+    radial-gradient(circle at top right, rgba(135, 240, 190, 0.12), transparent 32%);
+}
+
+body.dragon-kitchen-page .brand-mark,
+body.dragon-client-monitor-page .brand-mark {
+  color: #081018;
+  background: linear-gradient(135deg, var(--entry-accent-3), var(--entry-accent));
+  box-shadow: 0 18px 46px rgba(5, 2, 18, 0.28);
+}
+
+body.dragon-kitchen-page .lane.new {
+  border-color: rgba(155, 113, 255, 0.24);
+  box-shadow:
+    var(--shadow),
+    inset 0 0 0 1px rgba(155, 113, 255, 0.12),
+    0 0 24px rgba(155, 113, 255, 0.12);
+}
+
+body.dragon-kitchen-page .lane.cooking .lane-count,
+body.dragon-client-monitor-page .preparing .count {
+  box-shadow: 0 0 20px rgba(255, 210, 119, 0.24);
+}
+
+body.dragon-kitchen-page .lane.ready .lane-count,
+body.dragon-client-monitor-page .ready .count {
+  box-shadow: 0 0 20px rgba(135, 240, 190, 0.24);
+}
+
+body.dragon-kitchen-page .board.note-board {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(155, 113, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 90% 22%, rgba(135, 240, 190, 0.08), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(6, 5, 16, 0.8);
+}
+
+body.dragon-kitchen-page .kitchen-minimal-page .sync-line {
+  color: var(--muted);
+}
+
+body.dragon-kitchen-page .ticket.kitchen-note {
+  --note-accent: var(--entry-accent-3);
+  --note-ink: #f9f5ff;
+  --note-muted: rgba(232, 223, 255, 0.74);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.17), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(155, 113, 255, 0.18), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045) 44%, rgba(0, 0, 0, 0.2)),
+    rgba(14, 10, 28, 0.76);
+}
+
+body.dragon-kitchen-page .ticket.kitchen-note.status-cooking {
+  --note-accent: var(--entry-warm);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.17), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(255, 210, 119, 0.18), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045) 44%, rgba(0, 0, 0, 0.2)),
+    rgba(22, 15, 22, 0.74);
+}
+
+body.dragon-kitchen-page .ticket.kitchen-note.status-ready {
+  --note-accent: var(--entry-accent);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.17), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(135, 240, 190, 0.2), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045) 44%, rgba(0, 0, 0, 0.18)),
+    rgba(10, 22, 20, 0.72);
+}
+
+body.dragon-kitchen-page .ticket.kitchen-note .note-item-copy small,
+body.dragon-kitchen-page .ticket.kitchen-note .note-line b,
+body.dragon-kitchen-page .ticket.kitchen-note .tag.muted {
+  color: var(--note-muted);
+}
+
+body.dragon-client-monitor-page .column.preparing::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 210, 119, 0.3),
+    inset 0 0 28px rgba(255, 210, 119, 0.08),
+    0 0 26px rgba(255, 210, 119, 0.14);
+}
+
+body.dragon-client-monitor-page .column.ready::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(135, 240, 190, 0.3),
+    inset 0 0 28px rgba(135, 240, 190, 0.08),
+    0 0 28px rgba(135, 240, 190, 0.16);
+}
+
+body.dragon-client-monitor-page .code-card {
+  box-shadow:
+    0 20px 46px rgba(5, 2, 18, 0.28),
+    0 0 18px rgba(155, 113, 255, 0.14);
+}
+
+body.dragon-client-monitor-page .code-card.preparing {
+  background:
+    linear-gradient(180deg, rgba(255, 210, 119, 0.18), rgba(255, 210, 119, 0.06)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.045));
+}
+
+body.dragon-client-monitor-page .code-card.ready {
+  background:
+    linear-gradient(180deg, rgba(135, 240, 190, 0.18), rgba(135, 240, 190, 0.06)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.045));
+}
+
+@keyframes dragonClientReadyPulse {
+  0%,
+  100% {
+    box-shadow: 0 20px 46px rgba(5, 2, 18, 0.28), 0 0 0 rgba(135, 240, 190, 0);
+  }
+  50% {
+    box-shadow: 0 22px 52px rgba(5, 2, 18, 0.32), 0 0 42px rgba(135, 240, 190, 0.26);
+  }
+}
