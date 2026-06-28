@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070203" />
+  <title>DRAGON GO — QR-меню, Web App і доставка для ресторанів</title>
+  <meta name="description" content="Підключіть ресторан до DRAGON GO: QR-меню, Web App, онлайн-замовлення та доставка без складної розробки." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DRAGON GO" />
+  <meta property="og:title" content="DRAGON GO — QR-меню, Web App і доставка для ресторанів" />
+  <meta property="og:description" content="Підключіть ресторан до DRAGON GO: QR-меню, Web App, онлайн-замовлення та доставка без складної розробки." />
+  <meta property="og:image" content="app-icon-512.png" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DRAGON GO — QR-меню, Web App і доставка для ресторанів" />
+  <meta name="twitter:description" content="Підключіть ресторан до DRAGON GO: QR-меню, Web App, онлайн-замовлення та доставка без складної розробки." />
+  <meta name="twitter:image" content="app-icon-512.png" />
+  <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="app-icon-180.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dragon-theme.css" />
+</head>
+<body class="dragon-go-landing">
+  <a class="dg-skip" href="#main" data-i18n="skip">Перейти до контенту</a>
+
+  <header class="dg-header" id="top">
+    <a class="dg-brand" href="#top" aria-label="DRAGON GO">
+      <img src="logo.png" alt="" width="44" height="44" />
+      <span>
+        <strong>DRAGON GO</strong>
+        <small data-i18n="brandSub">QR Web App для ресторанів</small>
+      </span>
+    </a>
+
+    <button class="dg-menu-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-i18n-aria-label="menuLabel">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="dg-nav" id="siteNav" aria-label="Main navigation">
+      <a href="#restaurants" data-i18n="navRestaurants">Для ресторанів</a>
+      <a href="#delivery" data-i18n="navDelivery">Доставка</a>
+      <a href="#couriers" data-i18n="navCouriers">Кур’єрам</a>
+      <a href="#business" data-i18n="navBusiness">Бізнесу</a>
+      <a href="#about" data-i18n="navAbout">Про нас</a>
+      <a href="#faq" data-i18n="navFaq">FAQ</a>
+      <a href="profil.html" data-i18n="navLogin">Увійти</a>
+    </nav>
+
+    <div class="dg-header-actions">
+      <label class="dg-lang" for="langSelect">
+        <span data-i18n="languageLabel">Мова</span>
+        <select id="langSelect" aria-label="Language">
+          <option value="uk">UA</option>
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+        </select>
+      </label>
+      <a class="dg-btn dg-btn-primary dg-header-cta" href="#partner" data-i18n="connectRestaurant">Підключити ресторан</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="dg-hero" aria-labelledby="heroTitle">
+      <div class="dg-hero-bg" aria-hidden="true"></div>
+      <div class="dg-shell dg-hero-inner">
+        <div class="dg-hero-copy reveal">
+          <p class="dg-kicker" data-i18n="heroKicker">Локальна платформа онлайн-замовлень і доставки</p>
+          <h1 id="heroTitle" data-i18n="heroTitle">Будуйте свій онлайн-бізнес разом з DRAGON GO</h1>
+          <p class="dg-hero-text" data-i18n="heroText">DRAGON GO створює QR-меню, Web App / PWA-додаток, приймає онлайн-замовлення та допомагає з доставкою. Без складної розробки, без великих витрат, без зайвої бюрократії.</p>
+          <div class="dg-hero-actions">
+            <a class="dg-btn dg-btn-primary" href="#partner" data-i18n="connectRestaurant">Підключити ресторан</a>
+            <a class="dg-btn dg-btn-ghost" href="#demo" data-i18n="viewDemo">Подивитися демо</a>
+          </div>
+          <ul class="dg-proof-list" aria-label="DRAGON GO features">
+            <li data-i18n="chipQr">QR-меню</li>
+            <li data-i18n="chipWeb">Web App</li>
+            <li data-i18n="chipOrders">Онлайн-замовлення</li>
+            <li data-i18n="chipDelivery">Власна доставка</li>
+            <li data-i18n="chipNoSignup">Без реєстрації для клієнта</li>
+          </ul>
+        </div>
+
+        <div class="dg-hero-visual reveal" id="demo" aria-label="Демо DRAGON GO">
+          <div class="dg-phone">
+            <div class="dg-phone-top">
+              <span></span>
+              <b>DRAGON GO</b>
+            </div>
+            <div class="dg-phone-hero">
+              <img src="images/dragon22point.png" alt="DRAGON restaurant menu" />
+              <div>
+                <strong>DRAGON</strong>
+                <small data-i18n="phoneMeta">QR-меню · 15-30 хв</small>
+              </div>
+            </div>
+            <div class="dg-menu-card">
+              <img src="images/ZUPA_PHO_Z_WOLOWINA.png" alt="Pho" />
+              <span>
+                <b>Pho Bo</b>
+                <small>185 грн</small>
+              </span>
+              <em>+</em>
+            </div>
+            <div class="dg-menu-card">
+              <img src="images/nem_ran.png" alt="Nem ran" />
+              <span>
+                <b>Nem Ran</b>
+                <small>125 грн</small>
+              </span>
+              <em>+</em>
+            </div>
+            <div class="dg-phone-cta" data-i18n="phoneCta">Оформити замовлення</div>
+          </div>
+
+          <div class="dg-qr-card">
+            <div class="dg-qr" aria-hidden="true"></div>
+            <span>
+              <b data-i18n="qrTitle">Скануй QR</b>
+              <small data-i18n="qrText">Меню відкривається одразу</small>
+            </span>
+          </div>
+
+          <div class="dg-order-card">
+            <span class="dg-live-dot"></span>
+            <div>
+              <b data-i18n="orderTitle">Нове замовлення</b>
+              <small data-i18n="orderText">2 страви · доставка · 18 хв</small>
+            </div>
+            <strong>+310 грн</strong>
+          </div>
+
+          <img class="dg-float dg-float-bowl" src="glass1.png" alt="" aria-hidden="true" />
+          <img class="dg-float dg-float-wrap" src="shaurma-glass.png" alt="" aria-hidden="true" />
+          <img class="dg-float dg-float-pizza" src="pizza-glass.png" alt="" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <section class="food-directory" id="food" aria-labelledby="foodTitle">
+      <div class="food-head reveal">
+        <p class="dg-kicker">Каталог DRAGON GO</p>
+        <h2 class="food-title" id="foodTitle">Їжа</h2>
+        <p class="food-kicker">Локальні ресторани, кафе, dark kitchen та доставка поруч.</p>
+      </div>
+
+      <nav class="food-category-rail reveal" aria-label="Категорії їжі">
+        <button class="food-category" type="button" data-food-filter="fastfood">
+          <span class="food-category-icon" aria-hidden="true">🍟</span>
+          <span>Фаст-фуд</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="burgers">
+          <span class="food-category-icon" aria-hidden="true">🍔</span>
+          <span>Бургери</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="american">
+          <span class="food-category-icon" aria-hidden="true">🍗</span>
+          <span>Американська</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="international">
+          <span class="food-category-icon" aria-hidden="true">🌐</span>
+          <span>Міжнародна</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="european">
+          <span class="food-category-icon" aria-hidden="true">🥗</span>
+          <span>Європейська</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="ukrainian">
+          <span class="food-category-icon" aria-hidden="true">🍲</span>
+          <span>Українська</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="asian">
+          <span class="food-category-icon" aria-hidden="true">🍜</span>
+          <span>Азіатська</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="bakery">
+          <span class="food-category-icon" aria-hidden="true">🧁</span>
+          <span>Пекарня</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="pizza">
+          <span class="food-category-icon" aria-hidden="true">🍕</span>
+          <span>Піца</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="sushi">
+          <span class="food-category-icon" aria-hidden="true">🍣</span>
+          <span>Суші</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="breakfast">
+          <span class="food-category-icon" aria-hidden="true">☕</span>
+          <span>Сніданок</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="italian">
+          <span class="food-category-icon" aria-hidden="true">🍝</span>
+          <span>Італійська</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="shaurma">
+          <span class="food-category-icon" aria-hidden="true">🌯</span>
+          <span>Шаурма</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="healthy">
+          <span class="food-category-icon" aria-hidden="true">🥑</span>
+          <span>Корисна їжа</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="grill">
+          <span class="food-category-icon" aria-hidden="true">🍖</span>
+          <span>Гриль</span>
+        </button>
+        <button class="food-category" type="button" data-food-filter="alcohol">
+          <span class="food-category-icon" aria-hidden="true">🍾</span>
+          <span>Алкоголь</span>
+        </button>
+      </nav>
+
+      <div class="food-toolbar reveal" aria-label="Фільтри">
+        <button class="food-filter active" type="button" data-food-filter="all">Тип їжі</button>
+        <span class="food-filter">Сортувати за</span>
+        <span class="food-filter">♕ <strong>Найпопулярніший</strong></span>
+      </div>
+
+      <h3 class="food-section-title reveal">Всі заклади</h3>
+
+      <div class="venue-grid">
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all asian international healthy">
+          <div class="venue-media">
+            <img src="images/dragon22point.png" alt="DRAGON" />
+            <span class="venue-discount">-15% на деякі продукти</span>
+            <span class="venue-logo">🐉</span>
+          </div>
+          <h4 class="venue-name">DRAGON</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 98% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dlv" data-food-tags="all asian international">
+          <div class="venue-media">
+            <img src="promo.jpg" alt="PHO VIET" />
+            <span class="venue-discount">-25% при замовленні понад 650 ₴</span>
+            <span class="venue-logo">PH</span>
+          </div>
+          <h4 class="venue-name">PHO VIET</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 97% (439)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=asian" data-food-tags="all asian sushi international">
+          <div class="venue-media">
+            <img src="images/spring_rolls.jpeg" alt="HA NOI" />
+            <span class="venue-discount">-20% на деякі продукти</span>
+            <span class="venue-logo">HN</span>
+          </div>
+          <h4 class="venue-name">HA NOI</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 97% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=shaurma" data-food-tags="all shaurma fastfood grill">
+          <div class="venue-media">
+            <img src="images/mi_xao_ga.png" alt="Shaurma & Brothers" />
+            <span class="venue-discount">-20% на деякі продукти</span>
+            <span class="venue-logo">🌯</span>
+          </div>
+          <h4 class="venue-name">Shaurma & Brothers</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 96% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all burgers american fastfood">
+          <div class="venue-media">
+            <img src="burger-glass.png" alt="NUNU Гамбургерна" />
+            <span class="venue-discount">-10% на деякі продукти</span>
+            <span class="venue-logo">N</span>
+          </div>
+          <h4 class="venue-name">NUNU Гамбургерна</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 95% (215)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all burgers american fastfood breakfast">
+          <div class="venue-media">
+            <img src="images/ga_chien_xu.png" alt="McDonald's" />
+            <span class="venue-discount">-25% при замовленні понад 650 ₴</span>
+            <span class="venue-logo">M</span>
+          </div>
+          <h4 class="venue-name">McDonald's</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 95% (1k+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=asian" data-food-tags="all sushi asian healthy">
+          <div class="venue-media">
+            <img src="sushi-glass.png" alt="BagatoLososia" />
+            <span class="venue-discount">-15% на деякі продукти</span>
+            <span class="venue-logo">🍣</span>
+          </div>
+          <h4 class="venue-name">БаГатоЛосося</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 97% (116)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=shaurma" data-food-tags="all shaurma grill fastfood">
+          <div class="venue-media">
+            <img src="shaurma-glass.png" alt="Na Mangal Kebab House" />
+            <span class="venue-discount">-20% на деякі продукти</span>
+            <span class="venue-logo">NM</span>
+          </div>
+          <h4 class="venue-name">Na Mangal Kebab House</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 96% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all alcohol european">
+          <div class="venue-media">
+            <img src="images/shop-logos/hophey-logo.png" alt="WINETIME" />
+            <span class="venue-discount">-30% на деякі продукти</span>
+            <span class="venue-logo">W</span>
+          </div>
+          <h4 class="venue-name">WINETIME</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 100% (68)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all european italian breakfast">
+          <div class="venue-media">
+            <img src="images/com_rang_ga.png" alt="Mama Fokacha & Papa Chacha" />
+            <span class="venue-logo">MF</span>
+          </div>
+          <h4 class="venue-name">Mama Fokacha & Papa Chacha</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 95% (58)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all ukrainian healthy">
+          <div class="venue-media">
+            <img src="images/ZUPA_PHO_Z_WOLOWINA.png" alt="Puzata Hata" />
+            <span class="venue-discount">-25% при замовленні понад 550 ₴</span>
+            <span class="venue-logo">ПХ</span>
+          </div>
+          <h4 class="venue-name">Puzata Hata / Пузата Хата</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 98% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=asian" data-food-tags="all asian international">
+          <div class="venue-media">
+            <img src="images/KURCZAK_PO_CHINSKU.png" alt="Kitaika" />
+            <span class="venue-discount">-20% на деякі продукти</span>
+            <span class="venue-logo">中</span>
+          </div>
+          <h4 class="venue-name">Kitaika</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 98% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all pizza italian">
+          <div class="venue-media">
+            <img src="pizza-glass.png" alt="Mimosa Brooklyn Pizza" />
+            <span class="venue-discount">-15% на деякі продукти</span>
+            <span class="venue-logo">MB</span>
+          </div>
+          <h4 class="venue-name">Mimosa Brooklyn Pizza</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 99% (361)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=asian" data-food-tags="all sushi asian international">
+          <div class="venue-media">
+            <img src="images/nem_ran.png" alt="Chin Chin" />
+            <span class="venue-logo">CC</span>
+          </div>
+          <h4 class="venue-name">Chin Chin</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 96% (500+)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=dragon" data-food-tags="all ukrainian european">
+          <div class="venue-media">
+            <img src="images/build_pho_soup.png" alt="БОРЩ" />
+            <span class="venue-discount">-25% з Prime</span>
+            <span class="venue-logo">Б</span>
+          </div>
+          <h4 class="venue-name">БОРЩ / BORSCH</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 98% (452)</span></div>
+        </a>
+
+        <a class="venue-card reveal" href="menu.html?point=asian" data-food-tags="all asian grill international">
+          <div class="venue-media">
+            <img src="images/mi_tau_mix.png" alt="Китайський Привіт" />
+            <span class="venue-discount">-30% з Prime</span>
+            <span class="venue-logo">HI</span>
+          </div>
+          <h4 class="venue-name">Китайський Привіт Золоті Ворота</h4>
+          <div class="venue-meta"><span class="venue-delivery">🚴 Безкоштовно</span><span class="venue-rating">💎 98% (410)</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="dg-section" id="restaurants" aria-labelledby="restaurantsTitle">
+      <div class="dg-shell dg-two-col">
+        <div class="dg-section-copy reveal">
+          <p class="dg-kicker" data-i18n="restaurantsKicker">Для ресторанів</p>
+          <h2 id="restaurantsTitle" data-i18n="restaurantsTitle">Ми робимо ваш ресторан ближчим до клієнта</h2>
+          <p data-i18n="restaurantsText">Клієнт сканує QR-код, відкриває меню, оформлює замовлення та може додати ваш ресторан на головний екран телефону як додаток.</p>
+        </div>
+        <div class="dg-feature-grid">
+          <article class="dg-card reveal">
+            <span class="dg-icon">01</span>
+            <h3 data-i18n="cardFreeTitle">Безкоштовний запуск</h3>
+            <p data-i18n="cardFreeText">Ми створюємо базове QR-меню та Web App без оплати за старт.</p>
+          </article>
+          <article class="dg-card reveal">
+            <span class="dg-icon">02</span>
+            <h3 data-i18n="cardOrdersTitle">Онлайн-замовлення</h3>
+            <p data-i18n="cardOrdersText">Замовлення приходять у систему, Telegram або панель ресторану.</p>
+          </article>
+          <article class="dg-card reveal">
+            <span class="dg-icon">03</span>
+            <h3 data-i18n="cardDeliveryTitle">Доставка під ключ</h3>
+            <p data-i18n="cardDeliveryText">Ви готуєте їжу — ми можемо забрати та доставити клієнту.</p>
+          </article>
+          <article class="dg-card reveal">
+            <span class="dg-icon">04</span>
+            <h3 data-i18n="cardCommissionsTitle">Менше комісій</h3>
+            <p data-i18n="cardCommissionsText">Локальна модель з гнучкими умовами для малих ресторанів.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section dg-section-band" id="about" aria-labelledby="stepsTitle">
+      <div class="dg-shell">
+        <div class="dg-section-head reveal">
+          <p class="dg-kicker" data-i18n="stepsKicker">Як це працює</p>
+          <h2 id="stepsTitle" data-i18n="stepsTitle">Запуск без складної розробки</h2>
+        </div>
+        <div class="dg-steps">
+          <article class="dg-step reveal">
+            <span>1</span>
+            <h3 data-i18n="step1Title">Підключаємо ресторан</h3>
+            <p data-i18n="step1Text">Ви надсилаєте меню, фото, ціни та адресу.</p>
+          </article>
+          <article class="dg-step reveal">
+            <span>2</span>
+            <h3 data-i18n="step2Title">Створюємо Web App</h3>
+            <p data-i18n="step2Text">Робимо QR-меню, сторінку ресторану та PWA-додаток.</p>
+          </article>
+          <article class="dg-step reveal">
+            <span>3</span>
+            <h3 data-i18n="step3Title">Клієнти замовляють</h3>
+            <p data-i18n="step3Text">Люди сканують QR або переходять за посиланням.</p>
+          </article>
+          <article class="dg-step reveal">
+            <span>4</span>
+            <h3 data-i18n="step4Title">Ми допомагаємо з доставкою</h3>
+            <p data-i18n="step4Text">Замовлення можна забрати самостійно або доставити через DRAGON GO.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section" id="in-restaurant" aria-labelledby="inRestaurantTitle">
+      <div class="dg-shell">
+        <div class="dg-section-head reveal">
+          <p class="dg-kicker" data-i18n="inPlaceKicker">QR-код → меню → замовлення → кухня</p>
+          <h2 id="inRestaurantTitle" data-i18n="inPlaceTitle">Як це працює в закладі</h2>
+          <p data-i18n="inPlaceText">DRAGON GO перетворює телефон клієнта на термінал самообслуговування. Клієнт сканує QR-код, відкриває меню, оформлює замовлення, а кухня або каса одразу бачить його на моніторі.</p>
+        </div>
+
+        <div class="dg-inplace-grid">
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="logo.png" alt="" loading="lazy" />
+              <span class="dg-inplace-number">01</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep1Title">Клієнт сканує QR-код</h3>
+              <p data-i18n="inPlaceStep1Text">QR-код може бути на столі, біля каси або на вході. Клієнт відкриває DRAGON GO через Safari або Google Chrome.</p>
+            </div>
+          </article>
+
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="images/dragon22point.png" alt="" loading="lazy" />
+              <span class="dg-inplace-number">02</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep2Title">Відкриває меню на телефоні</h3>
+              <p data-i18n="inPlaceStep2Text">Клієнт натискає “Відкрити меню / Web App” і бачить страви, категорії, фото, ціни та опис.</p>
+            </div>
+          </article>
+
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="images/ZUPA_PHO_Z_WOLOWINA.png" alt="" loading="lazy" />
+              <span class="dg-inplace-number">03</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep3Title">Обирає страви</h3>
+              <p data-i18n="inPlaceStep3Text">Як у терміналі самообслуговування: клієнт сам вибирає Фо, Бун салат, Неми, Бао, рис, напої та кількість порцій.</p>
+            </div>
+          </article>
+
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="promo.jpg" alt="" loading="lazy" />
+              <span class="dg-inplace-number">04</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep4Title">Система визначає стіл</h3>
+              <p data-i18n="inPlaceStep4Text">Для кожного столу можна зробити окремий QR-код. Наприклад, QR на столі №5 автоматично передає в систему: “Замовлення зі столу 5”.</p>
+              <small data-i18n="inPlaceStep4Meta">Приклад: menu.html?table=5</small>
+            </div>
+          </article>
+
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="images/nem_ran.png" alt="" loading="lazy" />
+              <span class="dg-inplace-number">05</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep5Title">Клієнт оформлює замовлення</h3>
+              <p data-i18n="inPlaceStep5Text">Після натискання “Оформити замовлення” система створює номер замовлення, наприклад A123, показує суму та статус.</p>
+            </div>
+          </article>
+
+          <article class="dg-inplace-card reveal">
+            <div class="dg-inplace-image">
+              <img src="images/mi_xao_ga.png" alt="" loading="lazy" />
+              <span class="dg-inplace-number">06</span>
+            </div>
+            <div class="dg-inplace-content">
+              <h3 data-i18n="inPlaceStep6Title">Кухня отримує замовлення</h3>
+              <p data-i18n="inPlaceStep6Text">На моніторі кухні або каси одразу з’являється нове замовлення: код, номер столу, список страв, кількість і статус.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="dg-terminal-compare reveal">
+          <h3 data-i18n="terminalCompareTitle">Як термінал McDonald’s, тільки без термінала</h3>
+          <div class="dg-terminal-column">
+            <h4 data-i18n="terminalOldTitle">Звичайний термінал</h4>
+            <ul>
+              <li data-i18n="terminalOld1">Клієнт підходить до екрана</li>
+              <li data-i18n="terminalOld2">Обирає їжу</li>
+              <li data-i18n="terminalOld3">Оплачує</li>
+              <li data-i18n="terminalOld4">Отримує номер</li>
+              <li data-i18n="terminalOld5">Чекає готовність</li>
+            </ul>
+          </div>
+          <div class="dg-terminal-column">
+            <h4 data-i18n="terminalDragonTitle">DRAGON GO</h4>
+            <ul>
+              <li data-i18n="terminalDragon1">Клієнт використовує свій телефон</li>
+              <li data-i18n="terminalDragon2">Сканує QR-код</li>
+              <li data-i18n="terminalDragon3">Обирає їжу</li>
+              <li data-i18n="terminalDragon4">Отримує номер</li>
+              <li data-i18n="terminalDragon5">Кухня бачить замовлення на моніторі</li>
+            </ul>
+          </div>
+          <p data-i18n="terminalFinalText">Не потрібно купувати дорогі термінали — кожен телефон клієнта стає точкою замовлення.</p>
+        </div>
+
+        <div class="dg-inplace-cta reveal">
+          <div>
+            <h3 data-i18n="inPlaceCtaTitle">Хочете таку систему у своєму закладі?</h3>
+            <p data-i18n="inPlaceCtaText">DRAGON GO допоможе запустити QR-меню, Web App, прийом замовлень і екран кухні без покупки дорогих терміналів.</p>
+          </div>
+          <div class="dg-hero-actions">
+            <a class="dg-btn dg-btn-primary" href="#partner" data-i18n="connectRestaurant">Підключити ресторан</a>
+            <a class="dg-btn dg-btn-ghost" href="#demo" data-i18n="viewDemo">Подивитися демо</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section" id="partner" aria-labelledby="partnerTitle">
+      <div class="dg-shell">
+        <div class="dg-promo reveal">
+          <div>
+            <p class="dg-kicker" data-i18n="freeKicker">Перший запуск</p>
+            <h2 id="partnerTitle" data-i18n="freeTitle">Почніть продавати через DRAGON GO</h2>
+            <p data-i18n="freeText">Зареєструватися в DRAGON GO - справа кількох хвилин. Станьте нашим партнером сьогодні..</p>
+           </div>
+          <a class="dg-btn dg-btn-primary" href="tel:+380632637999" data-i18n="becomePartner">Стати партнером</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section dg-split-section" id="delivery">
+      <div class="dg-shell dg-split-grid">
+        <article class="dg-image-panel reveal">
+          <img src="images/mi_xao_ga.png" alt="Food delivery order" />
+          <div>
+            <b data-i18n="deliveryBadge">Доставка DRAGON GO</b>
+            <span data-i18n="deliveryBadgeText">Ресторан готує, ми допомагаємо привезти.</span>
+          </div>
+        </article>
+        <article class="dg-info-panel reveal" id="couriers">
+          <p class="dg-kicker" data-i18n="couriersKicker">Для кур’єрів</p>
+          <h2 data-i18n="couriersTitle">Заробляйте з DRAGON GO</h2>
+          <p data-i18n="couriersText">Доставляйте замовлення з локальних ресторанів у своєму районі. Гнучкий графік, простий старт, зрозумілі маршрути.</p>
+          <a class="dg-btn dg-btn-ghost" href="tel:+380632637999" data-i18n="becomeCourier">Стати кур’єром</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="dg-section" id="business" aria-labelledby="businessTitle">
+      <div class="dg-shell">
+        <div class="dg-business reveal">
+          <div>
+            <p class="dg-kicker" data-i18n="businessKicker">Для компаній</p>
+            <h2 id="businessTitle" data-i18n="businessTitle">DRAGON GO Business</h2>
+            <p data-i18n="businessText">Рішення для офісів, компаній та команд: обіди, корпоративні замовлення, доставка їжі для співробітників та партнерів.</p>
+          </div>
+          <a class="dg-btn dg-btn-secondary" href="#contact" data-i18n="learnMore">Дізнатися більше</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section dg-section-band" aria-labelledby="alternativeTitle">
+      <div class="dg-shell">
+        <div class="dg-section-head reveal">
+          <p class="dg-kicker" data-i18n="altKicker">Локальна модель</p>
+          <h2 id="alternativeTitle" data-i18n="altTitle">Локальна альтернатива великим delivery-платформам</h2>
+          <p data-i18n="altText">DRAGON GO створений для локальних закладів, яким потрібні онлайн-замовлення без складних інтеграцій та великих комісій.</p>
+        </div>
+        <div class="dg-benefits">
+          <span data-i18n="benefitFast">Швидке підключення</span>
+          <span data-i18n="benefitCost">Нижчі витрати</span>
+          <span data-i18n="benefitClose">Ближче до ресторану</span>
+          <span data-i18n="benefitFlexible">Гнучкі умови</span>
+          <span data-i18n="benefitDelivery">Можливість власної доставки</span>
+          <span data-i18n="benefitSmall">Підтримка малого бізнесу</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section" aria-labelledby="pricingTitle">
+      <div class="dg-shell">
+        <div class="dg-section-head reveal">
+          <p class="dg-kicker" data-i18n="pricingKicker">Тарифи</p>
+          <h2 id="pricingTitle" data-i18n="pricingTitle">Оберіть формат підключення</h2>
+        </div>
+        <div class="dg-pricing">
+          <article class="dg-price-card reveal">
+            <h3>Start</h3>
+            <strong data-i18n="priceStart">0 грн запуск</strong>
+            <ul>
+              <li data-i18n="start1">QR-меню</li>
+              <li data-i18n="start2">Web App</li>
+              <li data-i18n="start3">Базова сторінка ресторану</li>
+              <li data-i18n="start4">Посилання для Instagram / Telegram</li>
+            </ul>
+            <a class="dg-btn dg-btn-ghost" href="#partner" data-i18n="startButton">Почати</a>
+          </article>
+          <article class="dg-price-card dg-price-featured reveal">
+            <span class="dg-price-label" data-i18n="recommended">Рекомендовано</span>
+            <h3>Partner</h3>
+            <strong data-i18n="pricePartner">Комісія з замовлень</strong>
+            <ul>
+              <li data-i18n="partner1">Онлайн-замовлення</li>
+              <li data-i18n="partner2">Панель ресторану</li>
+              <li data-i18n="partner3">Telegram-сповіщення</li>
+              <li data-i18n="partner4">Підключення доставки</li>
+            </ul>
+            <a class="dg-btn dg-btn-primary" href="#partner" data-i18n="becomePartner">Стати партнером</a>
+          </article>
+          <article class="dg-price-card reveal">
+            <h3>Pro</h3>
+            <strong data-i18n="pricePro">Індивідуально</strong>
+            <ul>
+              <li data-i18n="pro1">Брендований Web App</li>
+              <li data-i18n="pro2">Фото меню</li>
+              <li data-i18n="pro3">Аналітика</li>
+              <li data-i18n="pro4">Акції та промокоди</li>
+              <li data-i18n="pro5">Пріоритетна підтримка</li>
+            </ul>
+            <a class="dg-btn dg-btn-secondary" href="tel:+380632637999" data-i18n="discuss">Обговорити</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section dg-section-band" id="faq" aria-labelledby="faqTitle">
+      <div class="dg-shell dg-faq-layout">
+        <div class="dg-section-copy reveal">
+          <p class="dg-kicker">FAQ</p>
+          <h2 id="faqTitle" data-i18n="faqTitle">Часті запитання</h2>
+          <p data-i18n="faqIntro">Коротко про запуск, замовлення, доставку та оновлення меню.</p>
+        </div>
+        <div class="dg-faq-list">
+          <details class="reveal" open>
+            <summary data-i18n="faq1Q">Скільки коштує підключення?</summary>
+            <p data-i18n="faq1A">Для перших партнерів базовий запуск безкоштовний.</p>
+          </details>
+          <details class="reveal">
+            <summary data-i18n="faq2Q">Чи потрібен App Store або Google Play?</summary>
+            <p data-i18n="faq2A">Ні. Ми використовуємо Web App / PWA, який можна додати на головний екран телефону.</p>
+          </details>
+          <details class="reveal">
+            <summary data-i18n="faq3Q">Як клієнт робить замовлення?</summary>
+            <p data-i18n="faq3A">Він сканує QR-код, відкриває меню та оформлює замовлення онлайн.</p>
+          </details>
+          <details class="reveal">
+            <summary data-i18n="faq4Q">Хто доставляє замовлення?</summary>
+            <p data-i18n="faq4A">Ресторан може доставляти самостійно або використовувати доставку DRAGON GO.</p>
+          </details>
+          <details class="reveal">
+            <summary data-i18n="faq5Q">Чи можна змінювати меню?</summary>
+            <p data-i18n="faq5A">Так, меню, ціни, стоп-лист і позиції можна оновлювати.</p>
+          </details>
+          <details class="reveal">
+            <summary data-i18n="faq6Q">Для яких закладів це підходить?</summary>
+            <p data-i18n="faq6A">Для кафе, ресторанів, суші, піцерій, шаурми, кав’ярень, dark kitchen та локальної доставки.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="dg-section" id="contact">
+      <div class="dg-shell">
+        <div class="dg-final-cta reveal">
+          <p class="dg-kicker" data-i18n="finalKicker">Запуск за 1 день</p>
+          <h2 data-i18n="finalTitle">Готові отримувати більше замовлень?</h2>
+          <p data-i18n="finalText">Підключіть ресторан до DRAGON GO та запустіть власне QR Web App меню без складної розробки.</p>
+          <div class="dg-hero-actions">
+            <a class="dg-btn dg-btn-primary" href="tel:+380632637999" data-i18n="connectRestaurant">Підключити ресторан</a>
+            <a class="dg-btn dg-btn-ghost" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" data-i18n="instagram">Написати в Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="dg-footer">
+    <div class="dg-shell dg-footer-grid">
+      <div class="dg-footer-brand">
+        <a class="dg-brand" href="#top">
+          <img src="logo.png" alt="" width="44" height="44" />
+          <span>
+            <strong>DRAGON GO</strong>
+            <small data-i18n="footerBrand">Локальна delivery tech платформа</small>
+          </span>
+        </a>
+      </div>
+      <div>
+        <h3 data-i18n="footerJoin">Приєднуйтеся до нас</h3>
+        <a href="#" data-i18n="footerJobs">Вакансії</a>
+        <a href="#restaurants" data-i18n="footerRestaurants">Ресторанам</a>
+        <a href="#couriers" data-i18n="footerCouriers">Кур’єрам</a>
+        <a href="#business">DRAGON GO Business</a>
+      </div>
+      <div>
+        <h3 data-i18n="footerUseful">Корисні посилання</h3>
+        <a href="#about" data-i18n="navAbout">Про нас</a>
+        <a href="#faq" data-i18n="footerFaq">Часті запитання</a>
+        <a href="#" data-i18n="footerBlog">Блог</a>
+        <a href="#contact" data-i18n="footerContact">Зв’язатися з нами</a>
+        <a href="#" data-i18n="footerSafety">Безпека</a>
+      </div>
+      <div>
+        <h3 data-i18n="footerPartners">Для партнерів</h3>
+        <a href="#partner" data-i18n="connectRestaurant">Підключити ресторан</a>
+        <a href="#delivery" data-i18n="footerDelivery">Доставка для ресторану</a>
+        <a href="#restaurants" data-i18n="footerQr">QR-меню</a>
+        <a href="#restaurants" data-i18n="footerWeb">Web App для закладу</a>
+        <a href="profil.html" data-i18n="navLogin">Увійти</a>
+      </div>
+      <div>
+        <h3 data-i18n="footerSocial">Ми у соціальних мережах</h3>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">TikTok</a>
+        <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </div>
+    </div>
+    <div class="dg-shell dg-footer-bottom">
+      <span data-i18n="copyright">© 2026 DRAGON GO. Локальна платформа онлайн-замовлень і доставки для ресторанів.</span>
+      <a href="tel:+380632637999">+380 632 637 999</a>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const translations = {
+        uk: {
+          skip: "Перейти до контенту",
+          brandSub: "QR Web App для ресторанів",
+          menuLabel: "Відкрити меню",
+          languageLabel: "Мова",
+          navRestaurants: "Для ресторанів",
+          navDelivery: "Доставка",
+          navCouriers: "Кур’єрам",
+          navBusiness: "Бізнесу",
+          navAbout: "Про нас",
+          navFaq: "FAQ",
+          navLogin: "Увійти",
+          connectRestaurant: "Підключити ресторан",
+          viewDemo: "Подивитися демо",
+          heroKicker: "Локальна платформа онлайн-замовлень і доставки",
+          heroTitle: "Будуйте свій онлайн-бізнес разом з DRAGON GO",
+          heroText: "DRAGON GO створює QR-меню, Web App / PWA-додаток, приймає онлайн-замовлення та допомагає з доставкою. Без складної розробки, без великих витрат, без зайвої бюрократії.",
+          chipQr: "QR-меню",
+          chipWeb: "Web App",
+          chipOrders: "Онлайн-замовлення",
+          chipDelivery: "Власна доставка",
+          chipNoSignup: "Без реєстрації для клієнта",
+          phoneMeta: "QR-меню · 15-30 хв",
+          phoneCta: "Оформити замовлення",
+          qrTitle: "Скануй QR",
+          qrText: "Меню відкривається одразу",
+          orderTitle: "Нове замовлення",
+          orderText: "2 страви · доставка · 18 хв",
+          restaurantsKicker: "Для ресторанів",
+          restaurantsTitle: "Ми робимо ваш ресторан ближчим до клієнта",
+          restaurantsText: "Клієнт сканує QR-код, відкриває меню, оформлює замовлення та може додати ваш ресторан на головний екран телефону як додаток.",
+          cardFreeTitle: "Безкоштовний запуск",
+          cardFreeText: "Ми створюємо базове QR-меню та Web App без оплати за старт.",
+          cardOrdersTitle: "Онлайн-замовлення",
+          cardOrdersText: "Замовлення приходять у систему, Telegram або панель ресторану.",
+          cardDeliveryTitle: "Доставка під ключ",
+          cardDeliveryText: "Ви готуєте їжу — ми можемо забрати та доставити клієнту.",
+          cardCommissionsTitle: "Менше комісій",
+          cardCommissionsText: "Локальна модель з гнучкими умовами для малих ресторанів.",
+          stepsKicker: "Як це працює",
+          stepsTitle: "Запуск без складної розробки",
+          step1Title: "Підключаємо ресторан",
+          step1Text: "Ви надсилаєте меню, фото, ціни та адресу.",
+          step2Title: "Створюємо Web App",
+          step2Text: "Робимо QR-меню, сторінку ресторану та PWA-додаток.",
+          step3Title: "Клієнти замовляють",
+          step3Text: "Люди сканують QR або переходять за посиланням.",
+          step4Title: "Ми допомагаємо з доставкою",
+          step4Text: "Замовлення можна забрати самостійно або доставити через DRAGON GO.",
+          inPlaceKicker: "QR-код → меню → замовлення → кухня",
+          inPlaceTitle: "Як це працює в закладі",
+          inPlaceText: "DRAGON GO перетворює телефон клієнта на термінал самообслуговування. Клієнт сканує QR-код, відкриває меню, оформлює замовлення, а кухня або каса одразу бачить його на моніторі.",
+          inPlaceStep1Title: "Клієнт сканує QR-код",
+          inPlaceStep1Text: "QR-код може бути на столі, біля каси або на вході. Клієнт відкриває DRAGON GO через Safari або Google Chrome.",
+          inPlaceStep2Title: "Відкриває меню на телефоні",
+          inPlaceStep2Text: "Клієнт натискає “Відкрити меню / Web App” і бачить страви, категорії, фото, ціни та опис.",
+          inPlaceStep3Title: "Обирає страви",
+          inPlaceStep3Text: "Як у терміналі самообслуговування: клієнт сам вибирає Фо, Бун салат, Неми, Бао, рис, напої та кількість порцій.",
+          inPlaceStep4Title: "Система визначає стіл",
+          inPlaceStep4Text: "Для кожного столу можна зробити окремий QR-код. Наприклад, QR на столі №5 автоматично передає в систему: “Замовлення зі столу 5”.",
+          inPlaceStep4Meta: "Приклад: menu.html?table=5",
+          inPlaceStep5Title: "Клієнт оформлює замовлення",
+          inPlaceStep5Text: "Після натискання “Оформити замовлення” система створює номер замовлення, наприклад A123, показує суму та статус.",
+          inPlaceStep6Title: "Кухня отримує замовлення",
+          inPlaceStep6Text: "На моніторі кухні або каси одразу з’являється нове замовлення: код, номер столу, список страв, кількість і статус.",
+          terminalCompareTitle: "Як термінал McDonald’s, тільки без термінала",
+          terminalOldTitle: "Звичайний термінал",
+          terminalDragonTitle: "DRAGON GO",
+          terminalOld1: "Клієнт підходить до екрана",
+          terminalOld2: "Обирає їжу",
+          terminalOld3: "Оплачує",
+          terminalOld4: "Отримує номер",
+          terminalOld5: "Чекає готовність",
+          terminalDragon1: "Клієнт використовує свій телефон",
+          terminalDragon2: "Сканує QR-код",
+          terminalDragon3: "Обирає їжу",
+          terminalDragon4: "Отримує номер",
+          terminalDragon5: "Кухня бачить замовлення на моніторі",
+          terminalFinalText: "Не потрібно купувати дорогі термінали — кожен телефон клієнта стає точкою замовлення.",
+          inPlaceCtaTitle: "Хочете таку систему у своєму закладі?",
+          inPlaceCtaText: "DRAGON GO допоможе запустити QR-меню, Web App, прийом замовлень і екран кухні без покупки дорогих терміналів.",
+          freeKicker: "Перший запуск",
+          freeTitle: "Будуйте свій онлайн-бізнес разом з DRAGON GO",
+          freeText: "Зареєструватися в DRAGON GO - справа кількох хвилин. Станьте нашим партнером сьогодні.",
+          becomePartner: "Стати партнером",
+          deliveryBadge: "Доставка DRAGON GO",
+          deliveryBadgeText: "Ресторан готує, ми допомагаємо привезти.",
+          couriersKicker: "Для кур’єрів",
+          couriersTitle: "Заробляйте з DRAGON GO",
+          couriersText: "Доставляйте замовлення з локальних ресторанів у своєму районі. Гнучкий графік, простий старт, зрозумілі маршрути.",
+          becomeCourier: "Стати кур’єром",
+          businessKicker: "Для компаній",
+          businessTitle: "DRAGON GO Business",
+          businessText: "Рішення для офісів, компаній та команд: обіди, корпоративні замовлення, доставка їжі для співробітників та партнерів.",
+          learnMore: "Дізнатися більше",
+          altKicker: "Локальна модель",
+          altTitle: "Локальна альтернатива великим delivery-платформам",
+          altText: "DRAGON GO створений для локальних закладів, яким потрібні онлайн-замовлення без складних інтеграцій та великих комісій.",
+          benefitFast: "Швидке підключення",
+          benefitCost: "Нижчі витрати",
+          benefitClose: "Ближче до ресторану",
+          benefitFlexible: "Гнучкі умови",
+          benefitDelivery: "Можливість власної доставки",
+          benefitSmall: "Підтримка малого бізнесу",
+          pricingKicker: "Тарифи",
+          pricingTitle: "Оберіть формат підключення",
+          priceStart: "0 грн запуск",
+          start1: "QR-меню",
+          start2: "Web App",
+          start3: "Базова сторінка ресторану",
+          start4: "Посилання для Instagram / Telegram",
+          startButton: "Почати",
+          recommended: "Рекомендовано",
+          pricePartner: "Комісія з замовлень",
+          partner1: "Онлайн-замовлення",
+          partner2: "Панель ресторану",
+          partner3: "Telegram-сповіщення",
+          partner4: "Підключення доставки",
+          pricePro: "Індивідуально",
+          pro1: "Брендований Web App",
+          pro2: "Фото меню",
+          pro3: "Аналітика",
+          pro4: "Акції та промокоди",
+          pro5: "Пріоритетна підтримка",
+          discuss: "Обговорити",
+          faqTitle: "Часті запитання",
+          faqIntro: "Коротко про запуск, замовлення, доставку та оновлення меню.",
+          faq1Q: "Скільки коштує підключення?",
+          faq1A: "Для перших партнерів базовий запуск безкоштовний.",
+          faq2Q: "Чи потрібен App Store або Google Play?",
+          faq2A: "Ні. Ми використовуємо Web App / PWA, який можна додати на головний екран телефону.",
+          faq3Q: "Як клієнт робить замовлення?",
+          faq3A: "Він сканує QR-код, відкриває меню та оформлює замовлення онлайн.",
+          faq4Q: "Хто доставляє замовлення?",
+          faq4A: "Ресторан може доставляти самостійно або використовувати доставку DRAGON GO.",
+          faq5Q: "Чи можна змінювати меню?",
+          faq5A: "Так, меню, ціни, стоп-лист і позиції можна оновлювати.",
+          faq6Q: "Для яких закладів це підходить?",
+          faq6A: "Для кафе, ресторанів, суші, піцерій, шаурми, кав’ярень, dark kitchen та локальної доставки.",
+          finalKicker: "Запуск за 1 день",
+          finalTitle: "Готові отримувати більше замовлень?",
+          finalText: "Підключіть ресторан до DRAGON GO та запустіть власне QR Web App меню без складної розробки.",
+          instagram: "Написати в Instagram",
+          footerBrand: "Локальна delivery tech платформа",
+          footerJoin: "Приєднуйтеся до нас",
+          footerJobs: "Вакансії",
+          footerRestaurants: "Ресторанам",
+          footerCouriers: "Кур’єрам",
+          footerUseful: "Корисні посилання",
+          footerFaq: "Часті запитання",
+          footerBlog: "Блог",
+          footerContact: "Зв’язатися з нами",
+          footerSafety: "Безпека",
+          footerPartners: "Для партнерів",
+          footerDelivery: "Доставка для ресторану",
+          footerQr: "QR-меню",
+          footerWeb: "Web App для закладу",
+          footerSocial: "Ми у соціальних мережах",
+          copyright: "© 2026 DRAGON GO. Локальна платформа онлайн-замовлень і доставки для ресторанів."
+        },
+        ru: {
+          skip: "Перейти к контенту",
+          brandSub: "QR Web App для ресторанов",
+          menuLabel: "Открыть меню",
+          languageLabel: "Язык",
+          navRestaurants: "Ресторанам",
+          navDelivery: "Доставка",
+          navCouriers: "Курьерам",
+          navBusiness: "Бизнесу",
+          navAbout: "О нас",
+          navFaq: "FAQ",
+          navLogin: "Войти",
+          connectRestaurant: "Подключить ресторан",
+          viewDemo: "Посмотреть демо",
+          heroKicker: "Локальная платформа онлайн-заказов и доставки",
+          heroTitle: "Будуйте свій онлайн-бізнес разом с DRAGON GO",
+          heroText: "DRAGON GO создает QR-меню, Web App / PWA-приложение, принимает онлайн-заказы и помогает с доставкой. Без сложной разработки, больших затрат и лишней бюрократии.",
+          chipQr: "QR-меню",
+          chipWeb: "Web App",
+          chipOrders: "Онлайн-заказы",
+          chipDelivery: "Своя доставка",
+          chipNoSignup: "Без регистрации клиента",
+          phoneMeta: "QR-меню · 15-30 мин",
+          phoneCta: "Оформить заказ",
+          qrTitle: "Сканируй QR",
+          qrText: "Меню открывается сразу",
+          orderTitle: "Новый заказ",
+          orderText: "2 блюда · доставка · 18 мин",
+          restaurantsKicker: "Для ресторанов",
+          restaurantsTitle: "Мы делаем ваш ресторан ближе к клиенту",
+          restaurantsText: "Клиент сканирует QR-код, открывает меню, оформляет заказ и может добавить ваш ресторан на главный экран телефона как приложение.",
+          cardFreeTitle: "Бесплатный запуск",
+          cardFreeText: "Мы создаем базовое QR-меню и Web App без оплаты за старт.",
+          cardOrdersTitle: "Онлайн-заказы",
+          cardOrdersText: "Заказы приходят в систему, Telegram или панель ресторана.",
+          cardDeliveryTitle: "Доставка под ключ",
+          cardDeliveryText: "Вы готовите еду, а мы можем забрать и доставить клиенту.",
+          cardCommissionsTitle: "Меньше комиссий",
+          cardCommissionsText: "Локальная модель с гибкими условиями для малых ресторанов.",
+          stepsKicker: "Как это работает",
+          stepsTitle: "Запуск без сложной разработки",
+          step1Title: "Подключаем ресторан",
+          step1Text: "Вы отправляете меню, фото, цены и адрес.",
+          step2Title: "Создаем Web App",
+          step2Text: "Делаем QR-меню, страницу ресторана и PWA-приложение.",
+          step3Title: "Клиенты заказывают",
+          step3Text: "Люди сканируют QR или переходят по ссылке.",
+          step4Title: "Помогаем с доставкой",
+          step4Text: "Заказ можно забрать самостоятельно или доставить через DRAGON GO.",
+          inPlaceKicker: "QR-код → меню → заказ → кухня",
+          inPlaceTitle: "Как это работает в заведении",
+          inPlaceText: "DRAGON GO превращает телефон клиента в терминал самообслуживания. Клиент сканирует QR-код, открывает меню, оформляет заказ, а кухня или касса сразу видит его на мониторе.",
+          inPlaceStep1Title: "Клиент сканирует QR-код",
+          inPlaceStep1Text: "QR-код может быть на столе, возле кассы или у входа. Клиент открывает DRAGON GO через Safari или Google Chrome.",
+          inPlaceStep2Title: "Открывает меню на телефоне",
+          inPlaceStep2Text: "Клиент нажимает “Открыть меню / Web App” и видит блюда, категории, фото, цены и описание.",
+          inPlaceStep3Title: "Выбирает блюда",
+          inPlaceStep3Text: "Как в терминале самообслуживания: клиент сам выбирает Фо, Бун салат, Нэмы, Бао, рис, напитки и количество порций.",
+          inPlaceStep4Title: "Система определяет стол",
+          inPlaceStep4Text: "Для каждого стола можно сделать отдельный QR-код. Например, QR на столе №5 автоматически передает в систему: “Заказ со стола 5”.",
+          inPlaceStep4Meta: "Пример: menu.html?table=5",
+          inPlaceStep5Title: "Клиент оформляет заказ",
+          inPlaceStep5Text: "После нажатия “Оформить заказ” система создает номер заказа, например A123, показывает сумму и статус.",
+          inPlaceStep6Title: "Кухня получает заказ",
+          inPlaceStep6Text: "На мониторе кухни или кассы сразу появляется новый заказ: код, номер стола, список блюд, количество и статус.",
+          terminalCompareTitle: "Как терминал McDonald’s, только без терминала",
+          terminalOldTitle: "Обычный терминал",
+          terminalDragonTitle: "DRAGON GO",
+          terminalOld1: "Клиент подходит к экрану",
+          terminalOld2: "Выбирает еду",
+          terminalOld3: "Оплачивает",
+          terminalOld4: "Получает номер",
+          terminalOld5: "Ждет готовность",
+          terminalDragon1: "Клиент использует свой телефон",
+          terminalDragon2: "Сканирует QR-код",
+          terminalDragon3: "Выбирает еду",
+          terminalDragon4: "Получает номер",
+          terminalDragon5: "Кухня видит заказ на мониторе",
+          terminalFinalText: "Не нужно покупать дорогие терминалы — каждый телефон клиента становится точкой заказа.",
+          inPlaceCtaTitle: "Хотите такую систему в своем заведении?",
+          inPlaceCtaText: "DRAGON GO поможет запустить QR-меню, Web App, прием заказов и экран кухни без покупки дорогих терминалов.",
+          freeKicker: "Первый запуск",
+          freeTitle: "Первым партнерам — запуск бесплатно",
+          freeText: "Мы ищем рестораны, кафе и кухни в Одессе для первого подключения. Вы получаете QR Web App без оплаты за разработку. Мы зарабатываем только тогда, когда система приносит реальные заказы.",
+          becomePartner: "Стать партнером",
+          deliveryBadge: "Доставка DRAGON GO",
+          deliveryBadgeText: "Ресторан готовит, мы помогаем привезти.",
+          couriersKicker: "Для курьеров",
+          couriersTitle: "Зарабатывайте с DRAGON GO",
+          couriersText: "Доставляйте заказы из локальных ресторанов в своем районе. Гибкий график, простой старт, понятные маршруты.",
+          becomeCourier: "Стать курьером",
+          businessKicker: "Для компаний",
+          businessTitle: "DRAGON GO Business",
+          businessText: "Решение для офисов, компаний и команд: обеды, корпоративные заказы, доставка еды для сотрудников и партнеров.",
+          learnMore: "Узнать больше",
+          altKicker: "Локальная модель",
+          altTitle: "Локальная альтернатива большим delivery-платформам",
+          altText: "DRAGON GO создан для локальных заведений, которым нужны онлайн-заказы без сложных интеграций и больших комиссий.",
+          benefitFast: "Быстрое подключение",
+          benefitCost: "Ниже расходы",
+          benefitClose: "Ближе к ресторану",
+          benefitFlexible: "Гибкие условия",
+          benefitDelivery: "Возможность своей доставки",
+          benefitSmall: "Поддержка малого бизнеса",
+          pricingKicker: "Тарифы",
+          pricingTitle: "Выберите формат подключения",
+          priceStart: "0 грн запуск",
+          start1: "QR-меню",
+          start2: "Web App",
+          start3: "Базовая страница ресторана",
+          start4: "Ссылка для Instagram / Telegram",
+          startButton: "Начать",
+          recommended: "Рекомендуем",
+          pricePartner: "Комиссия с заказов",
+          partner1: "Онлайн-заказы",
+          partner2: "Панель ресторана",
+          partner3: "Telegram-уведомления",
+          partner4: "Подключение доставки",
+          pricePro: "Индивидуально",
+          pro1: "Брендированный Web App",
+          pro2: "Фото меню",
+          pro3: "Аналитика",
+          pro4: "Акции и промокоды",
+          pro5: "Приоритетная поддержка",
+          discuss: "Обсудить",
+          faqTitle: "Частые вопросы",
+          faqIntro: "Коротко о запуске, заказах, доставке и обновлении меню.",
+          faq1Q: "Сколько стоит подключение?",
+          faq1A: "Для первых партнеров базовый запуск бесплатный.",
+          faq2Q: "Нужен App Store или Google Play?",
+          faq2A: "Нет. Мы используем Web App / PWA, который можно добавить на главный экран телефона.",
+          faq3Q: "Как клиент делает заказ?",
+          faq3A: "Он сканирует QR-код, открывает меню и оформляет заказ онлайн.",
+          faq4Q: "Кто доставляет заказы?",
+          faq4A: "Ресторан может доставлять сам или использовать доставку DRAGON GO.",
+          faq5Q: "Можно менять меню?",
+          faq5A: "Да, меню, цены, стоп-лист и позиции можно обновлять.",
+          faq6Q: "Для каких заведений это подходит?",
+          faq6A: "Для кафе, ресторанов, суши, пиццерий, шаурмы, кофеен, dark kitchen и локальной доставки.",
+          finalKicker: "Запуск за 1 день",
+          finalTitle: "Готовы получать больше заказов?",
+          finalText: "Подключите ресторан к DRAGON GO и запустите собственное QR Web App меню без сложной разработки.",
+          instagram: "Написать в Instagram",
+          footerBrand: "Локальная delivery tech платформа",
+          footerJoin: "Присоединяйтесь к нам",
+          footerJobs: "Вакансии",
+          footerRestaurants: "Ресторанам",
+          footerCouriers: "Курьерам",
+          footerUseful: "Полезные ссылки",
+          footerFaq: "Частые вопросы",
+          footerBlog: "Блог",
+          footerContact: "Связаться с нами",
+          footerSafety: "Безопасность",
+          footerPartners: "Для партнеров",
+          footerDelivery: "Доставка для ресторана",
+          footerQr: "QR-меню",
+          footerWeb: "Web App для заведения",
+          footerSocial: "Мы в социальных сетях",
+          copyright: "© 2026 DRAGON GO. Локальная платформа онлайн-заказов и доставки для ресторанов."
+        },
+        en: {
+          skip: "Skip to content",
+          brandSub: "QR Web App for restaurants",
+          menuLabel: "Open menu",
+          languageLabel: "Lang",
+          navRestaurants: "Restaurants",
+          navDelivery: "Delivery",
+          navCouriers: "Couriers",
+          navBusiness: "Business",
+          navAbout: "About",
+          navFaq: "FAQ",
+          navLogin: "Log in",
+          connectRestaurant: "Connect restaurant",
+          viewDemo: "View demo",
+          heroKicker: "Local online ordering and delivery platform",
+          heroTitle: "Put your restaurant in the customer’s phone in 1 day",
+          heroText: "DRAGON GO builds a QR menu, Web App / PWA, accepts online orders and helps with delivery. No complex development, no large upfront spend, no unnecessary bureaucracy.",
+          chipQr: "QR menu",
+          chipWeb: "Web App",
+          chipOrders: "Online orders",
+          chipDelivery: "Own delivery",
+          chipNoSignup: "No customer signup",
+          phoneMeta: "QR menu · 15-30 min",
+          phoneCta: "Place order",
+          qrTitle: "Scan QR",
+          qrText: "The menu opens instantly",
+          orderTitle: "New order",
+          orderText: "2 dishes · delivery · 18 min",
+          restaurantsKicker: "For restaurants",
+          restaurantsTitle: "We bring your restaurant closer to customers",
+          restaurantsText: "A customer scans the QR code, opens the menu, places an order and can add your restaurant to their home screen as an app.",
+          cardFreeTitle: "Free launch",
+          cardFreeText: "We create a basic QR menu and Web App with no startup fee.",
+          cardOrdersTitle: "Online orders",
+          cardOrdersText: "Orders arrive in the system, Telegram or restaurant dashboard.",
+          cardDeliveryTitle: "Turnkey delivery",
+          cardDeliveryText: "You cook the food, we can pick it up and deliver it to the customer.",
+          cardCommissionsTitle: "Lower commissions",
+          cardCommissionsText: "A local model with flexible terms for small restaurants.",
+          stepsKicker: "How it works",
+          stepsTitle: "Launch without complex development",
+          step1Title: "Connect the restaurant",
+          step1Text: "You send menu, photos, prices and address.",
+          step2Title: "Create the Web App",
+          step2Text: "We build the QR menu, restaurant page and PWA.",
+          step3Title: "Customers order",
+          step3Text: "People scan QR or open your link.",
+          step4Title: "We help with delivery",
+          step4Text: "Orders can be picked up by the restaurant or delivered via DRAGON GO.",
+          inPlaceKicker: "QR code → menu → order → kitchen",
+          inPlaceTitle: "How it works inside the venue",
+          inPlaceText: "DRAGON GO turns the customer’s phone into a self-service terminal. The customer scans a QR code, opens the menu, places an order, and the kitchen or cashier sees it on the monitor right away.",
+          inPlaceStep1Title: "The customer scans a QR code",
+          inPlaceStep1Text: "The QR code can be on the table, near the cashier or at the entrance. The customer opens DRAGON GO through Safari or Google Chrome.",
+          inPlaceStep2Title: "Opens the menu on the phone",
+          inPlaceStep2Text: "The customer taps “Open menu / Web App” and sees dishes, categories, photos, prices and descriptions.",
+          inPlaceStep3Title: "Chooses dishes",
+          inPlaceStep3Text: "Like at a self-service terminal: the customer chooses pho, bun salad, nem, bao, rice, drinks and the number of portions.",
+          inPlaceStep4Title: "The system detects the table",
+          inPlaceStep4Text: "Each table can have its own QR code. For example, the QR on table 5 automatically sends: “Order from table 5”.",
+          inPlaceStep4Meta: "Example: menu.html?table=5",
+          inPlaceStep5Title: "The customer places the order",
+          inPlaceStep5Text: "After tapping “Place order”, the system creates an order number, for example A123, and shows the total and status.",
+          inPlaceStep6Title: "The kitchen receives the order",
+          inPlaceStep6Text: "A new order appears on the kitchen or cashier monitor right away: code, table number, dishes, quantities and status.",
+          terminalCompareTitle: "Like a McDonald’s terminal, but without the terminal",
+          terminalOldTitle: "Standard terminal",
+          terminalDragonTitle: "DRAGON GO",
+          terminalOld1: "The customer walks up to a screen",
+          terminalOld2: "Chooses food",
+          terminalOld3: "Pays",
+          terminalOld4: "Gets a number",
+          terminalOld5: "Waits for readiness",
+          terminalDragon1: "The customer uses their own phone",
+          terminalDragon2: "Scans a QR code",
+          terminalDragon3: "Chooses food",
+          terminalDragon4: "Gets a number",
+          terminalDragon5: "The kitchen sees the order on a monitor",
+          terminalFinalText: "No need to buy expensive terminals — every customer phone becomes an ordering point.",
+          inPlaceCtaTitle: "Want this system in your venue?",
+          inPlaceCtaText: "DRAGON GO helps launch a QR menu, Web App, order intake and kitchen screen without buying expensive terminals.",
+          freeKicker: "First launch",
+          freeTitle: "Free launch for first partners",
+          freeText: "We are looking for restaurants, cafes and kitchens in Odesa for the first connections. You get a QR Web App with no development fee. We earn only when the system brings real orders.",
+          becomePartner: "Become a partner",
+          deliveryBadge: "DRAGON GO Delivery",
+          deliveryBadgeText: "The restaurant cooks, we help deliver.",
+          couriersKicker: "For couriers",
+          couriersTitle: "Earn with DRAGON GO",
+          couriersText: "Deliver orders from local restaurants in your area. Flexible schedule, simple start, clear routes.",
+          becomeCourier: "Become a courier",
+          businessKicker: "For companies",
+          businessTitle: "DRAGON GO Business",
+          businessText: "A solution for offices, companies and teams: lunches, corporate orders and food delivery for employees and partners.",
+          learnMore: "Learn more",
+          altKicker: "Local model",
+          altTitle: "A local alternative to large delivery platforms",
+          altText: "DRAGON GO is built for local venues that need online orders without complex integrations and high commissions.",
+          benefitFast: "Fast connection",
+          benefitCost: "Lower costs",
+          benefitClose: "Closer to the restaurant",
+          benefitFlexible: "Flexible terms",
+          benefitDelivery: "Own delivery option",
+          benefitSmall: "Small business support",
+          pricingKicker: "Pricing",
+          pricingTitle: "Choose your launch format",
+          priceStart: "0 UAH launch",
+          start1: "QR menu",
+          start2: "Web App",
+          start3: "Basic restaurant page",
+          start4: "Instagram / Telegram link",
+          startButton: "Start",
+          recommended: "Recommended",
+          pricePartner: "Commission per order",
+          partner1: "Online orders",
+          partner2: "Restaurant dashboard",
+          partner3: "Telegram notifications",
+          partner4: "Delivery connection",
+          pricePro: "Custom",
+          pro1: "Branded Web App",
+          pro2: "Menu photography",
+          pro3: "Analytics",
+          pro4: "Promotions and promo codes",
+          pro5: "Priority support",
+          discuss: "Discuss",
+          faqTitle: "FAQ",
+          faqIntro: "Short answers about launch, orders, delivery and menu updates.",
+          faq1Q: "How much does connection cost?",
+          faq1A: "For first partners, the basic launch is free.",
+          faq2Q: "Do I need App Store or Google Play?",
+          faq2A: "No. We use a Web App / PWA that can be added to the phone home screen.",
+          faq3Q: "How does a customer order?",
+          faq3A: "They scan a QR code, open the menu and place an order online.",
+          faq4Q: "Who delivers the orders?",
+          faq4A: "The restaurant can deliver independently or use DRAGON GO delivery.",
+          faq5Q: "Can the menu be changed?",
+          faq5A: "Yes, menu items, prices, stop-list and positions can be updated.",
+          faq6Q: "What venues is this for?",
+          faq6A: "Cafes, restaurants, sushi, pizza, shawarma, coffee shops, dark kitchens and local delivery.",
+          finalKicker: "Launch in 1 day",
+          finalTitle: "Ready to receive more orders?",
+          finalText: "Connect your restaurant to DRAGON GO and launch your own QR Web App menu without complex development.",
+          instagram: "Message on Instagram",
+          footerBrand: "Local delivery tech platform",
+          footerJoin: "Join us",
+          footerJobs: "Jobs",
+          footerRestaurants: "Restaurants",
+          footerCouriers: "Couriers",
+          footerUseful: "Useful links",
+          footerFaq: "FAQ",
+          footerBlog: "Blog",
+          footerContact: "Contact us",
+          footerSafety: "Safety",
+          footerPartners: "For partners",
+          footerDelivery: "Delivery for restaurants",
+          footerQr: "QR menu",
+          footerWeb: "Web App for venues",
+          footerSocial: "Social media",
+          copyright: "© 2026 DRAGON GO. Local online ordering and delivery platform for restaurants."
+        }
+      };
+
+      const langSelect = document.getElementById("langSelect");
+      const menuToggle = document.querySelector(".dg-menu-toggle");
+      const siteNav = document.getElementById("siteNav");
+      const foodFilters = Array.from(document.querySelectorAll("[data-food-filter]"));
+      const venueCards = Array.from(document.querySelectorAll("[data-food-tags]"));
+      const savedLang = localStorage.getItem("DG_LANDING_LANG") || "uk";
+
+      function applyLang(lang) {
+        const dict = translations[lang] || translations.uk;
+        document.documentElement.lang = lang === "uk" ? "uk" : lang;
+        document.querySelectorAll("[data-i18n]").forEach(node => {
+          const value = dict[node.dataset.i18n];
+          if (typeof value === "string") node.textContent = value;
+        });
+        document.querySelectorAll("[data-i18n-aria-label]").forEach(node => {
+          const value = dict[node.dataset.i18nAriaLabel];
+          if (typeof value === "string") node.setAttribute("aria-label", value);
+        });
+        if (langSelect) langSelect.value = translations[lang] ? lang : "uk";
+        localStorage.setItem("DG_LANDING_LANG", translations[lang] ? lang : "uk");
+      }
+
+      function applyFoodFilter(filter) {
+        const nextFilter = filter || "all";
+        foodFilters.forEach(button => {
+          button.classList.toggle("active", button.dataset.foodFilter === nextFilter);
+        });
+        venueCards.forEach(card => {
+          const tags = String(card.dataset.foodTags || "").split(/\s+/);
+          card.hidden = nextFilter !== "all" && !tags.includes(nextFilter);
+        });
+      }
+
+      langSelect?.addEventListener("change", event => applyLang(event.target.value));
+
+      foodFilters.forEach(button => {
+        button.addEventListener("click", () => applyFoodFilter(button.dataset.foodFilter));
+      });
+
+      menuToggle?.addEventListener("click", () => {
+        const open = document.body.classList.toggle("dg-nav-open");
+        menuToggle.setAttribute("aria-expanded", String(open));
+      });
+
+      siteNav?.addEventListener("click", event => {
+        if (event.target.closest("a")) {
+          document.body.classList.remove("dg-nav-open");
+          menuToggle?.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      const revealNodes = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.16 });
+        revealNodes.forEach(node => observer.observe(node));
+      } else {
+        revealNodes.forEach(node => node.classList.add("is-visible"));
+      }
+
+      applyLang(savedLang);
+    })();
+  </script>
+</body>
+</html>

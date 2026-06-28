@@ -7,7 +7,7 @@
   const scriptEl = document.currentScript;
   const rootUrl = new URL(".", scriptEl?.src || document.baseURI);
   const pages = [
-    { file: "HOME.html", label: "Home", note: "landing page" },
+    { file: "dragon.com.html", label: "Home", note: "landing page" },
     { file: "menu.html", label: "Menu", note: "customer menu" },
     { file: "kassa_dragon.html", label: "Kassa", note: "cashier panel" },
     { file: "monitor_kuhnhya.html", label: "Kitchen", note: "kitchen screen" },

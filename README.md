@@ -5,7 +5,7 @@ Static PWA project for DRAGON GO.
 ## Pages
 
 - `index.html` - QR / install landing page.
-- `HOME.html` - delivery-style restaurant list.
+- `dragon.com.html` - delivery-style restaurant list.
 - `menu.html` - client menu / Web App.
 - `profil.html` - profile page used by the menu.
 
@@ -52,4 +52,4 @@ Supported variables:
 
 - `manifest.json` controls install behavior.
 - `sw.js` caches the app shell.
-- PWA start page is `HOME.html`.
+- PWA start page is `dragon.com.html`.

@@ -110,7 +110,7 @@ Menu:
 ${lan_base_url}/menu.html
 
 Home:
-${lan_base_url}/HOME.html
+${lan_base_url}/dragon.com.html
 
 Works only inside the same Wi-Fi network.
 EOF
@@ -154,7 +154,7 @@ print_links() {
   printf 'Kitchen: %s/monitor_kuhnhya.html\n' "${lan_base_url}"
   printf 'Client:  %s/monitor_klient.html\n' "${lan_base_url}"
   printf 'Menu:    %s/menu.html\n' "${lan_base_url}"
-  printf 'Home:    %s/HOME.html\n' "${lan_base_url}"
+  printf 'Home:    %s/dragon.com.html\n' "${lan_base_url}"
   printf 'Log:     %s\n' "${LOG_FILE}"
   printf 'PID:     %s\n' "${PID_FILE}"
 }

@@ -590,13 +590,14 @@
         font-size: 2.45rem;
       }
     }
+
   </style>
 </head>
 <body class="dragon-entry dragon-entry-qr">
   <div class="intro-screen" aria-hidden="true"></div>
   <main class="landing">
     <section class="hero-card brand-card" aria-labelledby="homeTitle">
-      <a class="brand" href="https://jktigr.github.io/DRAGON-GO/HOME.html" id="brandMenuLink" aria-label="Open DRAGON HOME" data-i18n-aria-label="brandMenuLabel">
+      <a class="brand" href="https://jktigr.github.io/DRAGON-GO/dragon.com.html" id="brandMenuLink" aria-label="Open DRAGON HOME" data-i18n-aria-label="brandMenuLabel">
         <img src="logo-glass.png" alt="DRAGON logo">
         <span class="brand-stack">
           <span class="brand-head">
@@ -621,10 +622,10 @@
       </div>
 
       <section class="actions" aria-label="DRAGON GO actions" data-i18n-aria-label="actionsLabel">
-        <a class="action primary" href="https://jktigr.github.io/DRAGON-GO/HOME.html" id="openMenuButton">
+        <a class="action primary" href="https://jktigr.github.io/DRAGON-GO/dragon.com.html" id="openMenuButton">
           <span class="action-copy">
             <strong data-i18n="openAppTitle">Открыть меню / Web App</strong>
-            <small data-i18n="openAppHint">Перейти в HOME.html</small>
+            <small data-i18n="openAppHint">Перейти в dragon.com.html</small>
           </span>
           <span class="action-arrow" aria-hidden="true">↗</span>
         </a>
@@ -717,7 +718,7 @@
           qrTagline: "Быстрое меню, доставка.",
           actionsLabel: "Действия DRAGON GO",
           openAppTitle: "Открыть меню / Web App",
-          openAppHint: "Перейти в HOME.html",
+          openAppHint: "Перейти в dragon.com.html",
           androidTitle: "Скачать для Android",
           iphoneTitle: "Скачать для iPhone",
           installTitle: "Установка на экран",
@@ -746,7 +747,7 @@
           qrTagline: "Швидке меню, доставка.",
           actionsLabel: "Дії DRAGON GO",
           openAppTitle: "Відкрити меню / Web App",
-          openAppHint: "Перейти до HOME.html",
+          openAppHint: "Перейти до dragon.com.html",
           androidTitle: "Завантажити для Android",
           iphoneTitle: "Завантажити для iPhone",
           installTitle: "Встановлення на екран",
@@ -775,7 +776,7 @@
           qrTagline: "Menu nhanh, giao hàng.",
           actionsLabel: "Thao tác DRAGON GO",
           openAppTitle: "Mở menu / Web App",
-          openAppHint: "Đi tới HOME.html",
+          openAppHint: "Đi tới dragon.com.html",
           androidTitle: "Tải cho Android",
           iphoneTitle: "Tải cho iPhone",
           installTitle: "Cài đặt lên màn hình",
@@ -804,7 +805,7 @@
           qrTagline: "快速菜单，支持配送。",
           actionsLabel: "DRAGON GO 操作",
           openAppTitle: "打开菜单 / Web App",
-          openAppHint: "前往 HOME.html",
+          openAppHint: "前往 dragon.com.html",
           androidTitle: "下载 Android 版",
           iphoneTitle: "下载 iPhone 版",
           installTitle: "安装到主屏幕",
@@ -833,7 +834,7 @@
           qrTagline: "Szybkie menu, dostawa.",
           actionsLabel: "Akcje DRAGON GO",
           openAppTitle: "Otwórz menu / Web App",
-          openAppHint: "Przejdź do HOME.html",
+          openAppHint: "Przejdź do dragon.com.html",
           androidTitle: "Pobierz na Androida",
           iphoneTitle: "Pobierz na iPhone'a",
           installTitle: "Instalacja na ekranie",
@@ -862,7 +863,7 @@
           qrTagline: "Schnellmenü, Lieferung.",
           actionsLabel: "DRAGON GO Aktionen",
           openAppTitle: "Menü öffnen / Web App",
-          openAppHint: "Zu HOME.html wechseln",
+          openAppHint: "Zu dragon.com.html wechseln",
           androidTitle: "Für Android herunterladen",
           iphoneTitle: "Für iPhone herunterladen",
           installTitle: "Zum Startbildschirm hinzufügen",
@@ -971,7 +972,7 @@
 
       async function handleAndroidInstall() {
         if (isStandalone()) {
-          window.location.href = openMenuButton?.href || "https://jktigr.github.io/DRAGON-GO/HOME.html";
+          window.location.href = openMenuButton?.href || "https://jktigr.github.io/DRAGON-GO/dragon.com.html";
           return;
         }
         if (!deferredPrompt) {
@@ -990,7 +991,7 @@
 
       function handleIphoneInstall() {
         if (isStandalone()) {
-          window.location.href = openMenuButton?.href || "https://jktigr.github.io/DRAGON-GO/HOME.html";
+          window.location.href = openMenuButton?.href || "https://jktigr.github.io/DRAGON-GO/dragon.com.html";
           return;
         }
         setStatus(L().statusIphoneShare || "На iPhone установка делается через кнопку «Поделиться».");
@@ -1008,6 +1009,11 @@
       });
 
       applyLang(LANG);
+      if (window.location.hash) {
+        window.setTimeout(() => {
+          document.querySelector(window.location.hash)?.scrollIntoView({ block: "start" });
+        }, 120);
+      }
       androidButton?.addEventListener("click", handleAndroidInstall);
       iphoneButton?.addEventListener("click", handleIphoneInstall);
     })();

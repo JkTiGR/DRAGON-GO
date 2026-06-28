@@ -1387,6 +1387,68 @@
       background: rgba(255, 255, 255, 0.07);
     }
 
+    @media (min-width: 900px) {
+      html {
+        background: #02010a;
+      }
+
+      body.dragon-entry-home {
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.82), rgba(2, 2, 22, 0.34) 46%, rgba(0, 0, 0, 0.58)),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(3, 1, 18, 0.76) 68%, #02010a 100%),
+          radial-gradient(760px 420px at 22% 24%, rgba(255, 0, 255, 0.14), transparent 62%),
+          radial-gradient(720px 420px at 78% 36%, rgba(0, 110, 255, 0.16), transparent 64%),
+          url("dragon-asian-food-bg.png") center top / cover fixed no-repeat,
+          #02010a;
+      }
+
+      body.dragon-entry-home::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 22% 18%, rgba(255, 0, 255, 0.12), transparent 24%),
+          radial-gradient(circle at 82% 20%, rgba(38, 190, 255, 0.12), transparent 22%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 20%, rgba(0, 0, 0, 0.38));
+        mix-blend-mode: screen;
+        opacity: 0.72;
+      }
+
+      body.dragon-entry-home .app {
+        position: relative;
+        z-index: 1;
+      }
+
+      body.dragon-entry-home .hero {
+        min-height: 420px;
+        align-content: center;
+        background:
+          linear-gradient(90deg, rgba(5, 3, 18, 0.94), rgba(5, 3, 18, 0.58) 44%, rgba(5, 3, 18, 0.12) 74%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(5, 3, 18, 0.46) 100%),
+          url("dragon-asian-food-bg.png") center center / cover no-repeat;
+        border-color: rgba(255, 0, 255, 0.24);
+        box-shadow:
+          0 28px 72px rgba(0, 0, 0, 0.38),
+          0 0 34px rgba(255, 0, 255, 0.16),
+          0 0 58px rgba(38, 190, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      body.dragon-entry-home .hero::after {
+        background:
+          radial-gradient(circle at 76% 28%, rgba(255, 0, 255, 0.16), transparent 24%),
+          radial-gradient(circle at 90% 20%, rgba(38, 190, 255, 0.18), transparent 20%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%, rgba(0, 0, 0, 0.28));
+        opacity: 0.8;
+      }
+
+      body.dragon-entry-home .hero-float {
+        display: none;
+      }
+    }
+
     @media (min-width: 620px) {
       .top-grid {
         grid-auto-columns: minmax(292px, 46%);
@@ -1403,6 +1465,235 @@
       .hero {
         margin-inline: 0;
         border-radius: 32px;
+      }
+    }
+
+    @media (min-width: 900px) {
+      html {
+        background: #02010a;
+      }
+
+      body.dragon-entry-home {
+        min-height: 100%;
+        background:
+          linear-gradient(90deg, rgba(3, 2, 10, 0.96), rgba(4, 3, 18, 0.66) 42%, rgba(3, 2, 10, 0.9)),
+          linear-gradient(180deg, rgba(5, 3, 18, 0.24), rgba(2, 1, 10, 0.92) 82%, #02010a),
+          url("dragon-neon-home-bg.png") center top / cover fixed no-repeat,
+          #02010a;
+      }
+
+      body.dragon-entry-home::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 18%, rgba(0, 0, 0, 0.42)),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 28%, rgba(0, 0, 0, 0.42));
+        mix-blend-mode: normal;
+        opacity: 1;
+      }
+
+      body.dragon-entry.dragon-entry-home:not(.locked):not(.unlocked) > .app {
+        position: relative;
+        z-index: 1;
+        width: calc(100% - 96px) !important;
+        max-width: 1320px !important;
+        padding: max(14px, env(safe-area-inset-top)) 0 calc(116px + env(safe-area-inset-bottom));
+      }
+
+      body.dragon-entry-home .header {
+        top: max(12px, env(safe-area-inset-top));
+      }
+
+      body.dragon-entry-home .header .bar {
+        min-height: 66px;
+        margin-bottom: 18px;
+        border-radius: 28px;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar {
+        grid-template-columns: minmax(150px, auto) minmax(360px, 540px) auto auto;
+      }
+
+      body.dragon-entry-home .hero {
+        min-height: clamp(260px, 28vw, 360px);
+        padding: clamp(34px, 5vw, 64px);
+        align-content: center;
+        background:
+          linear-gradient(90deg, rgba(5, 3, 18, 0.92), rgba(5, 3, 18, 0.58) 44%, rgba(5, 3, 18, 0.16) 78%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(5, 3, 18, 0.46) 100%),
+          url("dragon-neon-home-bg.png") center 34% / cover no-repeat;
+        border-color: rgba(173, 122, 255, 0.24);
+        box-shadow:
+          0 28px 72px rgba(0, 0, 0, 0.38),
+          0 0 36px rgba(149, 106, 255, 0.14),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      body.dragon-entry-home .hero h1 {
+        max-width: 12ch;
+        font-size: clamp(3.4rem, 5vw, 5.7rem);
+        letter-spacing: -0.055em;
+      }
+
+      body.dragon-entry-home .hero p {
+        max-width: 460px;
+      }
+
+      .search {
+        min-height: 60px;
+        margin-bottom: 18px;
+      }
+
+      .chips {
+        grid-auto-columns: 78px;
+        overflow: visible;
+        margin-bottom: 30px;
+        padding-inline: 0;
+      }
+
+      .section {
+        margin-bottom: 34px;
+      }
+
+      .top-grid,
+      .market-grid,
+      .rail,
+      .all-restaurants-list {
+        overflow: visible;
+        grid-auto-flow: row;
+        margin: 0;
+        padding: 0;
+        scroll-snap-type: none;
+      }
+
+      .top-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .market-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .all-restaurants-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .top-grid > *,
+      .market-grid > * {
+        scroll-snap-align: none;
+      }
+
+      .restaurant-card {
+        min-height: 100%;
+      }
+
+      .restaurant-cover,
+      .all-restaurants-list .restaurant-cover {
+        height: clamp(210px, 18vw, 274px);
+      }
+
+      .market-media {
+        border-radius: 20px;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        transform: none;
+        width: 100%;
+        min-height: 50px;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid rgba(236, 228, 255, 0.14);
+        border-radius: 20px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(19, 13, 38, 0.56)),
+          rgba(10, 8, 24, 0.5);
+        box-shadow:
+          0 10px 24px rgba(0, 0, 0, 0.2),
+          0 0 18px rgba(149, 106, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(16px) saturate(145%);
+        -webkit-backdrop-filter: blur(16px) saturate(145%);
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock::before {
+        inset: 1px;
+        opacity: 0.34;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .dock-btn {
+        width: 100%;
+        max-width: none;
+        min-height: 42px;
+        justify-content: center;
+        gap: 2px;
+        padding: 4px 3px;
+        border-radius: 15px;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .dock-btn::after {
+        max-width: 100%;
+        overflow: hidden;
+        font-size: 0.56rem;
+        line-height: 1.05;
+        letter-spacing: 0.03em;
+        text-overflow: ellipsis;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock img {
+        width: 21px;
+        height: 21px;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .cart-badge {
+        top: 2px;
+        right: 8px;
+      }
+
+      body.dragon-entry-home.dock-in-bar.sheet-open .header .bar > .dock {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      body.dragon-entry.dragon-entry-home:not(.locked):not(.unlocked) > .app {
+        width: calc(100% - 96px) !important;
+        max-width: 1320px !important;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar {
+        grid-template-columns: minmax(170px, auto) minmax(420px, 620px) auto auto;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .dock-btn {
+        min-height: 44px;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .dock-btn::after {
+        font-size: 0.58rem;
+        white-space: nowrap;
+      }
+
+      body.dragon-entry-home.dock-in-bar .header .bar > .dock .cart-badge {
+        top: 2px;
+        right: 10px;
       }
     }
 
@@ -2498,6 +2789,30 @@
       const i18nNodes = Array.from(document.querySelectorAll("[data-i18n]"));
       const i18nPlaceholders = Array.from(document.querySelectorAll("[data-i18n-placeholder]"));
       const i18nAriaLabels = Array.from(document.querySelectorAll("[data-i18n-aria-label]"));
+      const appMain = document.querySelector("main.app");
+      const headerBar = document.querySelector(".header .bar");
+      const dockNav = document.querySelector("nav.dock");
+      const dockDesktopQuery = window.matchMedia ? window.matchMedia("(min-width: 900px)") : null;
+
+      function syncDockPlacement() {
+        if (!dockNav || !headerBar) return;
+
+        const placeInBar = Boolean(dockDesktopQuery?.matches);
+        document.body.classList.toggle("dock-in-bar", placeInBar);
+
+        if (placeInBar) {
+          if (dockNav.parentElement !== headerBar) {
+            const langWrap = headerBar.querySelector(".lang");
+            const burger = headerBar.querySelector(".burger");
+            headerBar.insertBefore(dockNav, langWrap || burger || null);
+          }
+          return;
+        }
+
+        if (dockNav.parentElement !== document.body) {
+          document.body.insertBefore(dockNav, ordersOverlay || appMain?.nextSibling || null);
+        }
+      }
 
       function setStatus(text) {
         if (status) status.textContent = text || "";
@@ -2885,6 +3200,13 @@
         }
       });
 
+      syncDockPlacement();
+      if (dockDesktopQuery?.addEventListener) {
+        dockDesktopQuery.addEventListener("change", syncDockPlacement);
+      } else if (dockDesktopQuery?.addListener) {
+        dockDesktopQuery.addListener(syncDockPlacement);
+      }
+
       setLang(LANG);
       updateCartBadge();
       renderOrdersSheet();
@@ -2900,6 +3222,7 @@
       });
 
       window.addEventListener("pageshow", () => {
+        syncDockPlacement();
         updateCartBadge();
         renderOrdersSheet();
       });

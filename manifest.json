@@ -1,7 +1,7 @@
 {
   "name": "DRAGON GO",
   "short_name": "DRAGON GO",
-  "start_url": "https://jktigr.github.io/DRAGON-GO/HOME.html",
+  "start_url": "https://jktigr.github.io/DRAGON-GO/dragon.com.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0a0616",

@@ -2,7 +2,7 @@ const CACHE_NAME = "dragon-go-pwa-v21";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./HOME.html",
+  "./dragon.com.html",
   "./menu.html",
   "./market.html",
   "./profil.html",

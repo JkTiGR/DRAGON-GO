@@ -1,7 +1,7 @@
 const CACHE_NAME = "dragon-go-shell-v26";
 const APP_SHELL = [
   "./",
-  "./HOME.html",
+  "./dragon.com.html",
   "./menu.html",
   "./index.html",
   "./market.html",
